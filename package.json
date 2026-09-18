@@ -1,0 +1,14 @@
+{
+  "name": "io-note",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Isolated signed-message audio research PoC; no transport backend",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "measure": "node scripts/measure.mjs",
+    "browser-check": "node scripts/browser-check.mjs"
+  },
+  "engines": { "node": ">=22" }
+}

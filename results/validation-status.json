@@ -1,0 +1,25 @@
+{
+  "testCount": 32,
+  "passed": 32,
+  "failed": 0,
+  "skipped": 0,
+  "softwareBaseline": {
+    "successful": 10,
+    "failed": 0
+  },
+  "captureWorkerIntegration": "passed in Node VM simulation; no browser/hardware involved",
+  "browserExecution": {
+    "verified": true,
+    "scope": "dist/io-note.html over file:// in headless Chromium 141.0.7390.37 (Linux x64): loopback gate, six adversarial cases, key generation; no console or page errors",
+    "microphoneExercised": false,
+    "raw": "results/browser-verification.json"
+  },
+  "physicalAudio": {
+    "attempted": false,
+    "successful": null,
+    "failed": null,
+    "endToEndSeconds": null
+  },
+  "deployed": false,
+  "breadlinesModified": false
+}

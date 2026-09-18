@@ -1,0 +1,73 @@
+{
+  "generatedAt": "2026-09-18T19:13:58.363Z",
+  "target": "file:///home/user/io-note-/dist/io-note.html",
+  "host": {
+    "node": "v22.22.2",
+    "platform": "linux x64"
+  },
+  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.7390.37 Safari/537.36",
+  "microphoneExercised": false,
+  "physicalAudio": {
+    "attempted": false,
+    "reason": "Headless browser check; no speaker, microphone, or second device involved."
+  },
+  "gate": {
+    "transmitDisabledBeforeLoopback": true,
+    "listenDisabledBeforeLoopback": true,
+    "attackDisabledBeforeLoopback": true,
+    "listenEnabledAfterLoopback": true,
+    "attackEnabledAfterLoopback": true
+  },
+  "loopback": {
+    "gateText": "Software loopback passed. Live audio controls unlocked.",
+    "gatePassed": true,
+    "mode": "SOFTWARE LOOPBACK · NO MICROPHONE",
+    "status": "SIGNATURE VERIFIED",
+    "message": "hello, io-note",
+    "fingerprint": "21fe31dfa154a261626bf854046fd2271b7bed4b6abe45aa58877ef47f9721b9",
+    "packetBytes": "137",
+    "transmittedBits": "1208",
+    "audioSeconds": "6.34",
+    "timing": "Software pipeline: 94.7 ms compute · 6.04 s tones + 0.30 s silence. No physical audio measured."
+  },
+  "adversarial": [
+    {
+      "attack": "message",
+      "status": "SIGNATURE INVALID",
+      "detail": "Ed25519 verification failed"
+    },
+    {
+      "attack": "signature",
+      "status": "SIGNATURE INVALID",
+      "detail": "Ed25519 verification failed"
+    },
+    {
+      "attack": "public-key",
+      "status": "SIGNATURE INVALID",
+      "detail": "Ed25519 verification failed"
+    },
+    {
+      "attack": "truncate",
+      "status": "TRANSPORT CORRUPTED",
+      "detail": "CRC-32 mismatch"
+    },
+    {
+      "attack": "nonce",
+      "status": "REPLAYED PACKET",
+      "detail": "hello, io-note"
+    },
+    {
+      "attack": "bit",
+      "status": "TRANSPORT CORRUPTED",
+      "detail": "CRC-32 mismatch"
+    }
+  ],
+  "identity": {
+    "generatedFingerprintLength": 64,
+    "transmitEnabledAfterKeygen": true
+  },
+  "decodeCounters": "5 / 2",
+  "consoleOutput": [],
+  "allExpectedOutcomes": true,
+  "failures": []
+}

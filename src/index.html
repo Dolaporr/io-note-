@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' blob:; style-src 'unsafe-inline'; worker-src blob:; child-src blob:; connect-src 'none'; img-src data:; media-src blob:; base-uri 'none'; form-action 'none'">
+  <title>io-note · signed words, through sound</title>
+  <style>/* STYLE */</style>
+</head>
+<body>
+<main>
+  <header><a class="wordmark" href="#">io<span>·</span>note</a><span class="chip">ISOLATED RESEARCH PoC / v0.1</span></header>
+  <div class="intro"><div class="eyebrow">TWO DEVICES. ONE AUDIO CHANNEL.</div><h1>Signed words.<br><span>Carried by sound.</span></h1><p>Ed25519 → binary packet → two tones → independent verification.</p></div>
+  <div class="gate"><span id="gate-dot" class="dot"></span><span id="gate-text">Run the deterministic software loopback before live audio.</span><button id="selftest">Run loopback</button></div>
+  <div class="grid">
+    <section class="panel">
+      <div class="panel-head"><span class="step">01</span><h2>Send a note</h2><span class="subtle">THIS DEVICE</span></div>
+      <label for="message">Message <span id="byte-count">14 / 96 UTF-8 bytes</span></label>
+      <textarea id="message" rows="3" spellcheck="false">hello, io-note</textarea>
+      <div class="key-row"><span>Local Ed25519 identity</span><button id="generate">Generate key</button></div>
+      <code id="sender-key">No key generated</code>
+      <div class="button-row small"><button id="export-key" disabled>Export keypair</button><label class="file-button" for="import-key">Import keypair</label><input id="import-key" type="file" accept="application/json,.json" hidden></div>
+      <button id="transmit" class="primary" disabled>Transmit audio <span>↗</span></button>
+      <div class="button-row small"><button id="resend" disabled>Resend same packet</button><button id="stop-tx" disabled>Stop tone</button></div>
+      <p id="tx-note" class="note">Audible tones · 1,200 / 2,200 Hz · start at low volume</p>
+      <div class="signal" id="signal" aria-hidden="true"></div>
+    </section>
+    <section class="panel receiver">
+      <div class="panel-head"><span class="step">02</span><h2>Receive & verify</h2><span class="subtle">SECOND DEVICE</span></div>
+      <div class="button-row"><button id="listen" class="primary" disabled>Listen on microphone</button><button id="stop-rx" disabled>Finish</button></div>
+      <p id="rx-note" class="note">Run loopback on each device. Then listen here before transmitting.</p>
+      <div class="verdict" id="verdict" aria-live="polite"><span id="mode">NO PACKET YET</span><strong id="status">Ready when you are.</strong><p id="received">The receiver recovers and verifies the message locally.</p></div>
+      <div class="fingerprint"><span>Received key fingerprint · SHA-256</span><code id="received-key">—</code><small>Compare the full fingerprint out of band to identify a known sender.</small></div>
+      <p class="note" id="replay-note">Replay memory: this open page only; up to 1,024 verified nonces per mode.</p>
+    </section>
+  </div>
+  <section class="measurements"><div><span>Packet</span><strong id="m-bytes">—</strong><small>encoded bytes</small></div><div><span>On air</span><strong id="m-bits">—</strong><small>bits incl. framing</small></div><div><span>Bitrate</span><strong>200</strong><small>bits / second</small></div><div><span>Audio buffer</span><strong id="m-time">—</strong><small>seconds incl. silence</small></div><div><span>Decode attempts</span><strong id="m-decodes">0 / 0</strong><small>successful / failed</small></div></section>
+  <div class="bottom-row"><p id="timing" class="note">Timing measurements will appear after a test or transmission.</p><button id="export-results">Export measurements</button></div>
+  <details><summary>Adversarial lab · software only</summary><p>Uses a fresh signed test packet. Message, signature, and public-key mutations have a recomputed CRC to reach the signature check.</p><div class="button-row"><select id="attack" aria-label="Adversarial test"><option value="message">Modify message byte</option><option value="signature">Modify signature</option><option value="public-key">Modify public key</option><option value="truncate">Truncate packet</option><option value="nonce">Duplicate nonce</option><option value="bit">Flip audio data bit</option></select><button id="run-attack" disabled>Run test</button></div></details>
+  <footer><strong>Authenticity & integrity only.</strong> Audio and message bytes are unencrypted and can be recorded by anyone nearby. An included key does not establish a real-world identity. Research PoC; not production-ready.<br>No transport backend · No wallet · No blockchain · Independent of Breadlines</footer>
+</main>
+<script>/* SCRIPT */</script>
+</body>
+</html>

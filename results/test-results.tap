@@ -1,0 +1,202 @@
+TAP version 13
+# Subtest: built standalone script parses; CSP rejects network; no external resources
+ok 1 - built standalone script parses; CSP rejects network; no external resources
+  ---
+  duration_ms: 6.361272
+  type: 'test'
+  ...
+# Subtest: actual AudioWorklet chunker → actual worker decoder → independent verifier (Node VM simulation)
+ok 2 - actual AudioWorklet chunker → actual worker decoder → independent verifier (Node VM simulation)
+  ---
+  duration_ms: 3941.536422
+  type: 'test'
+  ...
+# Subtest: MSB-first bits roundtrip all 256 byte values
+ok 3 - MSB-first bits roundtrip all 256 byte values
+  ---
+  duration_ms: 2.734212
+  type: 'test'
+  ...
+# Subtest: deterministic PCM loopback at 44100 Hz
+ok 4 - deterministic PCM loopback at 44100 Hz
+  ---
+  duration_ms: 130.167812
+  type: 'test'
+  ...
+# Subtest: deterministic PCM loopback at 48000 Hz
+ok 5 - deterministic PCM loopback at 48000 Hz
+  ---
+  duration_ms: 63.805336
+  type: 'test'
+  ...
+# Subtest: deterministic PCM loopback at 96000 Hz
+ok 6 - deterministic PCM loopback at 96000 Hz
+  ---
+  duration_ms: 104.164814
+  type: 'test'
+  ...
+# Subtest: unknown start phase + seeded noise + attenuation
+ok 7 - unknown start phase + seeded noise + attenuation
+  ---
+  duration_ms: 53.41523
+  type: 'test'
+  ...
+# Subtest: inverted waveform and arbitrary carrier phase preserve payload
+ok 8 - inverted waveform and arbitrary carrier phase preserve payload
+  ---
+  duration_ms: 44.986065
+  type: 'test'
+  ...
+# Subtest: 96-byte message decodes at maximum bounded packet size
+ok 9 - 96-byte message decodes at maximum bounded packet size
+  ---
+  duration_ms: 63.162245
+  type: 'test'
+  ...
+# Subtest: audio data-bit inversion recovers altered packet and fails CRC
+ok 10 - audio data-bit inversion recovers altered packet and fails CRC
+  ---
+  duration_ms: 42.343394
+  type: 'test'
+  ...
+# Subtest: truncated audio after sync is explicitly partial
+ok 11 - truncated audio after sync is explicitly partial
+  ---
+  duration_ms: 135.921747
+  type: 'test'
+  ...
+# Subtest: silence and seeded noise produce no synchronized packet
+ok 12 - silence and seeded noise produce no synchronized packet
+  ---
+  duration_ms: 9.487807
+  type: 'test'
+  ...
+# Subtest: destroyed sync produces no packet rather than a signature verdict
+ok 13 - destroyed sync produces no packet rather than a signature verdict
+  ---
+  duration_ms: 34.448457
+  type: 'test'
+  ...
+# Subtest: corrupt physical length is bounded without allocation from untrusted length
+ok 14 - corrupt physical length is bounded without allocation from untrusted length
+  ---
+  duration_ms: 48.574406
+  type: 'test'
+  ...
+# Subtest: RFC 8032 empty-message signature known-answer vector
+ok 15 - RFC 8032 empty-message signature known-answer vector
+  ---
+  duration_ms: 9.516988
+  type: 'test'
+  ...
+# Subtest: CRC-32/ISO-HDLC known-answer vector
+ok 16 - CRC-32/ISO-HDLC known-answer vector
+  ---
+  duration_ms: 0.299676
+  type: 'test'
+  ...
+# Subtest: deterministic exact frame golden vector
+ok 17 - deterministic exact frame golden vector
+  ---
+  duration_ms: 8.382424
+  type: 'test'
+  ...
+# Subtest: modified message, CRC recomputed → SIGNATURE INVALID
+ok 18 - modified message, CRC recomputed → SIGNATURE INVALID
+  ---
+  duration_ms: 1.212992
+  type: 'test'
+  ...
+# Subtest: modified signature, CRC recomputed → SIGNATURE INVALID
+ok 19 - modified signature, CRC recomputed → SIGNATURE INVALID
+  ---
+  duration_ms: 1.961685
+  type: 'test'
+  ...
+# Subtest: modified public key, CRC recomputed → SIGNATURE INVALID
+ok 20 - modified public key, CRC recomputed → SIGNATURE INVALID
+  ---
+  duration_ms: 0.803124
+  type: 'test'
+  ...
+# Subtest: modified nonce, CRC recomputed → SIGNATURE INVALID
+ok 21 - modified nonce, CRC recomputed → SIGNATURE INVALID
+  ---
+  duration_ms: 1.845319
+  type: 'test'
+  ...
+# Subtest: single transport bit corruption → TRANSPORT CORRUPTED
+ok 22 - single transport bit corruption → TRANSPORT CORRUPTED
+  ---
+  duration_ms: 0.428649
+  type: 'test'
+  ...
+# Subtest: every truncation and trailing bytes rejected
+ok 23 - every truncation and trailing bytes rejected
+  ---
+  duration_ms: 3.323774
+  type: 'test'
+  ...
+# Subtest: unsupported version, magic, and forged length fail structurally
+ok 24 - unsupported version, magic, and forged length fail structurally
+  ---
+  duration_ms: 0.566193
+  type: 'test'
+  ...
+# Subtest: same sender + nonce replay rejected even with newly signed message
+ok 25 - same sender + nonce replay rejected even with newly signed message
+  ---
+  duration_ms: 5.459429
+  type: 'test'
+  ...
+# Subtest: invalid signature cannot poison replay memory
+ok 26 - invalid signature cannot poison replay memory
+  ---
+  duration_ms: 1.286775
+  type: 'test'
+  ...
+# Subtest: concurrent duplicate verification admits exactly one packet
+ok 27 - concurrent duplicate verification admits exactly one packet
+  ---
+  duration_ms: 2.247632
+  type: 'test'
+  ...
+# Subtest: replay scope is per public key; full cache refuses new entries without eviction
+ok 28 - replay scope is per public key; full cache refuses new entries without eviction
+  ---
+  duration_ms: 2.433218
+  type: 'test'
+  ...
+# Subtest: cache saturation is explicit
+ok 29 - cache saturation is explicit
+  ---
+  duration_ms: 6.355541
+  type: 'test'
+  ...
+# Subtest: generate/export/import roundtrip and mismatched keypair rejection
+ok 30 - generate/export/import roundtrip and mismatched keypair rejection
+  ---
+  duration_ms: 12.591389
+  type: 'test'
+  ...
+# Subtest: exact Unicode, whitespace and embedded NUL bytes are preserved
+ok 31 - exact Unicode, whitespace and embedded NUL bytes are preserved
+  ---
+  duration_ms: 1.208867
+  type: 'test'
+  ...
+# Subtest: byte limit, empty message, malformed Unicode and nonce length
+ok 32 - byte limit, empty message, malformed Unicode and nonce length
+  ---
+  duration_ms: 6.028934
+  type: 'test'
+  ...
+1..32
+# tests 32
+# suites 0
+# pass 32
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4067.17889
