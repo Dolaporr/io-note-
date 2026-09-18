@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createPacket, importIdentity, verifyPacket, STATUS } from '../src/protocol.mjs';
-import { bitsToBytes, bytesToBits, decodeAudio, frameBits, metrics, modulate, modulateBits, OVERHEAD_BITS } from '../src/modem.mjs';
+import { bitsToBytes, bytesToBits, decodeAudio, FRAMING, frameBits, metrics, modulate, modulateBits, OVERHEAD_BITS } from '../src/modem.mjs';
 import { softwareLoopback, TEST_IDENTITY, TEST_MESSAGE } from '../src/selftest.mjs';
 
 const keys = await importIdentity(TEST_IDENTITY);
@@ -61,4 +61,54 @@ test('destroyed sync produces no packet rather than a signature verdict', () => 
 test('corrupt physical length is bounded without allocation from untrusted length', () => {
   const bits = frameBits(packet); bits[96] = 1;
   assert.equal(decodeAudio(modulateBits(bits), 48000).kind, 'corrupted');
+});
+test('diagnostics are additive: decode results carry no extra decision fields', () => {
+  const decoded = decodeAudio(modulate(packet), 48000);
+  assert.deepEqual(Object.keys(decoded).filter(k => k !== 'diagnostics').sort(), ['endSample', 'kind', 'packet', 'quality', 'startSample']);
+  assert.deepEqual(decoded.packet, packet);
+});
+test('diagnostics report a complete frame, checksum and bit counts for a clean signal', () => {
+  const d = decodeAudio(modulate(packet), 48000).diagnostics;
+  assert.equal(d.framing, FRAMING.complete);
+  assert.equal(d.checksum, 'CRC-32 PASS');
+  assert.equal(d.declaredPacketBytes, packet.length);
+  assert.equal(d.bits.framing, OVERHEAD_BITS);
+  assert.equal(d.bits.expectedData, packet.length * 8);
+  assert.equal(d.bits.receivedData, packet.length * 8);
+  assert.equal(d.bits.total, metrics(packet).transmittedBits);
+  assert.equal(d.sync.candidates, 1); assert.equal(d.sync.accepted, 1);
+  assert.equal(d.tones.join(), '1200,2200');
+  assert.ok(d.symbols.meanConfidence > 0.9, `confidence ${d.symbols.meanConfidence}`);
+  assert.ok(d.level.rmsDbfs > -20 && d.level.clippedSamples === 0);
+  // The preamble is alternating by construction, so a correctly timed trace must read 0101…
+  assert.match(d.symbolTrace.bits, /^(01){20,}/);
+});
+test('diagnostics separate a failed checksum from a failed sync and from silence', async () => {
+  const bits = frameBits(packet); bits[OVERHEAD_BITS + 55 * 8 + 7] ^= 1;
+  const corrupted = decodeAudio(modulateBits(bits), 48000).diagnostics;
+  assert.equal(corrupted.framing, FRAMING.complete);
+  assert.equal(corrupted.checksum, 'CRC-32 FAIL');
+  assert.equal(corrupted.bits.receivedData, corrupted.bits.expectedData);
+
+  const broken = frameBits(packet); broken[70] ^= 1;
+  const nosync = decodeAudio(modulateBits(broken), 48000).diagnostics;
+  assert.equal(nosync.framing, FRAMING.carrier);
+  assert.equal(nosync.sync.candidates, 0);
+  assert.equal(nosync.checksum, 'not reached');
+
+  const silent = decodeAudio(new Float32Array(48000 * 2), 48000).diagnostics;
+  assert.equal(silent.framing, FRAMING.none);
+  assert.equal(silent.level.rmsDbfs, -120);
+  assert.equal(silent.symbols.meanConfidence, 0);
+
+  const short = decodeAudio(modulate(packet).slice(0, -48000), 48000).diagnostics;
+  assert.equal(short.framing, FRAMING.incomplete);
+  assert.ok(short.bits.receivedData < short.bits.expectedData);
+  assert.equal(short.bits.total, null);
+});
+test('a corrupt physical length is reported as an invalid length, not a short frame', () => {
+  const bits = frameBits(packet); bits[96] = 1;
+  const d = decodeAudio(modulateBits(bits), 48000).diagnostics;
+  assert.equal(d.framing, FRAMING.length);
+  assert.ok(d.declaredPacketBytes > 219 || d.declaredPacketBytes < 123);
 });

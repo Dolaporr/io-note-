@@ -44,3 +44,34 @@ test('actual AudioWorklet chunker → actual worker decoder → independent veri
   self.onmessage({ data: { type: 'finish' } });
   assert.equal(messages.at(-1).kind, 'none'); assert.equal(messages.at(-1).final, true);
 });
+
+test('worker keeps a bounded sliding window and still recovers a late frame (Node VM simulation)', async () => {
+  const keys = await importIdentity(TEST_IDENTITY);
+  const packet = await createPacket('we control the io pins', keys, new Uint8Array(16));
+  const rate = 16000, lead = rate * 10;
+  const signal = modulate(packet, rate);
+  const total = new Float32Array(lead + signal.length + rate * 4);
+  total.set(signal, lead);
+  const messages = [], self = {};
+  const workerContext = vm.createContext({ self, postMessage: msg => messages.push(msg), performance, crypto, TextEncoder, TextDecoder, Uint8Array, Float32Array, Float64Array, DataView });
+  vm.runInContext([await read('src/protocol.mjs'), await read('src/modem.mjs'), await read('src/decoder-worker.mjs')].map(plain).join('\n'), workerContext);
+  self.onmessage({ data: { type: 'init', sampleRate: rate } });
+  for (let at = 0; at < total.length; at += 4096) self.onmessage({ data: { type: 'chunk', pcm: total.slice(at, at + 4096) } });
+  self.onmessage({ data: { type: 'finish' } });
+
+  // The capture ran well past the 14 s window and past decodeAudio's 16 s hard limit.
+  const last = messages.at(-1);
+  assert.ok(last.capturedSeconds > 16, `captured ${last.capturedSeconds} s`);
+  assert.ok(last.windowSeconds <= 14.1, `window ${last.windowSeconds} s`);
+  assert.ok(last.droppedSamples > 0, 'older audio must be evicted, not kept');
+  assert.ok(!messages.some(m => m.kind === 'error'), 'no message may exceed the decoder buffer bound');
+  // No message before the explicit finish may claim to be final; the session is the app's to end.
+  assert.equal(messages.filter(m => m.final).length, 1);
+
+  const decoded = messages.find(m => m.kind === 'packet' && Buffer.from(m.packet).equals(Buffer.from(packet)));
+  assert.ok(decoded, 'a frame arriving after older audio was evicted must still decode');
+  assert.equal((await verifyPacket(decoded.packet)).status, STATUS.verified);
+  assert.equal(decoded.diagnostics.checksum, 'CRC-32 PASS');
+  // Sample indices stay in capture coordinates, so signal-to-verdict timing survives eviction.
+  assert.ok(Math.abs(decoded.startSample - lead) < rate * 0.5, `startSample ${decoded.startSample} vs ${lead}`);
+});

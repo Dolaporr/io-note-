@@ -2,18 +2,35 @@
 
 An isolated research PoC for an Ed25519-signed short message carried by audible 2-FSK. This project is independent of Breadlines. No Breadlines files were accessed or modified. No deployment was performed.
 
-**Implemented and verified in software. Physical two-device audio transport and browser execution remain unverified in this environment.** See [MEASURED_RESULTS.md](MEASURED_RESULTS.md) for actual successes, failures, and validation limits.
+**Implemented and verified in software and in a browser. Physical two-device audio transport remains unverified.** See [MEASURED_RESULTS.md](MEASURED_RESULTS.md) for actual successes, failures, and validation limits, and [PHYSICAL_TEST.md](PHYSICAL_TEST.md) for the two-device procedure that would change that.
 
-## Run without a server
+## HTTPS preview
 
-1. Download/unzip the project and open `dist/io-note.html` directly in a desktop browser on each device. All code, CSS, worker code, and worklet code are embedded. There are no external resources, package downloads, or network services at runtime.
+_Publishing; the URL is filled in once the first deployment succeeds._
+
+The preview is a single static file on GitHub Pages. **The server has no part in message
+transport**: the page's CSP sets `connect-src 'none'`, the app contains no fetch, WebSocket,
+WebRTC or telemetry code, and the only path between two devices is sound. HTTPS exists here
+for one reason — browsers only grant microphone access in a secure context. Open the same URL
+on both devices, pick **Sender** on one and **Receiver** on the other, and follow
+[PHYSICAL_TEST.md](PHYSICAL_TEST.md).
+
+`.github/workflows/preview.yml` rebuilds the file from `src/`, refuses to publish if the
+rebuild differs from the committed `dist/io-note.html`, runs the tests, and serves the result
+with a `Disallow: /` robots file.
+
+## Run it
+
+1. Open the preview URL above on both devices, or open `dist/io-note.html` directly from disk. All code, CSS, worker code, and worklet code are embedded; there are no external resources, package downloads, or network services at runtime. **A local `file://` page cannot get microphone access in every browser — use the HTTPS preview for the receiver.**
 2. Click **Run loopback** on both devices. Live controls stay disabled unless PCM modulation → decoding → Ed25519 verification succeeds.
-3. On the sending device, click **Generate key**, or import an `io-note-key-v1` JSON keypair. No wallet is involved. Generated keys exist only in page memory unless explicitly exported.
-4. On the receiving device, click **Listen on microphone**, and grant microphone access to this local file. It does not need the sender's private key or an imported identity.
-5. On the sender, click **Transmit audio**. Start at low speaker volume and place the devices close together. Read the receiver's actual outcome; playback completion is not delivery confirmation.
-6. Use **Export measurements** on each device to preserve actual results. For replay testing, re-arm the receiver, then use **Resend same packet**. Normal **Transmit audio** creates a fresh random nonce even for identical text.
+3. Choose a role: **Sender**, **Receiver**, or **Both · one device** for a single-machine acoustic self-test. The choice is remembered per device and only affects which panels are shown.
+4. On the sending device, click **Generate key**, or import an `io-note-key-v1` JSON keypair. No wallet is involved. Generated keys exist only in page memory unless explicitly exported. Two test messages are one click away, including `we control the io pins`.
+5. On the receiving device, click **Listen on microphone** and grant access. It does not need the sender's private key or an imported identity. The receiver stays armed for 90 seconds and decodes a rolling 14-second window, so there is no rush to get to the other device.
+6. On the sender, click **Transmit audio**. Start at low speaker volume and place the devices close together. Read the receiver's actual outcome; playback completion is not delivery confirmation.
+7. Watch **Live receiver diagnostics** while the tones play: framing state, input level, detected tone shares, symbol count and confidence, sync candidates, bits received, checksum, and signature, plus a symbol trace and a timestamped receiver log. Every failure mode in [PHYSICAL_TEST.md](PHYSICAL_TEST.md) is read from that panel.
+8. Use **Export measurements** on each device to preserve actual results; the receiver's export includes the diagnostics and the log. For replay testing, re-arm the receiver, then use **Resend same packet**. Normal **Transmit audio** creates a fresh random nonce even for identical text.
 
-Browser prerequisite: Ed25519 Web Crypto, AudioContext, AudioWorklet, Worker, and `getUserMedia` in the local file context. A compatible desktop Chrome/Chromium is the intended initial trial target. The built file has been loaded and driven once over `file://` in headless Chromium 141 (loopback, adversarial lab, key generation; see [MEASURED_RESULTS.md](MEASURED_RESULTS.md)), which is **not a general compatibility claim and did not exercise the microphone**. Mobile file previews and embedded in-app viewers may not execute this app or allow microphone access. If the local file context is unsupported, the app shows an error; no server, hosting, or permission-bypass fallback is included. Browser/OS audio effects can also prevent decoding even when API setup succeeds.
+Browser prerequisite: Ed25519 Web Crypto, AudioContext, AudioWorklet, Worker, and `getUserMedia` in a secure context. A compatible desktop Chrome/Chromium is the intended initial trial target. The built file has been loaded and driven once over `file://` in headless Chromium 141 (loopback, adversarial lab, key generation; see [MEASURED_RESULTS.md](MEASURED_RESULTS.md)), which is **not a general compatibility claim and did not exercise the microphone**. Mobile file previews and embedded in-app viewers may not execute this app or allow microphone access. If the local file context is unsupported, the app shows an error; no server, hosting, or permission-bypass fallback is included. Browser/OS audio effects can also prevent decoding even when API setup succeeds.
 
 The runtime CSP sets `connect-src 'none'`; the application contains no fetch, WebSocket, WebRTC, telemetry, backend, wallet, or blockchain code. Speaker and microphone are the only intended inter-device message path.
 
@@ -28,7 +45,7 @@ npm test
 npm run measure
 ```
 
-`npm run browser-check` is optional and deliberately excluded from `npm test`: it drives `dist/io-note.html` over `file://` in a real browser and is the only command that needs software outside this project (`npx playwright install chromium`, or point `IO_NOTE_PLAYWRIGHT` at an existing Playwright install). It never opens the microphone.
+`npm run browser-check` is optional and deliberately excluded from `npm test`: it is the only command that needs software outside this project (`npx playwright install chromium`, or point `IO_NOTE_PLAYWRIGHT` at an existing Playwright install). It runs two stages — the UI, loopback gate, adversarial lab and role switching over `file://`, then the real `getUserMedia` → AudioWorklet → worker → verifier path over `http://127.0.0.1` with Chromium's fake capture device fed from `results/synthetic-input.wav`. **That capture device is software, not a microphone**, so the check proves nothing about physical audio and prints as much.
 
 - `src/protocol.mjs`: canonical packet, keys, checksum, verification, replay cache.
 - `src/modem.mjs`: binary framing, PCM synthesis, noncoherent tone detector.
@@ -37,9 +54,11 @@ npm run measure
 - `src/selftest.mjs`: deterministic known public fixture; never the live sender identity.
 - `src/app.mjs`, `src/index.html`, `src/style.css`: local UI.
 - `scripts/build.mjs`: embeds everything into one HTML file.
-- `scripts/browser-check.mjs`: optional headless-browser run of the built file; writes `results/browser-verification.json`.
+- `scripts/browser-check.mjs`: optional headless-browser run of the built file, including the microphone path against a synthetic capture device; writes `results/browser-verification.json`.
 - `tests/`: protocol, adversarial, waveform, and simulated capture/worker integration tests.
 - `results/`: raw JSON measurements, TAP test output, public fixture WAV, browser-run output, validation status.
+- `PHYSICAL_TEST.md`: the two-device speaker-to-microphone procedure, what to record, and failure triage from the diagnostics.
+- `.github/workflows/preview.yml`: rebuild, verify, test and publish the static HTTPS preview.
 
 The fixture uses a **public RFC 8032 test private key** and fixed nonce solely for reproducible software checks. Anyone can sign with it. Live identities are generated using Web Crypto randomness or explicitly imported by the user.
 

@@ -1,0 +1,49 @@
+# Static HTTPS preview of the branch, so browser microphone permissions behave normally.
+# GitHub Pages serves one file. It has no part in message transport: the page's CSP sets
+# connect-src 'none', and the app contains no fetch, WebSocket, WebRTC or telemetry code.
+name: preview
+
+on:
+  push:
+    branches: ['claude/io-note-measured-results-ga9zqe']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rebuild the single-file app from src/
+        run: npm run build
+      - name: Refuse to publish a build that differs from the committed one
+        run: git diff --exit-code dist/io-note.html
+      - name: Protocol, modem and integration tests
+        run: npm test
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Assemble the static site
+        run: |
+          mkdir -p _site
+          cp dist/io-note.html _site/index.html
+          printf 'User-agent: *\nDisallow: /\n' > _site/robots.txt
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4

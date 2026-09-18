@@ -3,46 +3,90 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' blob:; style-src 'unsafe-inline'; worker-src blob:; child-src blob:; connect-src 'none'; img-src data:; media-src blob:; base-uri 'none'; form-action 'none'">
   <title>io-note · signed words, through sound</title>
   <style>:root{color-scheme:dark;--bg:#0c1113;--panel:#131b1e;--line:#2b383b;--muted:#94a8ac;--ink:#eff5ef;--green:#c2f977;--red:#ff9292;--amber:#ffd58e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,sans-serif}main{max-width:1160px;margin:auto;padding:28px 32px}header,.panel-head,.key-row,.button-row,.bottom-row{display:flex;align-items:center;gap:12px}header{justify-content:space-between;margin-bottom:36px}.wordmark{font-size:30px;font-weight:750;letter-spacing:-1.5px;color:var(--ink);text-decoration:none}.wordmark span{color:var(--green)}.chip,.eyebrow,.subtle,.step,#mode{font:11px/1.4 ui-monospace,monospace;letter-spacing:1.4px}.chip{border:1px solid var(--line);border-radius:20px;padding:7px 13px;color:var(--muted)}.eyebrow{color:var(--green);margin-bottom:12px}h1{font-size:clamp(36px,5vw,58px);font-weight:550;line-height:1.06;letter-spacing:-2.5px;margin:0 0 15px}h1 span{color:var(--muted)}.intro p{color:var(--muted);margin-bottom:25px}.gate{display:flex;align-items:center;gap:12px;border-block:1px solid var(--line);padding:12px 0;margin-bottom:24px;font-size:13px}.gate button{margin-left:auto}.dot{width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0}.dot.pass{background:var(--green)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.panel{background:var(--panel);border:1px solid var(--line);padding:24px;border-radius:14px;min-width:0}.panel-head{margin-bottom:22px}.step{color:var(--green);border:1px solid var(--line);padding:5px;border-radius:5px}h2{font-size:18px;font-weight:550;margin:0}.subtle{margin-left:auto;color:var(--muted);font-size:9px}label{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}label span{float:right}textarea,select{width:100%;border:1px solid var(--line);border-radius:8px;background:#0b1214;color:var(--ink);font:16px/1.5 ui-monospace,monospace;padding:12px;resize:vertical}textarea:focus,button:focus-visible,select:focus{outline:2px solid var(--green);outline-offset:2px}button,.file-button{border:1px solid #415154;border-radius:7px;padding:9px 13px;background:transparent;color:var(--ink);font:inherit;font-size:12px;cursor:pointer;white-space:nowrap}button:hover,.file-button:hover{border-color:var(--green)}button:disabled{opacity:.35;cursor:not-allowed}button.primary{background:var(--green);color:#15200b;border-color:var(--green);font-size:14px;font-weight:650;padding:13px 16px}.primary span{float:right}#transmit{width:100%;margin-top:16px}.key-row{justify-content:space-between;font-size:12px;margin:13px 0 8px;color:var(--muted)}code{display:block;font:11px/1.5 ui-monospace,monospace;overflow-wrap:anywhere;color:#b9c9cc;min-height:32px}.small{margin-top:10px}.small button,.small .file-button{font-size:11px;padding:6px 10px;margin-bottom:0}.note{font-size:11px;color:var(--muted);margin:12px 0}.signal{height:24px;background:repeating-linear-gradient(90deg,#445637 0 2px,transparent 2px 7px);opacity:.5;mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent)}.signal.active{background:repeating-linear-gradient(90deg,var(--green) 0 2px,transparent 2px 7px);animation:pulse .5s infinite alternate}@keyframes pulse{to{opacity:1;transform:scaleY(.6)}}.receiver .primary{flex:1}.verdict{min-height:158px;border:1px solid var(--line);background:#0e1517;border-radius:10px;padding:18px;margin:21px 0}#mode{display:block;color:var(--muted);font-size:10px}#status{display:block;font-size:24px;letter-spacing:-.7px;line-height:1.2;margin-top:16px}#received{font-size:14px;margin-bottom:0;white-space:pre-wrap;overflow-wrap:anywhere}.verdict.verified{border-color:#658441} .verified #status{color:var(--green)}.verdict.invalid,.verdict.corrupted{border-color:#8c4f4f}.invalid #status,.corrupted #status{color:var(--red)}.verdict.replay{border-color:#947642}.replay #status{color:var(--amber)}.fingerprint span,.fingerprint small{font-size:10px;color:var(--muted)}.fingerprint code{margin:7px 0}.measurements{display:grid;grid-template-columns:repeat(5,1fr);border-block:1px solid var(--line);margin-top:24px;padding:18px 0}.measurements>div{border-right:1px solid var(--line);padding:0 20px}.measurements>div:first-child{padding-left:0}.measurements>div:last-child{border:0}.measurements span,.measurements small{display:block;font-size:10px;color:var(--muted)}.measurements strong{display:block;font:27px/1.5 ui-monospace,monospace}.bottom-row{justify-content:space-between}details{border-top:1px solid var(--line);padding-top:16px;margin:15px 0;font-size:12px;color:var(--muted)}summary{cursor:pointer}details select{font-size:12px}footer{font-size:11px;color:var(--muted);line-height:1.8;margin-top:24px}footer strong{color:var(--ink)}@media(max-width:720px){main{padding:20px 16px}header{margin-bottom:25px}.chip{font-size:8px}.grid{grid-template-columns:1fr}.panel{padding:18px}.measurements{grid-template-columns:repeat(3,1fr);gap:15px}.measurements>div{padding:0 10px}.gate{flex-wrap:wrap}.gate button{margin-left:20px}.bottom-row{align-items:flex-start}.subtle{font-size:8px}.button-row{flex-wrap:wrap}}
+.modes{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.modes-label{font:11px/1.4 ui-monospace,monospace;letter-spacing:1.4px;color:var(--muted)}
+.modes button{border-radius:20px;padding:8px 15px}
+.modes button.on{background:var(--green);color:#15200b;border-color:var(--green);font-weight:650}
+body.mode-sender #receiver-panel,body.mode-sender #diagnostics-panel,body.mode-receiver #sender-panel{display:none}
+body.mode-sender .grid,body.mode-receiver .grid{grid-template-columns:1fr}
+.diagnostics{margin-top:20px}
+.dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.dcell{background:#0e1517;padding:14px 16px;min-width:0}
+.dcell.wide{grid-column:span 2}
+.dcell span{display:block;font:10px/1.4 ui-monospace,monospace;letter-spacing:1.2px;color:var(--muted)}
+.dcell strong{display:block;font:17px/1.35 ui-monospace,monospace;margin:7px 0 5px;overflow-wrap:anywhere}
+.dcell small{display:block;font-size:10px;color:var(--muted);line-height:1.4}
+.dcell strong.pass{color:var(--green)}.dcell strong.fail{color:var(--red)}.dcell strong.hold{color:var(--amber)}
+#d-trace{letter-spacing:1px;word-break:break-all;margin:8px 0 4px}
+#d-log{font:11px/1.6 ui-monospace,monospace;color:#b9c9cc;background:#0b1214;border:1px solid var(--line);border-radius:8px;padding:12px;max-height:190px;overflow:auto;margin:8px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+#tx-packet{margin-top:8px}
+@media(max-width:720px){.dgrid{grid-template-columns:1fr 1fr}.dcell.wide{grid-column:span 2}}
 </style>
 </head>
-<body>
+<body class="mode-both">
 <main>
-  <header><a class="wordmark" href="#">io<span>·</span>note</a><span class="chip">ISOLATED RESEARCH PoC / v0.1</span></header>
-  <div class="intro"><div class="eyebrow">TWO DEVICES. ONE AUDIO CHANNEL.</div><h1>Signed words.<br><span>Carried by sound.</span></h1><p>Ed25519 → binary packet → two tones → independent verification.</p></div>
+  <header><a class="wordmark" href="#">io<span>·</span>note</a><span class="chip">ISOLATED RESEARCH PoC / v0.1 · PHYSICAL AUDIO UNVERIFIED</span></header>
+  <div class="intro"><div class="eyebrow">TWO DEVICES. ONE AUDIO CHANNEL.</div><h1>Signed words.<br><span>Carried by sound.</span></h1><p>Ed25519 → binary packet → two tones → independent verification. This page is static; the server never sees a message.</p></div>
+  <div class="modes" role="group" aria-label="Device role">
+    <span class="modes-label">This device is the</span>
+    <button id="mode-sender" data-mode="sender">Sender</button>
+    <button id="mode-receiver" data-mode="receiver">Receiver</button>
+    <button id="mode-both" data-mode="both" class="on">Both · one device</button>
+  </div>
   <div class="gate"><span id="gate-dot" class="dot"></span><span id="gate-text">Run the deterministic software loopback before live audio.</span><button id="selftest">Run loopback</button></div>
   <div class="grid">
-    <section class="panel">
-      <div class="panel-head"><span class="step">01</span><h2>Send a note</h2><span class="subtle">THIS DEVICE</span></div>
+    <section class="panel sender" id="sender-panel">
+      <div class="panel-head"><span class="step">01</span><h2>Send a note</h2><span class="subtle">SENDER</span></div>
       <label for="message">Message <span id="byte-count">14 / 96 UTF-8 bytes</span></label>
       <textarea id="message" rows="3" spellcheck="false">hello, io-note</textarea>
+      <div class="button-row small"><span class="note">Test messages</span><button id="preset-io">we control the io pins</button><button id="preset-hello">hello, io-note</button></div>
       <div class="key-row"><span>Local Ed25519 identity</span><button id="generate">Generate key</button></div>
       <code id="sender-key">No key generated</code>
       <div class="button-row small"><button id="export-key" disabled>Export keypair</button><label class="file-button" for="import-key">Import keypair</label><input id="import-key" type="file" accept="application/json,.json" hidden></div>
       <button id="transmit" class="primary" disabled>Transmit audio <span>↗</span></button>
       <div class="button-row small"><button id="resend" disabled>Resend same packet</button><button id="stop-tx" disabled>Stop tone</button></div>
       <p id="tx-note" class="note">Audible tones · 1,200 / 2,200 Hz · start at low volume</p>
+      <code id="tx-packet">No packet encoded yet</code>
       <div class="signal" id="signal" aria-hidden="true"></div>
     </section>
-    <section class="panel receiver">
-      <div class="panel-head"><span class="step">02</span><h2>Receive & verify</h2><span class="subtle">SECOND DEVICE</span></div>
+    <section class="panel receiver" id="receiver-panel">
+      <div class="panel-head"><span class="step">02</span><h2>Receive &amp; verify</h2><span class="subtle">RECEIVER</span></div>
       <div class="button-row"><button id="listen" class="primary" disabled>Listen on microphone</button><button id="stop-rx" disabled>Finish</button></div>
-      <p id="rx-note" class="note">Run loopback on each device. Then listen here before transmitting.</p>
+      <p id="rx-note" class="note">Run the loopback first. Arm the microphone here, then transmit from the other device.</p>
       <div class="verdict" id="verdict" aria-live="polite"><span id="mode">NO PACKET YET</span><strong id="status">Ready when you are.</strong><p id="received">The receiver recovers and verifies the message locally.</p></div>
       <div class="fingerprint"><span>Received key fingerprint · SHA-256</span><code id="received-key">—</code><small>Compare the full fingerprint out of band to identify a known sender.</small></div>
       <p class="note" id="replay-note">Replay memory: this open page only; up to 1,024 verified nonces per mode.</p>
     </section>
   </div>
+  <section class="panel diagnostics" id="diagnostics-panel">
+    <div class="panel-head"><span class="step">RX</span><h2>Live receiver diagnostics</h2><span class="subtle" id="d-updated">NO CAPTURE YET</span></div>
+    <div class="dgrid">
+      <div class="dcell wide"><span>Framing state</span><strong id="d-framing">—</strong><small id="d-framing-note">Updated on every decode attempt while listening.</small></div>
+      <div class="dcell"><span>Input level</span><strong id="d-level">—</strong><small id="d-level-note">RMS / peak dBFS</small></div>
+      <div class="dcell"><span>Detected tones</span><strong id="d-tone">—</strong><small id="d-tone-note">1,200 Hz vs 2,200 Hz energy share</small></div>
+      <div class="dcell"><span>Symbols</span><strong id="d-symbols">—</strong><small id="d-symbols-note">analysed · strong · mean confidence</small></div>
+      <div class="dcell"><span>Sync words</span><strong id="d-sync">—</strong><small id="d-sync-note">candidates · accepted</small></div>
+      <div class="dcell"><span>Bits received</span><strong id="d-bits">—</strong><small id="d-bits-note">framing + data bits</small></div>
+      <div class="dcell"><span>Checksum</span><strong id="d-crc">—</strong><small>CRC-32/ISO-HDLC over the packet</small></div>
+      <div class="dcell"><span>Signature</span><strong id="d-sig">—</strong><small>Ed25519 over magic‖version‖key‖nonce‖length‖message</small></div>
+    </div>
+    <div class="key-row"><span>Symbol trace · strongest 64 symbols, 0 = 1,200 Hz, 1 = 2,200 Hz</span><span class="note" id="d-trace-at">—</span></div>
+    <code id="d-trace">—</code>
+    <div class="key-row"><span>Receiver log</span><button id="clear-log">Clear</button></div>
+    <pre id="d-log">Nothing captured yet.</pre>
+  </section>
   <section class="measurements"><div><span>Packet</span><strong id="m-bytes">—</strong><small>encoded bytes</small></div><div><span>On air</span><strong id="m-bits">—</strong><small>bits incl. framing</small></div><div><span>Bitrate</span><strong>200</strong><small>bits / second</small></div><div><span>Audio buffer</span><strong id="m-time">—</strong><small>seconds incl. silence</small></div><div><span>Decode attempts</span><strong id="m-decodes">0 / 0</strong><small>successful / failed</small></div></section>
   <div class="bottom-row"><p id="timing" class="note">Timing measurements will appear after a test or transmission.</p><button id="export-results">Export measurements</button></div>
   <details><summary>Adversarial lab · software only</summary><p>Uses a fresh signed test packet. Message, signature, and public-key mutations have a recomputed CRC to reach the signature check.</p><div class="button-row"><select id="attack" aria-label="Adversarial test"><option value="message">Modify message byte</option><option value="signature">Modify signature</option><option value="public-key">Modify public key</option><option value="truncate">Truncate packet</option><option value="nonce">Duplicate nonce</option><option value="bit">Flip audio data bit</option></select><button id="run-attack" disabled>Run test</button></div></details>
-  <footer><strong>Authenticity & integrity only.</strong> Audio and message bytes are unencrypted and can be recorded by anyone nearby. An included key does not establish a real-world identity. Research PoC; not production-ready.<br>No transport backend · No wallet · No blockchain · Independent of Breadlines</footer>
+  <footer><strong>Authenticity &amp; integrity only.</strong> Audio and message bytes are unencrypted and can be recorded by anyone nearby. An included key does not establish a real-world identity. Research PoC; not production-ready.<br><strong>Physical two-device audio transport is not yet verified.</strong> This page is being used to attempt that test.<br>Static hosting only · No transport backend · No wallet · No blockchain · Independent of Breadlines</footer>
 </main>
 <script>'use strict';
 (async () => {
-const decoderWorkerSource = "// All multibyte integers are big endian. No JSON on the wire.\nconst VERSION = 1;\nconst MAX_MESSAGE = 96;\nconst MIN_PACKET = 123;\nconst MAX_PACKET = MIN_PACKET + MAX_MESSAGE;\nconst MAGIC = new Uint8Array([0x49, 0x4f, 0x4e, 0x31]); // ION1 / domain separation\nconst STATUS = Object.freeze({ verified: 'SIGNATURE VERIFIED', invalid: 'SIGNATURE INVALID', corrupted: 'TRANSPORT CORRUPTED', replay: 'REPLAYED PACKET' });\nconst utf8 = new TextEncoder();\nconst hex = bytes => Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');\nfunction unhex(s) {\n  if (typeof s !== 'string' || !/^(?:[a-fA-F0-9]{2})+$/.test(s)) throw new Error('Invalid hex');\n  return Uint8Array.from(s.match(/../g), b => parseInt(b, 16));\n}\nfunction concat(...parts) {\n  const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));\n  let at = 0;\n  for (const p of parts) { out.set(p, at); at += p.length; }\n  return out;\n}\nfunction crc32(bytes) {\n  let c = 0xffffffff;\n  for (const b of bytes) {\n    c ^= b;\n    for (let i = 0; i < 8; i++) c = (c >>> 1) ^ ((c & 1) ? 0xedb88320 : 0);\n  }\n  return (c ^ 0xffffffff) >>> 0;\n}\nfunction appendCRC(bytes) {\n  const out = concat(bytes, new Uint8Array(4));\n  new DataView(out.buffer).setUint32(bytes.length, crc32(bytes));\n  return out;\n}\nasync function generateIdentity() {\n  return crypto.subtle.generateKey({ name: 'Ed25519' }, true, ['sign', 'verify']);\n}\nasync function exportIdentity(keys) {\n  return { format: 'io-note-key-v1', publicKey: hex(new Uint8Array(await crypto.subtle.exportKey('raw', keys.publicKey))), privateKeyPkcs8: hex(new Uint8Array(await crypto.subtle.exportKey('pkcs8', keys.privateKey))) };\n}\nasync function importIdentity(data) {\n  if (data?.format !== 'io-note-key-v1') throw new Error('Expected io-note-key-v1 JSON');\n  const raw = unhex(data.publicKey), pkcs8 = unhex(data.privateKeyPkcs8);\n  if (raw.length !== 32 || pkcs8.length > 256) throw new Error('Invalid key size');\n  const publicKey = await crypto.subtle.importKey('raw', raw, 'Ed25519', true, ['verify']);\n  const privateKey = await crypto.subtle.importKey('pkcs8', pkcs8, 'Ed25519', true, ['sign']);\n  const challenge = utf8.encode('io-note keypair consistency check v1');\n  const sig = await crypto.subtle.sign('Ed25519', privateKey, challenge);\n  if (!await crypto.subtle.verify('Ed25519', publicKey, sig, challenge)) throw new Error('Private and public keys do not match');\n  return { publicKey, privateKey };\n}\nasync function fingerprint(publicKeyBytes) {\n  return hex(new Uint8Array(await crypto.subtle.digest('SHA-256', publicKeyBytes)));\n}\nasync function createPacket(message, keys, nonce = crypto.getRandomValues(new Uint8Array(16))) {\n  const bytes = utf8.encode(message);\n  if (new TextDecoder().decode(bytes) !== message) throw new Error('Message must be well-formed Unicode');\n  if (bytes.length > MAX_MESSAGE) throw new Error(`Message exceeds ${MAX_MESSAGE} UTF-8 bytes`);\n  if (!(nonce instanceof Uint8Array) || nonce.length !== 16) throw new Error('Nonce must be 16 bytes');\n  const pk = new Uint8Array(await crypto.subtle.exportKey('raw', keys.publicKey));\n  const header = concat(MAGIC, new Uint8Array([VERSION]), pk, nonce, new Uint8Array(2), bytes);\n  new DataView(header.buffer).setUint16(53, bytes.length);\n  const sig = new Uint8Array(await crypto.subtle.sign('Ed25519', keys.privateKey, header));\n  return appendCRC(concat(header, sig));\n}\nfunction parsePacket(packet) {\n  if (!(packet instanceof Uint8Array) || packet.length < MIN_PACKET || packet.length > MAX_PACKET) throw new Error('Packet size out of bounds / truncated');\n  const view = new DataView(packet.buffer, packet.byteOffset, packet.byteLength);\n  if (view.getUint32(packet.length - 4) !== crc32(packet.subarray(0, -4))) throw new Error('CRC-32 mismatch');\n  if (!MAGIC.every((v, i) => packet[i] === v) || packet[4] !== VERSION) throw new Error('Unsupported magic or version');\n  const length = view.getUint16(53);\n  if (length > MAX_MESSAGE || packet.length !== MIN_PACKET + length) throw new Error('Message length mismatch');\n  const payload = packet.slice(55, 55 + length);\n  // Fatal decoding prevents replacement characters hiding malformed bytes.\n  const message = new TextDecoder('utf-8', { fatal: true }).decode(payload);\n  return { message, payload, publicKey: packet.slice(5, 37), nonce: packet.slice(37, 53), signature: packet.slice(55 + length, -4), signed: packet.slice(0, 55 + length) };\n}\nclass ReplayCache {\n  constructor(limit = 1024) { this.limit = limit; this.seen = new Set(); }\n  checkAndAdd(key) {\n    if (this.seen.has(key)) return false;\n    if (this.seen.size >= this.limit) throw new Error('Replay cache full; reload starts a new receiver session');\n    this.seen.add(key);\n    return true;\n  }\n}\nasync function verifyPacket(packet, cache = new ReplayCache()) {\n  let p;\n  try { p = parsePacket(packet); }\n  catch (e) { return { status: STATUS.corrupted, reason: e.message }; }\n  let valid = false;\n  try {\n    const key = await crypto.subtle.importKey('raw', p.publicKey, 'Ed25519', false, ['verify']);\n    valid = await crypto.subtle.verify('Ed25519', key, p.signature, p.signed);\n  } catch { /* A malformed key/signature is not a verified packet. */ }\n  if (!valid) return { status: STATUS.invalid, reason: 'Ed25519 verification failed' };\n  // Atomic synchronous check-and-add AFTER verification; failed forgeries cannot poison it.\n  const fresh = cache.checkAndAdd(`${hex(p.publicKey)}:${hex(p.nonce)}`);\n  return { status: fresh ? STATUS.verified : STATUS.replay, message: p.message, nonce: hex(p.nonce), publicKey: hex(p.publicKey), fingerprint: await fingerprint(p.publicKey) };\n}\n\n\nconst BITRATE = 200;\nconst TONES = [1200, 2200];\nconst PREAMBLE_BITS = 64;\nconst SYNC = 0xd391c5a7;\nconst OVERHEAD_BITS = PREAMBLE_BITS + 32 + 16;\nfunction bytesToBits(bytes) {\n  return Uint8Array.from(Array.from(bytes).flatMap(b => Array.from({ length: 8 }, (_, i) => (b >> (7 - i)) & 1)));\n}\nfunction bitsToBytes(bits) {\n  if (bits.length % 8) throw new Error('Non-byte-aligned bit array');\n  const bytes = new Uint8Array(bits.length / 8);\n  for (let i = 0; i < bits.length; i++) bytes[i >> 3] |= bits[i] << (7 - (i & 7));\n  return bytes;\n}\nfunction frameBits(packet) {\n  if (packet.length < MIN_PACKET || packet.length > MAX_PACKET) throw new Error('Packet size out of bounds');\n  const h = new Uint8Array(6), v = new DataView(h.buffer);\n  v.setUint32(0, SYNC); v.setUint16(4, packet.length);\n  const bits = new Uint8Array(OVERHEAD_BITS + packet.length * 8);\n  for (let i = 0; i < PREAMBLE_BITS; i++) bits[i] = i % 2;\n  bits.set(bytesToBits(h), PREAMBLE_BITS);\n  bits.set(bytesToBits(packet), OVERHEAD_BITS);\n  return bits;\n}\nfunction modulateBits(bits, sampleRate = 48000, { amplitude = 0.35, leadSeconds = 0.15, tailSeconds = 0.15 } = {}) {\n  const lead = Math.round(leadSeconds * sampleRate), body = Math.round(bits.length * sampleRate / BITRATE);\n  const pcm = new Float32Array(lead + body + Math.round(tailSeconds * sampleRate));\n  let phase = 0;\n  for (let i = 0; i < body; i++) {\n    const bit = bits[Math.min(bits.length - 1, Math.floor(i * BITRATE / sampleRate))];\n    pcm[lead + i] = amplitude * Math.sin(phase);\n    phase = (phase + 2 * Math.PI * TONES[bit] / sampleRate) % (2 * Math.PI);\n  }\n  return pcm;\n}\nfunction modulate(packet, sampleRate = 48000, options) { return modulateBits(frameBits(packet), sampleRate, options); }\nfunction metrics(packet, sampleRate = 48000) {\n  const bits = OVERHEAD_BITS + packet.length * 8;\n  return { packetBytes: packet.length, packetBits: packet.length * 8, transmittedBits: bits, bitrate: BITRATE, toneSeconds: bits / BITRATE, audioSeconds: modulate(packet, sampleRate).length / sampleRate, sampleRate };\n}\n\n// Noncoherent quadrature detector. Prefix sums make each candidate symbol O(1).\n// Eight timing phases tolerate an unknown sample offset; no shared TX clock or packet.\nfunction decodeAudio(pcm, sampleRate) {\n  if (!(pcm instanceof Float32Array) || sampleRate < 8000 || sampleRate > 192000 || pcm.length > sampleRate * 16) throw new Error('Unsupported audio buffer');\n  const sums = Array.from({ length: 4 }, () => new Float64Array(pcm.length + 1));\n  for (let f = 0; f < 2; f++) {\n    const w = 2 * Math.PI * TONES[f] / sampleRate;\n    for (let i = 0; i < pcm.length; i++) {\n      sums[f * 2][i + 1] = sums[f * 2][i] + pcm[i] * Math.cos(i * w);\n      sums[f * 2 + 1][i + 1] = sums[f * 2 + 1][i] + pcm[i] * Math.sin(i * w);\n    }\n  }\n  const symbol = sampleRate / BITRATE;\n  let best = null, pending = null;\n  for (let phase = 0; phase < 8; phase++) {\n    const offset = phase * symbol / 8;\n    const count = Math.max(0, Math.floor((pcm.length - offset) / symbol));\n    const bits = new Uint8Array(count), strength = new Float32Array(count);\n    for (let b = 0; b < count; b++) {\n      const start = Math.round(offset + (b + 0.1) * symbol), end = Math.round(offset + (b + 0.9) * symbol);\n      const energy = [0, 0];\n      for (let f = 0; f < 2; f++) {\n        const re = sums[f * 2][end] - sums[f * 2][start], im = sums[f * 2 + 1][end] - sums[f * 2 + 1][start];\n        energy[f] = re * re + im * im;\n      }\n      const total = energy[0] + energy[1];\n      bits[b] = energy[1] > energy[0] ? 1 : 0;\n      strength[b] = total > 1e-5 ? Math.abs(energy[1] - energy[0]) / total : 0;\n    }\n    let shift = 0;\n    for (let b = 0; b < count; b++) {\n      shift = ((shift << 1) | bits[b]) >>> 0;\n      if (shift !== SYNC || b < 63) continue;\n      const syncStart = b - 31;\n      let preambleErrors = 0, quality = 0;\n      for (let j = 0; j < 32; j++) {\n        if (bits[syncStart - 32 + j] !== j % 2) preambleErrors++;\n        quality += strength[syncStart + j];\n      }\n      if (preambleErrors > 1 || quality / 32 < 0.4) continue;\n      const startSample = Math.max(0, offset + (syncStart - PREAMBLE_BITS) * symbol);\n      if (b + 17 >= count) { pending = { kind: 'partial', reason: 'Incomplete physical header', startSample }; continue; }\n      let length = 0;\n      for (let j = 1; j <= 16; j++) length = (length << 1) | bits[b + j];\n      if (length < MIN_PACKET || length > MAX_PACKET) {\n        best ??= { kind: 'corrupted', reason: 'Physical length out of bounds', startSample };\n        continue;\n      }\n      const dataStart = b + 17, end = dataStart + length * 8;\n      if (end > count) { pending = { kind: 'partial', reason: 'Frame detected but incomplete', expectedBytes: length, startSample }; continue; }\n      const packet = bitsToBytes(bits.slice(dataStart, end));\n      const endSample = offset + end * symbol;\n      const frame = { kind: 'packet', packet, startSample, endSample, quality: quality / 32 };\n      const view = new DataView(packet.buffer);\n      // CRC selects a timing phase, not authenticity. Signature checked independently.\n      if (view.getUint32(packet.length - 4) === crc32(packet.subarray(0, -4))) return frame;\n      if (!best || quality / 32 > (best.quality ?? 0)) best = frame;\n    }\n  }\n  return best ?? pending ?? { kind: 'none', reason: 'No synchronized frame found' };\n}\n\n\nlet chunks = [], length = 0, rate = 48000, lastAttempt = 0;\nfunction attempt(final) {\n  const pcm = new Float32Array(length);\n  let at = 0;\n  for (const chunk of chunks) { pcm.set(chunk, at); at += chunk.length; }\n  const start = performance.now();\n  const result = decodeAudio(pcm, rate);\n  postMessage({ ...result, final, capturedSeconds: length / rate, decodeMs: performance.now() - start });\n}\nself.onmessage = ({ data }) => {\n  try {\n    if (data.type === 'init') { rate = data.sampleRate; chunks = []; length = 0; lastAttempt = 0; }\n    if (data.type === 'chunk') {\n      if (length + data.pcm.length > rate * 15) { attempt(true); return; }\n      chunks.push(data.pcm); length += data.pcm.length;\n      if (length - lastAttempt >= rate * 0.25) { lastAttempt = length; attempt(false); }\n    }\n    if (data.type === 'finish') attempt(true);\n  } catch (e) { postMessage({ kind: 'error', reason: e.message }); }\n};\n";
+const decoderWorkerSource = "// All multibyte integers are big endian. No JSON on the wire.\nconst VERSION = 1;\nconst MAX_MESSAGE = 96;\nconst MIN_PACKET = 123;\nconst MAX_PACKET = MIN_PACKET + MAX_MESSAGE;\nconst MAGIC = new Uint8Array([0x49, 0x4f, 0x4e, 0x31]); // ION1 / domain separation\nconst STATUS = Object.freeze({ verified: 'SIGNATURE VERIFIED', invalid: 'SIGNATURE INVALID', corrupted: 'TRANSPORT CORRUPTED', replay: 'REPLAYED PACKET' });\nconst utf8 = new TextEncoder();\nconst hex = bytes => Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');\nfunction unhex(s) {\n  if (typeof s !== 'string' || !/^(?:[a-fA-F0-9]{2})+$/.test(s)) throw new Error('Invalid hex');\n  return Uint8Array.from(s.match(/../g), b => parseInt(b, 16));\n}\nfunction concat(...parts) {\n  const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));\n  let at = 0;\n  for (const p of parts) { out.set(p, at); at += p.length; }\n  return out;\n}\nfunction crc32(bytes) {\n  let c = 0xffffffff;\n  for (const b of bytes) {\n    c ^= b;\n    for (let i = 0; i < 8; i++) c = (c >>> 1) ^ ((c & 1) ? 0xedb88320 : 0);\n  }\n  return (c ^ 0xffffffff) >>> 0;\n}\nfunction appendCRC(bytes) {\n  const out = concat(bytes, new Uint8Array(4));\n  new DataView(out.buffer).setUint32(bytes.length, crc32(bytes));\n  return out;\n}\nasync function generateIdentity() {\n  return crypto.subtle.generateKey({ name: 'Ed25519' }, true, ['sign', 'verify']);\n}\nasync function exportIdentity(keys) {\n  return { format: 'io-note-key-v1', publicKey: hex(new Uint8Array(await crypto.subtle.exportKey('raw', keys.publicKey))), privateKeyPkcs8: hex(new Uint8Array(await crypto.subtle.exportKey('pkcs8', keys.privateKey))) };\n}\nasync function importIdentity(data) {\n  if (data?.format !== 'io-note-key-v1') throw new Error('Expected io-note-key-v1 JSON');\n  const raw = unhex(data.publicKey), pkcs8 = unhex(data.privateKeyPkcs8);\n  if (raw.length !== 32 || pkcs8.length > 256) throw new Error('Invalid key size');\n  const publicKey = await crypto.subtle.importKey('raw', raw, 'Ed25519', true, ['verify']);\n  const privateKey = await crypto.subtle.importKey('pkcs8', pkcs8, 'Ed25519', true, ['sign']);\n  const challenge = utf8.encode('io-note keypair consistency check v1');\n  const sig = await crypto.subtle.sign('Ed25519', privateKey, challenge);\n  if (!await crypto.subtle.verify('Ed25519', publicKey, sig, challenge)) throw new Error('Private and public keys do not match');\n  return { publicKey, privateKey };\n}\nasync function fingerprint(publicKeyBytes) {\n  return hex(new Uint8Array(await crypto.subtle.digest('SHA-256', publicKeyBytes)));\n}\nasync function createPacket(message, keys, nonce = crypto.getRandomValues(new Uint8Array(16))) {\n  const bytes = utf8.encode(message);\n  if (new TextDecoder().decode(bytes) !== message) throw new Error('Message must be well-formed Unicode');\n  if (bytes.length > MAX_MESSAGE) throw new Error(`Message exceeds ${MAX_MESSAGE} UTF-8 bytes`);\n  if (!(nonce instanceof Uint8Array) || nonce.length !== 16) throw new Error('Nonce must be 16 bytes');\n  const pk = new Uint8Array(await crypto.subtle.exportKey('raw', keys.publicKey));\n  const header = concat(MAGIC, new Uint8Array([VERSION]), pk, nonce, new Uint8Array(2), bytes);\n  new DataView(header.buffer).setUint16(53, bytes.length);\n  const sig = new Uint8Array(await crypto.subtle.sign('Ed25519', keys.privateKey, header));\n  return appendCRC(concat(header, sig));\n}\nfunction parsePacket(packet) {\n  if (!(packet instanceof Uint8Array) || packet.length < MIN_PACKET || packet.length > MAX_PACKET) throw new Error('Packet size out of bounds / truncated');\n  const view = new DataView(packet.buffer, packet.byteOffset, packet.byteLength);\n  if (view.getUint32(packet.length - 4) !== crc32(packet.subarray(0, -4))) throw new Error('CRC-32 mismatch');\n  if (!MAGIC.every((v, i) => packet[i] === v) || packet[4] !== VERSION) throw new Error('Unsupported magic or version');\n  const length = view.getUint16(53);\n  if (length > MAX_MESSAGE || packet.length !== MIN_PACKET + length) throw new Error('Message length mismatch');\n  const payload = packet.slice(55, 55 + length);\n  // Fatal decoding prevents replacement characters hiding malformed bytes.\n  const message = new TextDecoder('utf-8', { fatal: true }).decode(payload);\n  return { message, payload, publicKey: packet.slice(5, 37), nonce: packet.slice(37, 53), signature: packet.slice(55 + length, -4), signed: packet.slice(0, 55 + length) };\n}\nclass ReplayCache {\n  constructor(limit = 1024) { this.limit = limit; this.seen = new Set(); }\n  checkAndAdd(key) {\n    if (this.seen.has(key)) return false;\n    if (this.seen.size >= this.limit) throw new Error('Replay cache full; reload starts a new receiver session');\n    this.seen.add(key);\n    return true;\n  }\n}\nasync function verifyPacket(packet, cache = new ReplayCache()) {\n  let p;\n  try { p = parsePacket(packet); }\n  catch (e) { return { status: STATUS.corrupted, reason: e.message }; }\n  let valid = false;\n  try {\n    const key = await crypto.subtle.importKey('raw', p.publicKey, 'Ed25519', false, ['verify']);\n    valid = await crypto.subtle.verify('Ed25519', key, p.signature, p.signed);\n  } catch { /* A malformed key/signature is not a verified packet. */ }\n  if (!valid) return { status: STATUS.invalid, reason: 'Ed25519 verification failed' };\n  // Atomic synchronous check-and-add AFTER verification; failed forgeries cannot poison it.\n  const fresh = cache.checkAndAdd(`${hex(p.publicKey)}:${hex(p.nonce)}`);\n  return { status: fresh ? STATUS.verified : STATUS.replay, message: p.message, nonce: hex(p.nonce), publicKey: hex(p.publicKey), fingerprint: await fingerprint(p.publicKey) };\n}\n\n\nconst BITRATE = 200;\nconst TONES = [1200, 2200];\nconst PREAMBLE_BITS = 64;\nconst SYNC = 0xd391c5a7;\nconst OVERHEAD_BITS = PREAMBLE_BITS + 32 + 16;\nfunction bytesToBits(bytes) {\n  return Uint8Array.from(Array.from(bytes).flatMap(b => Array.from({ length: 8 }, (_, i) => (b >> (7 - i)) & 1)));\n}\nfunction bitsToBytes(bits) {\n  if (bits.length % 8) throw new Error('Non-byte-aligned bit array');\n  const bytes = new Uint8Array(bits.length / 8);\n  for (let i = 0; i < bits.length; i++) bytes[i >> 3] |= bits[i] << (7 - (i & 7));\n  return bytes;\n}\nfunction frameBits(packet) {\n  if (packet.length < MIN_PACKET || packet.length > MAX_PACKET) throw new Error('Packet size out of bounds');\n  const h = new Uint8Array(6), v = new DataView(h.buffer);\n  v.setUint32(0, SYNC); v.setUint16(4, packet.length);\n  const bits = new Uint8Array(OVERHEAD_BITS + packet.length * 8);\n  for (let i = 0; i < PREAMBLE_BITS; i++) bits[i] = i % 2;\n  bits.set(bytesToBits(h), PREAMBLE_BITS);\n  bits.set(bytesToBits(packet), OVERHEAD_BITS);\n  return bits;\n}\nfunction modulateBits(bits, sampleRate = 48000, { amplitude = 0.35, leadSeconds = 0.15, tailSeconds = 0.15 } = {}) {\n  const lead = Math.round(leadSeconds * sampleRate), body = Math.round(bits.length * sampleRate / BITRATE);\n  const pcm = new Float32Array(lead + body + Math.round(tailSeconds * sampleRate));\n  let phase = 0;\n  for (let i = 0; i < body; i++) {\n    const bit = bits[Math.min(bits.length - 1, Math.floor(i * BITRATE / sampleRate))];\n    pcm[lead + i] = amplitude * Math.sin(phase);\n    phase = (phase + 2 * Math.PI * TONES[bit] / sampleRate) % (2 * Math.PI);\n  }\n  return pcm;\n}\nfunction modulate(packet, sampleRate = 48000, options) { return modulateBits(frameBits(packet), sampleRate, options); }\nfunction metrics(packet, sampleRate = 48000) {\n  const bits = OVERHEAD_BITS + packet.length * 8;\n  return { packetBytes: packet.length, packetBits: packet.length * 8, transmittedBits: bits, bitrate: BITRATE, toneSeconds: bits / BITRATE, audioSeconds: modulate(packet, sampleRate).length / sampleRate, sampleRate };\n}\n\n// Framing states reported to the operator while a physical transmission is in flight.\nconst FRAMING = Object.freeze({ none: 'NO SIGNAL', carrier: 'CARRIER; NO SYNC', sync: 'SYNC FOUND; HEADER INCOMPLETE', length: 'SYNC FOUND; LENGTH INVALID', incomplete: 'FRAME INCOMPLETE', complete: 'FRAME COMPLETE' });\nconst TRACE_SYMBOLS = 64;\nconst db = v => 20 * Math.log10(Math.max(v, 1e-6));\nconst round = (v, n = 3) => Math.round(v * 10 ** n) / 10 ** n;\nfunction levels(pcm) {\n  let peak = 0, squares = 0, clipped = 0;\n  for (let i = 0; i < pcm.length; i++) {\n    const v = pcm[i] < 0 ? -pcm[i] : pcm[i];\n    if (v > peak) peak = v;\n    if (v >= 0.999) clipped++;\n    squares += pcm[i] * pcm[i];\n  }\n  const rms = Math.sqrt(squares / Math.max(1, pcm.length));\n  return { rms: round(rms, 5), peak: round(peak, 5), rmsDbfs: round(db(rms), 1), peakDbfs: round(db(peak), 1), clippedSamples: clipped };\n}\n// Per-phase symbol telemetry. Observational only: it never feeds a decode decision.\nfunction summarise(phase, bits, strength, energyLow, energyHigh) {\n  let strong = 0, confidence = 0, low = 0, best = 0, window = 0, at = 0;\n  for (let b = 0; b < bits.length; b++) {\n    confidence += strength[b];\n    if (strength[b] >= 0.5) strong++;\n    if (bits[b] === 0) low++;\n    window += strength[b];\n    if (b >= TRACE_SYMBOLS) window -= strength[b - TRACE_SYMBOLS];\n    if (b >= TRACE_SYMBOLS - 1 && window > best) { best = window; at = b - TRACE_SYMBOLS + 1; }\n  }\n  const energy = energyLow + energyHigh;\n  return {\n    phase, symbols: bits.length, strongSymbols: strong,\n    meanConfidence: round(bits.length ? confidence / bits.length : 0),\n    lowToneSymbols: low, highToneSymbols: bits.length - low,\n    toneShare: { 1200: round(energy ? energyLow / energy : 0), 2200: round(energy ? energyHigh / energy : 0) },\n    strongestWindowStart: at, strongestWindowConfidence: round(bits.length >= TRACE_SYMBOLS ? best / TRACE_SYMBOLS : 0),\n  };\n}\nfunction trace(bits, strength, from) {\n  const start = Math.max(0, Math.min(from, bits.length - TRACE_SYMBOLS));\n  const end = Math.min(bits.length, start + TRACE_SYMBOLS);\n  const out = { fromSymbol: start, bits: '', confidence: [] };\n  for (let b = start; b < end; b++) { out.bits += bits[b]; out.confidence.push(round(strength[b], 2)); }\n  return out;\n}\n\n// Noncoherent quadrature detector. Prefix sums make each candidate symbol O(1).\n// Eight timing phases tolerate an unknown sample offset; no shared TX clock or packet.\n// Diagnostics are accumulated alongside, and never alter a decode decision.\nfunction decodeAudio(pcm, sampleRate) {\n  if (!(pcm instanceof Float32Array) || sampleRate < 8000 || sampleRate > 192000 || pcm.length > sampleRate * 16) throw new Error('Unsupported audio buffer');\n  const sums = Array.from({ length: 4 }, () => new Float64Array(pcm.length + 1));\n  for (let f = 0; f < 2; f++) {\n    const w = 2 * Math.PI * TONES[f] / sampleRate;\n    for (let i = 0; i < pcm.length; i++) {\n      sums[f * 2][i + 1] = sums[f * 2][i] + pcm[i] * Math.cos(i * w);\n      sums[f * 2 + 1][i + 1] = sums[f * 2 + 1][i] + pcm[i] * Math.sin(i * w);\n    }\n  }\n  const symbol = sampleRate / BITRATE;\n  const diagnostics = {\n    sampleRate, capturedSeconds: round(pcm.length / sampleRate, 2), symbolSamples: round(symbol, 2), tones: TONES,\n    level: levels(pcm), sync: { candidates: 0, preambleRejected: 0, qualityRejected: 0, accepted: 0, bestPreambleErrors: null, bestQuality: null, phase: null },\n    framing: FRAMING.none, declaredPacketBytes: null, bits: { framing: OVERHEAD_BITS, expectedData: null, receivedData: null, total: null },\n    checksum: 'not reached', phases: [], symbolTrace: null,\n  };\n  const phaseBits = [], phaseStrength = [];\n  let best = null, pending = null, bestPhase = null, pendingPhase = null, traceFrom = null;\n  const report = (result, phase) => {\n    const p = phase == null ? diagnostics.phases.reduce((a, b) => (b.meanConfidence > a.meanConfidence ? b : a), diagnostics.phases[0]) : diagnostics.phases[phase];\n    diagnostics.reportedPhase = p?.phase ?? null;\n    diagnostics.symbols = p ?? null;\n    if (p) diagnostics.symbolTrace = trace(phaseBits[p.phase], phaseStrength[p.phase], traceFrom ?? p.strongestWindowStart);\n    if (diagnostics.framing === FRAMING.none && p && p.meanConfidence >= 0.4 && diagnostics.level.rmsDbfs > -60) diagnostics.framing = FRAMING.carrier;\n    return { ...result, diagnostics };\n  };\n  for (let phase = 0; phase < 8; phase++) {\n    const offset = phase * symbol / 8;\n    const count = Math.max(0, Math.floor((pcm.length - offset) / symbol));\n    const bits = new Uint8Array(count), strength = new Float32Array(count);\n    let energyLow = 0, energyHigh = 0;\n    for (let b = 0; b < count; b++) {\n      const start = Math.round(offset + (b + 0.1) * symbol), end = Math.round(offset + (b + 0.9) * symbol);\n      const energy = [0, 0];\n      for (let f = 0; f < 2; f++) {\n        const re = sums[f * 2][end] - sums[f * 2][start], im = sums[f * 2 + 1][end] - sums[f * 2 + 1][start];\n        energy[f] = re * re + im * im;\n      }\n      const total = energy[0] + energy[1];\n      bits[b] = energy[1] > energy[0] ? 1 : 0;\n      strength[b] = total > 1e-5 ? Math.abs(energy[1] - energy[0]) / total : 0;\n      energyLow += energy[0]; energyHigh += energy[1];\n    }\n    phaseBits[phase] = bits; phaseStrength[phase] = strength;\n    diagnostics.phases.push(summarise(phase, bits, strength, energyLow, energyHigh));\n    let shift = 0;\n    for (let b = 0; b < count; b++) {\n      shift = ((shift << 1) | bits[b]) >>> 0;\n      if (shift !== SYNC || b < 63) continue;\n      const syncStart = b - 31;\n      let preambleErrors = 0, quality = 0;\n      for (let j = 0; j < 32; j++) {\n        if (bits[syncStart - 32 + j] !== j % 2) preambleErrors++;\n        quality += strength[syncStart + j];\n      }\n      diagnostics.sync.candidates++;\n      if (diagnostics.sync.bestQuality == null || quality / 32 > diagnostics.sync.bestQuality) {\n        diagnostics.sync.bestQuality = round(quality / 32); diagnostics.sync.bestPreambleErrors = preambleErrors; diagnostics.sync.phase = phase;\n      }\n      if (preambleErrors > 1) { diagnostics.sync.preambleRejected++; continue; }\n      if (quality / 32 < 0.4) { diagnostics.sync.qualityRejected++; continue; }\n      diagnostics.sync.accepted++;\n      traceFrom = Math.max(0, syncStart - PREAMBLE_BITS);\n      const startSample = Math.max(0, offset + (syncStart - PREAMBLE_BITS) * symbol);\n      if (b + 17 >= count) {\n        diagnostics.framing = FRAMING.sync; diagnostics.bits.receivedData = 0;\n        pending = { kind: 'partial', reason: 'Incomplete physical header', startSample }; pendingPhase = phase; continue;\n      }\n      let length = 0;\n      for (let j = 1; j <= 16; j++) length = (length << 1) | bits[b + j];\n      if (length < MIN_PACKET || length > MAX_PACKET) {\n        diagnostics.framing = FRAMING.length; diagnostics.declaredPacketBytes = length;\n        best ??= { kind: 'corrupted', reason: 'Physical length out of bounds', startSample }; bestPhase ??= phase; continue;\n      }\n      const dataStart = b + 17, end = dataStart + length * 8;\n      if (end > count) {\n        diagnostics.framing = FRAMING.incomplete; diagnostics.declaredPacketBytes = length;\n        diagnostics.bits.expectedData = length * 8; diagnostics.bits.receivedData = Math.max(0, count - dataStart);\n        pending = { kind: 'partial', reason: 'Frame detected but incomplete', expectedBytes: length, startSample }; pendingPhase = phase; continue;\n      }\n      const packet = bitsToBytes(bits.slice(dataStart, end));\n      const endSample = offset + end * symbol;\n      const frame = { kind: 'packet', packet, startSample, endSample, quality: quality / 32 };\n      const view = new DataView(packet.buffer);\n      const crcOk = view.getUint32(packet.length - 4) === crc32(packet.subarray(0, -4));\n      diagnostics.framing = FRAMING.complete; diagnostics.declaredPacketBytes = length;\n      diagnostics.bits.expectedData = length * 8; diagnostics.bits.receivedData = length * 8; diagnostics.bits.total = OVERHEAD_BITS + length * 8;\n      diagnostics.checksum = crcOk ? 'CRC-32 PASS' : 'CRC-32 FAIL';\n      // CRC selects a timing phase, not authenticity. Signature checked independently.\n      if (crcOk) return report(frame, phase);\n      if (!best || quality / 32 > (best.quality ?? 0)) { best = frame; bestPhase = phase; }\n    }\n  }\n  if (best) return report(best, bestPhase);\n  if (pending) return report(pending, pendingPhase);\n  return report({ kind: 'none', reason: 'No synchronized frame found' }, null);\n}\n\n\n// Bounded sliding capture window. decodeAudio refuses buffers over 16 s, so older\n// audio is evicted instead of ending the session: the receiver can stay armed while\n// the operator walks to the second device. Nothing here changes modulation or framing.\nconst WINDOW_SECONDS = 14;\nlet chunks = [], length = 0, dropped = 0, captured = 0, rate = 48000, lastAttempt = 0, lastDecodeMs = 0;\nfunction reset(sampleRate) { rate = sampleRate; chunks = []; length = 0; dropped = 0; captured = 0; lastAttempt = 0; lastDecodeMs = 0; }\nfunction trim() {\n  const max = Math.round(rate * WINDOW_SECONDS);\n  while (length > max && chunks.length > 1) { const old = chunks.shift(); length -= old.length; dropped += old.length; }\n}\nfunction attempt(final) {\n  const pcm = new Float32Array(length);\n  let at = 0;\n  for (const chunk of chunks) { pcm.set(chunk, at); at += chunk.length; }\n  const start = performance.now();\n  const result = decodeAudio(pcm, rate);\n  lastDecodeMs = performance.now() - start;\n  // Sample indices are reported against the start of capture, not the start of the window.\n  const message = { ...result, final, capturedSeconds: captured / rate, windowSeconds: length / rate, droppedSamples: dropped, decodeMs: lastDecodeMs };\n  if (result.startSample != null) message.startSample = result.startSample + dropped;\n  if (result.endSample != null) message.endSample = result.endSample + dropped;\n  postMessage(message);\n}\nself.onmessage = ({ data }) => {\n  try {\n    if (data.type === 'init') reset(data.sampleRate);\n    if (data.type === 'chunk') {\n      chunks.push(data.pcm); length += data.pcm.length; captured += data.pcm.length;\n      trim();\n      // Never spend more than about half the wall clock decoding; keeps the window fresh.\n      const interval = rate * Math.max(0.25, lastDecodeMs / 1000);\n      if (captured - lastAttempt >= interval) { lastAttempt = captured; attempt(false); }\n    }\n    if (data.type === 'finish') attempt(true);\n  } catch (e) { postMessage({ kind: 'error', reason: e.message }); }\n};\n";
 const audioWorkletSource = "class IoNoteCapture extends AudioWorkletProcessor {\n  constructor() { super(); this.chunk = new Float32Array(4096); this.at = 0; }\n  process(inputs) {\n    const input = inputs[0]?.[0];\n    if (input) for (let i = 0; i < input.length; i++) {\n      this.chunk[this.at++] = input[i];\n      if (this.at === this.chunk.length) {\n        this.port.postMessage(this.chunk, [this.chunk.buffer]);\n        this.chunk = new Float32Array(4096); this.at = 0;\n      }\n    }\n    return true;\n  }\n}\nregisterProcessor('io-note-capture', IoNoteCapture);\n";
 // All multibyte integers are big endian. No JSON on the wire.
 const VERSION = 1;
@@ -185,8 +229,53 @@ function metrics(packet, sampleRate = 48000) {
   return { packetBytes: packet.length, packetBits: packet.length * 8, transmittedBits: bits, bitrate: BITRATE, toneSeconds: bits / BITRATE, audioSeconds: modulate(packet, sampleRate).length / sampleRate, sampleRate };
 }
 
+// Framing states reported to the operator while a physical transmission is in flight.
+const FRAMING = Object.freeze({ none: 'NO SIGNAL', carrier: 'CARRIER; NO SYNC', sync: 'SYNC FOUND; HEADER INCOMPLETE', length: 'SYNC FOUND; LENGTH INVALID', incomplete: 'FRAME INCOMPLETE', complete: 'FRAME COMPLETE' });
+const TRACE_SYMBOLS = 64;
+const db = v => 20 * Math.log10(Math.max(v, 1e-6));
+const round = (v, n = 3) => Math.round(v * 10 ** n) / 10 ** n;
+function levels(pcm) {
+  let peak = 0, squares = 0, clipped = 0;
+  for (let i = 0; i < pcm.length; i++) {
+    const v = pcm[i] < 0 ? -pcm[i] : pcm[i];
+    if (v > peak) peak = v;
+    if (v >= 0.999) clipped++;
+    squares += pcm[i] * pcm[i];
+  }
+  const rms = Math.sqrt(squares / Math.max(1, pcm.length));
+  return { rms: round(rms, 5), peak: round(peak, 5), rmsDbfs: round(db(rms), 1), peakDbfs: round(db(peak), 1), clippedSamples: clipped };
+}
+// Per-phase symbol telemetry. Observational only: it never feeds a decode decision.
+function summarise(phase, bits, strength, energyLow, energyHigh) {
+  let strong = 0, confidence = 0, low = 0, best = 0, window = 0, at = 0;
+  for (let b = 0; b < bits.length; b++) {
+    confidence += strength[b];
+    if (strength[b] >= 0.5) strong++;
+    if (bits[b] === 0) low++;
+    window += strength[b];
+    if (b >= TRACE_SYMBOLS) window -= strength[b - TRACE_SYMBOLS];
+    if (b >= TRACE_SYMBOLS - 1 && window > best) { best = window; at = b - TRACE_SYMBOLS + 1; }
+  }
+  const energy = energyLow + energyHigh;
+  return {
+    phase, symbols: bits.length, strongSymbols: strong,
+    meanConfidence: round(bits.length ? confidence / bits.length : 0),
+    lowToneSymbols: low, highToneSymbols: bits.length - low,
+    toneShare: { 1200: round(energy ? energyLow / energy : 0), 2200: round(energy ? energyHigh / energy : 0) },
+    strongestWindowStart: at, strongestWindowConfidence: round(bits.length >= TRACE_SYMBOLS ? best / TRACE_SYMBOLS : 0),
+  };
+}
+function trace(bits, strength, from) {
+  const start = Math.max(0, Math.min(from, bits.length - TRACE_SYMBOLS));
+  const end = Math.min(bits.length, start + TRACE_SYMBOLS);
+  const out = { fromSymbol: start, bits: '', confidence: [] };
+  for (let b = start; b < end; b++) { out.bits += bits[b]; out.confidence.push(round(strength[b], 2)); }
+  return out;
+}
+
 // Noncoherent quadrature detector. Prefix sums make each candidate symbol O(1).
 // Eight timing phases tolerate an unknown sample offset; no shared TX clock or packet.
+// Diagnostics are accumulated alongside, and never alter a decode decision.
 function decodeAudio(pcm, sampleRate) {
   if (!(pcm instanceof Float32Array) || sampleRate < 8000 || sampleRate > 192000 || pcm.length > sampleRate * 16) throw new Error('Unsupported audio buffer');
   const sums = Array.from({ length: 4 }, () => new Float64Array(pcm.length + 1));
@@ -198,11 +287,27 @@ function decodeAudio(pcm, sampleRate) {
     }
   }
   const symbol = sampleRate / BITRATE;
-  let best = null, pending = null;
+  const diagnostics = {
+    sampleRate, capturedSeconds: round(pcm.length / sampleRate, 2), symbolSamples: round(symbol, 2), tones: TONES,
+    level: levels(pcm), sync: { candidates: 0, preambleRejected: 0, qualityRejected: 0, accepted: 0, bestPreambleErrors: null, bestQuality: null, phase: null },
+    framing: FRAMING.none, declaredPacketBytes: null, bits: { framing: OVERHEAD_BITS, expectedData: null, receivedData: null, total: null },
+    checksum: 'not reached', phases: [], symbolTrace: null,
+  };
+  const phaseBits = [], phaseStrength = [];
+  let best = null, pending = null, bestPhase = null, pendingPhase = null, traceFrom = null;
+  const report = (result, phase) => {
+    const p = phase == null ? diagnostics.phases.reduce((a, b) => (b.meanConfidence > a.meanConfidence ? b : a), diagnostics.phases[0]) : diagnostics.phases[phase];
+    diagnostics.reportedPhase = p?.phase ?? null;
+    diagnostics.symbols = p ?? null;
+    if (p) diagnostics.symbolTrace = trace(phaseBits[p.phase], phaseStrength[p.phase], traceFrom ?? p.strongestWindowStart);
+    if (diagnostics.framing === FRAMING.none && p && p.meanConfidence >= 0.4 && diagnostics.level.rmsDbfs > -60) diagnostics.framing = FRAMING.carrier;
+    return { ...result, diagnostics };
+  };
   for (let phase = 0; phase < 8; phase++) {
     const offset = phase * symbol / 8;
     const count = Math.max(0, Math.floor((pcm.length - offset) / symbol));
     const bits = new Uint8Array(count), strength = new Float32Array(count);
+    let energyLow = 0, energyHigh = 0;
     for (let b = 0; b < count; b++) {
       const start = Math.round(offset + (b + 0.1) * symbol), end = Math.round(offset + (b + 0.9) * symbol);
       const energy = [0, 0];
@@ -213,7 +318,10 @@ function decodeAudio(pcm, sampleRate) {
       const total = energy[0] + energy[1];
       bits[b] = energy[1] > energy[0] ? 1 : 0;
       strength[b] = total > 1e-5 ? Math.abs(energy[1] - energy[0]) / total : 0;
+      energyLow += energy[0]; energyHigh += energy[1];
     }
+    phaseBits[phase] = bits; phaseStrength[phase] = strength;
+    diagnostics.phases.push(summarise(phase, bits, strength, energyLow, energyHigh));
     let shift = 0;
     for (let b = 0; b < count; b++) {
       shift = ((shift << 1) | bits[b]) >>> 0;
@@ -224,27 +332,47 @@ function decodeAudio(pcm, sampleRate) {
         if (bits[syncStart - 32 + j] !== j % 2) preambleErrors++;
         quality += strength[syncStart + j];
       }
-      if (preambleErrors > 1 || quality / 32 < 0.4) continue;
+      diagnostics.sync.candidates++;
+      if (diagnostics.sync.bestQuality == null || quality / 32 > diagnostics.sync.bestQuality) {
+        diagnostics.sync.bestQuality = round(quality / 32); diagnostics.sync.bestPreambleErrors = preambleErrors; diagnostics.sync.phase = phase;
+      }
+      if (preambleErrors > 1) { diagnostics.sync.preambleRejected++; continue; }
+      if (quality / 32 < 0.4) { diagnostics.sync.qualityRejected++; continue; }
+      diagnostics.sync.accepted++;
+      traceFrom = Math.max(0, syncStart - PREAMBLE_BITS);
       const startSample = Math.max(0, offset + (syncStart - PREAMBLE_BITS) * symbol);
-      if (b + 17 >= count) { pending = { kind: 'partial', reason: 'Incomplete physical header', startSample }; continue; }
+      if (b + 17 >= count) {
+        diagnostics.framing = FRAMING.sync; diagnostics.bits.receivedData = 0;
+        pending = { kind: 'partial', reason: 'Incomplete physical header', startSample }; pendingPhase = phase; continue;
+      }
       let length = 0;
       for (let j = 1; j <= 16; j++) length = (length << 1) | bits[b + j];
       if (length < MIN_PACKET || length > MAX_PACKET) {
-        best ??= { kind: 'corrupted', reason: 'Physical length out of bounds', startSample };
-        continue;
+        diagnostics.framing = FRAMING.length; diagnostics.declaredPacketBytes = length;
+        best ??= { kind: 'corrupted', reason: 'Physical length out of bounds', startSample }; bestPhase ??= phase; continue;
       }
       const dataStart = b + 17, end = dataStart + length * 8;
-      if (end > count) { pending = { kind: 'partial', reason: 'Frame detected but incomplete', expectedBytes: length, startSample }; continue; }
+      if (end > count) {
+        diagnostics.framing = FRAMING.incomplete; diagnostics.declaredPacketBytes = length;
+        diagnostics.bits.expectedData = length * 8; diagnostics.bits.receivedData = Math.max(0, count - dataStart);
+        pending = { kind: 'partial', reason: 'Frame detected but incomplete', expectedBytes: length, startSample }; pendingPhase = phase; continue;
+      }
       const packet = bitsToBytes(bits.slice(dataStart, end));
       const endSample = offset + end * symbol;
       const frame = { kind: 'packet', packet, startSample, endSample, quality: quality / 32 };
       const view = new DataView(packet.buffer);
+      const crcOk = view.getUint32(packet.length - 4) === crc32(packet.subarray(0, -4));
+      diagnostics.framing = FRAMING.complete; diagnostics.declaredPacketBytes = length;
+      diagnostics.bits.expectedData = length * 8; diagnostics.bits.receivedData = length * 8; diagnostics.bits.total = OVERHEAD_BITS + length * 8;
+      diagnostics.checksum = crcOk ? 'CRC-32 PASS' : 'CRC-32 FAIL';
       // CRC selects a timing phase, not authenticity. Signature checked independently.
-      if (view.getUint32(packet.length - 4) === crc32(packet.subarray(0, -4))) return frame;
-      if (!best || quality / 32 > (best.quality ?? 0)) best = frame;
+      if (crcOk) return report(frame, phase);
+      if (!best || quality / 32 > (best.quality ?? 0)) { best = frame; bestPhase = phase; }
     }
   }
-  return best ?? pending ?? { kind: 'none', reason: 'No synchronized frame found' };
+  if (best) return report(best, bestPhase);
+  if (pending) return report(pending, pendingPhase);
+  return report({ kind: 'none', reason: 'No synchronized frame found' }, null);
 }
 
 
@@ -268,27 +396,41 @@ async function softwareLoopback(sampleRate = 48000) {
 
 
 const $ = id => document.getElementById(id);
-let keys = null, gatePassed = false, busy = false, tx = null, rx = null, lastPacket = null;
+const DASH = '—';
+const LISTEN_SECONDS = 90;
+const MODES = ['sender', 'receiver', 'both'];
+let keys = null, gatePassed = false, busy = false, tx = null, rx = null, lastPacket = null, mode = 'both';
 const liveCache = new ReplayCache();
 const records = [];
-let successes = 0, failures = 0;
-function controls() {
-  $('transmit').disabled = !gatePassed || !keys || busy || !!tx || !!rx || utf8.encode($('message').value).length > MAX_MESSAGE;
-  $('resend').disabled = !gatePassed || !lastPacket || busy || !!tx || !!rx;
-  $('listen').disabled = !gatePassed || busy || !!tx || !!rx;
-  $('stop-rx').disabled = !rx;
-  $('stop-tx').disabled = !tx;
-  $('selftest').disabled = busy || !!tx || !!rx;
-  $('generate').disabled = busy || !!tx || !!rx;
-  $('import-key').disabled = busy || !!tx || !!rx;
-  $('export-key').disabled = !keys || busy;
-  $('run-attack').disabled = !gatePassed || busy || !!tx || !!rx;
+let successes = 0, failures = 0, logLines = [], lastDiagnostics = null;
+
+function setMode(next) {
+  mode = MODES.includes(next) ? next : 'both';
+  document.body.className = `mode-${mode}`;
+  for (const m of MODES) $(`mode-${m}`).classList.toggle('on', m === mode);
+  try { localStorage.setItem('io-note-mode', mode); } catch { /* private mode is fine */ }
+  controls();
 }
-function display(result, mode) {
-  $('mode').textContent = mode;
+function controls() {
+  const sending = !!tx, receiving = !!rx;
+  // Sender and receiver may run together only in single-device mode, for an acoustic self-test.
+  const crossBlocked = mode === 'both' ? false : true;
+  $('transmit').disabled = !gatePassed || !keys || busy || sending || (receiving && crossBlocked) || utf8.encode($('message').value).length > MAX_MESSAGE;
+  $('resend').disabled = !gatePassed || !lastPacket || busy || sending || (receiving && crossBlocked);
+  $('listen').disabled = !gatePassed || busy || receiving || (sending && crossBlocked);
+  $('stop-rx').disabled = !receiving;
+  $('stop-tx').disabled = !sending;
+  $('selftest').disabled = busy || sending || receiving;
+  $('generate').disabled = busy || sending || receiving;
+  $('import-key').disabled = busy || sending || receiving;
+  $('export-key').disabled = !keys || busy;
+  $('run-attack').disabled = !gatePassed || busy || sending || receiving;
+}
+function display(result, label) {
+  $('mode').textContent = label;
   $('status').textContent = result.status;
   $('received').textContent = result.message !== undefined ? result.message : result.reason || '';
-  $('received-key').textContent = result.fingerprint || '—';
+  $('received-key').textContent = result.fingerprint || DASH;
   const kind = Object.keys(STATUS).find(k => STATUS[k] === result.status) || '';
   $('verdict').className = `verdict ${kind}`;
 }
@@ -298,10 +440,51 @@ function showMetrics(m) {
   $('m-time').textContent = m.audioSeconds.toFixed(2);
 }
 function record(row) {
-  records.push({ at: new Date().toISOString(), ...row });
+  records.push({ at: new Date().toISOString(), deviceRole: mode, ...row });
   if (row.successfulDecode === true) successes++;
   if (row.successfulDecode === false) failures++;
   $('m-decodes').textContent = `${successes} / ${failures}`;
+}
+function log(line) {
+  logLines.push(`${new Date().toTimeString().slice(0, 8)}  ${line}`);
+  if (logLines.length > 300) logLines.shift();
+  const el = $('d-log');
+  el.textContent = logLines.join('\n');
+  el.scrollTop = el.scrollHeight;
+}
+function cell(id, value, state = '') { const el = $(id); el.textContent = value; el.className = state; }
+function resetDiagnostics(reason) {
+  lastDiagnostics = null;
+  for (const id of ['d-framing', 'd-level', 'd-tone', 'd-symbols', 'd-sync', 'd-bits', 'd-crc', 'd-sig']) cell(id, DASH);
+  $('d-trace').textContent = DASH; $('d-trace-at').textContent = DASH; $('d-updated').textContent = reason;
+}
+// Everything below is observation of the decoder's own state; none of it feeds a decode decision.
+function showDiagnostics(d, when) {
+  if (!d) return;
+  lastDiagnostics = d;
+  $('d-updated').textContent = when;
+  cell('d-framing', d.framing, d.framing === FRAMING.complete ? 'pass' : d.framing === FRAMING.none ? '' : 'hold');
+  const quiet = d.level.rmsDbfs < -55;
+  cell('d-level', `${d.level.rmsDbfs} / ${d.level.peakDbfs} dBFS`, d.level.clippedSamples > 0 ? 'fail' : quiet ? 'hold' : 'pass');
+  $('d-level-note').textContent = `RMS / peak · ${d.level.clippedSamples} clipped samples · ${d.capturedSeconds} s in decode window`;
+  const s = d.symbols || {};
+  const low = Math.round((s.toneShare?.[1200] ?? 0) * 100), high = Math.round((s.toneShare?.[2200] ?? 0) * 100);
+  cell('d-tone', `${low}% / ${high}%`);
+  $('d-tone-note').textContent = `1,200 Hz vs 2,200 Hz energy · ${s.lowToneSymbols ?? 0} low / ${s.highToneSymbols ?? 0} high symbols`;
+  const confidence = s.meanConfidence ?? 0;
+  cell('d-symbols', `${s.symbols ?? 0} · ${s.strongSymbols ?? 0} · ${confidence.toFixed(2)}`, confidence >= 0.6 ? 'pass' : confidence >= 0.4 ? 'hold' : 'fail');
+  $('d-symbols-note').textContent = `analysed · strong (≥0.50) · mean confidence · timing phase ${d.reportedPhase ?? DASH} of 8`;
+  cell('d-sync', `${d.sync.candidates} · ${d.sync.accepted}`, d.sync.accepted ? 'pass' : d.sync.candidates ? 'hold' : '');
+  $('d-sync-note').textContent = `candidates · accepted · rejected ${d.sync.preambleRejected} preamble / ${d.sync.qualityRejected} quality${d.sync.bestQuality == null ? '' : ` · best quality ${d.sync.bestQuality}, ${d.sync.bestPreambleErrors} preamble errors`}`;
+  cell('d-bits', d.bits.expectedData == null ? (d.sync.accepted ? `${d.bits.framing} + 0` : DASH) : `${d.bits.framing} + ${d.bits.receivedData} / ${d.bits.expectedData}`,
+    d.bits.total ? 'pass' : d.bits.expectedData ? 'hold' : '');
+  $('d-bits-note').textContent = d.declaredPacketBytes == null ? 'framing bits + data bits received / expected' : `framing + data bits · declared ${d.declaredPacketBytes}-byte packet${d.bits.total ? ` · ${d.bits.total} on air` : ''}`;
+  cell('d-crc', d.checksum, d.checksum.endsWith('PASS') ? 'pass' : d.checksum.endsWith('FAIL') ? 'fail' : '');
+  if (d.symbolTrace) {
+    $('d-trace').textContent = d.symbolTrace.bits || DASH;
+    const mean = d.symbolTrace.confidence.reduce((a, b) => a + b, 0) / Math.max(1, d.symbolTrace.confidence.length);
+    $('d-trace-at').textContent = `from symbol ${d.symbolTrace.fromSymbol} · mean confidence ${mean.toFixed(2)} · a clean preamble reads 0101…`;
+  }
 }
 function download(name, text) {
   const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
@@ -311,15 +494,20 @@ function download(name, text) {
 async function guarded(action) {
   busy = true; controls();
   try { await action(); }
-  catch (e) { display({ status: 'ACTION FAILED', reason: e.message }, 'LOCAL ERROR'); record({ mode: 'operation', error: e.message }); }
+  catch (e) { display({ status: 'ACTION FAILED', reason: e.message }, 'LOCAL ERROR'); log(`action failed: ${e.message}`); record({ mode: 'operation', error: e.message }); }
   finally { busy = false; controls(); }
 }
 async function updateKey() {
   const raw = new Uint8Array(await crypto.subtle.exportKey('raw', keys.publicKey));
   $('sender-key').textContent = await fingerprint(raw);
-  lastPacket = null;
+  lastPacket = null; $('tx-packet').textContent = 'No packet encoded yet';
 }
+for (const m of MODES) $(`mode-${m}`).onclick = () => setMode(m);
 $('message').addEventListener('input', () => { $('byte-count').textContent = `${utf8.encode($('message').value).length} / 96 UTF-8 bytes`; controls(); });
+const preset = text => () => { $('message').value = text; $('message').dispatchEvent(new Event('input')); };
+$('preset-io').onclick = preset('we control the io pins');
+$('preset-hello').onclick = preset(TEST_MESSAGE);
+$('clear-log').onclick = () => { logLines = []; $('d-log').textContent = 'Log cleared.'; };
 $('message').dispatchEvent(new Event('input'));
 $('selftest').onclick = () => guarded(async () => {
   gatePassed = false;
@@ -329,16 +517,17 @@ $('selftest').onclick = () => guarded(async () => {
     gatePassed = true; $('gate-dot').className = 'dot pass';
     $('gate-text').textContent = 'Software loopback passed. Live audio controls unlocked.';
     display(result, 'SOFTWARE LOOPBACK · NO MICROPHONE'); showMetrics(result); record(result);
+    log(`software loopback verified · ${result.packetBytes} bytes · ${result.transmittedBits} bits · ${result.processingMs.toFixed(1)} ms`);
     $('timing').textContent = `Software pipeline: ${result.processingMs.toFixed(1)} ms compute · ${result.toneSeconds.toFixed(2)} s tones + 0.30 s silence. No physical audio measured.`;
-  } catch (e) { $('gate-dot').className = 'dot'; $('gate-text').textContent = `Loopback failed: ${e.message}`; record({ mode: 'software loopback', successfulDecode: false, error: e.message }); throw e; }
+  } catch (e) { $('gate-dot').className = 'dot'; $('gate-text').textContent = `Loopback failed: ${e.message}`; log(`software loopback FAILED: ${e.message}`); record({ mode: 'software loopback', successfulDecode: false, error: e.message }); throw e; }
 });
-$('generate').onclick = () => guarded(async () => { keys = await generateIdentity(); await updateKey(); });
+$('generate').onclick = () => guarded(async () => { keys = await generateIdentity(); await updateKey(); log('generated a new local Ed25519 identity'); });
 $('export-key').onclick = () => guarded(async () => { download('io-note-private-key.json', JSON.stringify(await exportIdentity(keys), null, 2)); $('tx-note').textContent = 'Export contains an unencrypted private key. Keep it local; do not share it.'; });
 $('import-key').onchange = () => guarded(async () => {
   const file = $('import-key').files[0]; if (!file) return;
   if (file.size > 4096) throw new Error('Key file exceeds 4 KiB');
   const imported = await importIdentity(JSON.parse(await file.text()));
-  keys = imported; await updateKey(); $('import-key').value = '';
+  keys = imported; await updateKey(); $('import-key').value = ''; log('imported an io-note-key-v1 identity');
 });
 async function transmit(reuse) {
   const actionStart = performance.now();
@@ -352,12 +541,15 @@ async function transmit(reuse) {
     const source = context.createBufferSource(); source.buffer = buffer; source.connect(context.destination);
     tx = { source, context, stopped: false }; const session = tx;
     showMetrics(m); $('signal').classList.add('active');
-    $('tx-note').textContent = `Transmitting ${m.transmittedBits} bits · ${m.audioSeconds.toFixed(2)} seconds${reuse ? ' · same nonce' : ''}`;
+    $('tx-packet').textContent = `nonce ${hex(packet.slice(37, 53))} · crc ${hex(packet.slice(-4))} · ${context.sampleRate.toLocaleString()} Hz`;
+    $('tx-note').textContent = `Transmitting ${m.transmittedBits} bits · ${m.audioSeconds.toFixed(2)} seconds${reuse ? ' · same nonce (replay test)' : ''}`;
+    log(`transmitting ${m.packetBytes} bytes / ${m.transmittedBits} bits · ${m.audioSeconds.toFixed(2)} s · crc ${hex(packet.slice(-4))}${reuse ? ' · replayed nonce' : ''}`);
     source.onended = () => {
       const elapsed = performance.now() - actionStart;
-      record({ mode: 'speaker transmission', ...m, senderButtonToEndedMs: elapsed, interrupted: session.stopped, receiverOutcome: 'unknown on sender' });
+      record({ mode: 'speaker transmission', ...m, replayedNonce: !!reuse, senderButtonToEndedMs: elapsed, interrupted: session.stopped, receiverOutcome: 'unknown on sender' });
       $('tx-note').textContent = session.stopped ? 'Transmission interrupted.' : 'Audio playback completed. Check the receiving device for its verdict.';
       $('timing').textContent = `Sender button → playback ended: ${(elapsed / 1000).toFixed(2)} s. This does not establish receiver success.`;
+      log(`playback ${session.stopped ? 'interrupted' : 'completed'} after ${(elapsed / 1000).toFixed(2)} s; sender cannot observe delivery`);
       $('signal').classList.remove('active'); context.close(); tx = null; controls();
     };
     source.start(context.currentTime + 0.05);
@@ -368,16 +560,26 @@ $('resend').onclick = () => guarded(() => transmit(true));
 $('stop-tx').onclick = () => { if (tx) { tx.stopped = true; tx.source.stop(); } };
 function closeReceiver(session) {
   if (!session || session.closed) return;
-  session.closed = true; clearTimeout(session.timer);
+  session.closed = true; clearInterval(session.timer);
   session.worker?.terminate(); session.stream?.getTracks().forEach(t => t.stop());
   session.node?.disconnect(); session.source?.disconnect(); session.context?.close();
   if (rx === session) rx = null;
   controls();
 }
 async function handleAudio(session, data) {
-  if (session.closed || session.verifying) return;
+  if (session.closed) return;
+  if (data.diagnostics) {
+    showDiagnostics(data.diagnostics, `${data.final ? 'FINAL' : 'LIVE'} · ${data.capturedSeconds.toFixed(1)} s CAPTURED · DECODE ${data.decodeMs.toFixed(0)} ms`);
+    if (data.diagnostics.framing !== session.framing) {
+      session.framing = data.diagnostics.framing;
+      log(`framing → ${session.framing} at ${data.capturedSeconds.toFixed(1)} s (rms ${data.diagnostics.level.rmsDbfs} dBFS, confidence ${(data.diagnostics.symbols?.meanConfidence ?? 0).toFixed(2)})`);
+    }
+    if (!session.verifying) $('rx-note').textContent = `Listening · ${data.capturedSeconds.toFixed(1)} s captured · ${Math.max(0, session.endsAt - Date.now()) / 1000 | 0} s left · ${data.diagnostics.framing}`;
+  }
+  if (session.verifying) return;
   if (data.kind === 'error') {
     closeReceiver(session); display({ status: 'RECEIVER ERROR', reason: data.reason }, 'MICROPHONE');
+    log(`receiver error: ${data.reason}`);
     record({ mode: 'microphone', successfulDecode: false, error: data.reason }); return;
   }
   if (data.kind === 'packet') {
@@ -390,28 +592,32 @@ async function handleAudio(session, data) {
       const result = await verifyPacket(data.packet, liveCache);
       const now = performance.now();
       const m = metrics(data.packet, session.rate);
-      const row = { mode: 'microphone', ...m, ...result, successfulDecode: intact, capturedSeconds: data.capturedSeconds, decodeMs: data.decodeMs, verifyMs: now - verifiedStart, listenToVerdictMs: now - session.started, estimatedSignalToVerdictMs: session.captureEpoch == null ? null : now - session.captureEpoch - data.startSample / session.rate * 1000, frameSampleDurationSeconds: (data.endSample - data.startSample) / session.rate, microphoneSettings: session.settings };
+      const row = { mode: 'microphone', ...m, ...result, successfulDecode: intact, capturedSeconds: data.capturedSeconds, decodeMs: data.decodeMs, verifyMs: now - verifiedStart, listenToVerdictMs: now - session.started, estimatedSignalToVerdictMs: session.captureEpoch == null ? null : now - session.captureEpoch - data.startSample / session.rate * 1000, frameSampleDurationSeconds: (data.endSample - data.startSample) / session.rate, microphoneSettings: session.settings, diagnostics: data.diagnostics };
+      const sig = result.status === STATUS.verified ? 'pass' : result.status === STATUS.replay ? 'hold' : 'fail';
+      cell('d-sig', result.status, sig);
       display(result, 'MICROPHONE INPUT'); showMetrics(m); record(row);
+      log(`verdict ${result.status} after ${(row.listenToVerdictMs / 1000).toFixed(2)} s · ${m.packetBytes} bytes · checksum ${data.diagnostics?.checksum ?? 'n/a'}`);
       $('timing').textContent = `Listen → verdict: ${(row.listenToVerdictMs / 1000).toFixed(2)} s · estimated signal → verdict: ${row.estimatedSignalToVerdictMs == null ? 'unavailable' : (row.estimatedSignalToVerdictMs / 1000).toFixed(2) + ' s'} · decode ${data.decodeMs.toFixed(1)} ms`;
       $('rx-note').textContent = 'Capture stopped. Click Listen again to receive another packet; replay memory is retained.';
-    } catch (e) { display({ status: 'RECEIVER ERROR', reason: e.message }, 'MICROPHONE'); record({ mode: 'microphone', successfulDecode: false, error: e.message }); }
+    } catch (e) { display({ status: 'RECEIVER ERROR', reason: e.message }, 'MICROPHONE'); log(`verification error: ${e.message}`); record({ mode: 'microphone', successfulDecode: false, error: e.message }); }
     finally { closeReceiver(session); }
   } else if (data.final) {
     const status = data.kind === 'none' ? 'NO PACKET DECODED' : STATUS.corrupted;
     display({ status, reason: data.reason }, 'MICROPHONE · DECODE FAILED');
-    record({ mode: 'microphone', successfulDecode: false, status, reason: data.reason, capturedSeconds: data.capturedSeconds });
-    $('rx-note').textContent = 'Capture stopped without a complete valid frame. Re-arm to try again.';
+    cell('d-sig', 'not reached');
+    record({ mode: 'microphone', successfulDecode: false, status, reason: data.reason, capturedSeconds: data.capturedSeconds, diagnostics: data.diagnostics });
+    log(`capture finished without a valid frame: ${data.reason}`);
+    $('rx-note').textContent = 'Capture stopped without a complete valid frame. Re-arm to try again; the diagnostics above are from the final attempt.';
     closeReceiver(session);
-  } else if (data.kind === 'partial') {
-    $('rx-note').textContent = `Frame detected · receiving${data.expectedBytes ? ' ' + data.expectedBytes + ' bytes' : ''}…`;
   }
 }
 $('listen').onclick = () => guarded(async () => {
-  if (!navigator.mediaDevices?.getUserMedia) throw new Error('Microphone unavailable in this browser/file context. Open the downloaded HTML in a compatible desktop browser; no server fallback is provided.');
+  if (!navigator.mediaDevices?.getUserMedia) throw new Error('Microphone unavailable here. Open this page over HTTPS (or localhost) in a browser that allows microphone access; a local file:// page cannot prompt for it in every browser.');
   const context = new AudioContext();
   await context.resume();
-  const session = { context, started: performance.now(), captureEpoch: null, closed: false, verifying: false };
+  const session = { context, started: performance.now(), captureEpoch: null, closed: false, verifying: false, framing: null, endsAt: Date.now() + LISTEN_SECONDS * 1000 };
   rx = session;
+  resetDiagnostics('ARMING MICROPHONE');
   try {
     session.stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: false, noiseSuppression: false, autoGainControl: false }, video: false });
     session.settings = session.stream.getAudioTracks()[0].getSettings(); session.rate = context.sampleRate;
@@ -432,10 +638,15 @@ $('listen').onclick = () => guarded(async () => {
     session.source.connect(session.node);
     // Worklet outputs silence; microphone input is never fed back to speakers.
     session.node.connect(context.destination);
-    session.timer = setTimeout(() => session.worker?.postMessage({ type: 'finish' }), 15000);
-    display({ status: 'LISTENING', reason: 'Transmit from the other device now. Auto-stop after 15 seconds.' }, 'MICROPHONE · ARMED');
-    $('rx-note').textContent = `Microphone active · ${context.sampleRate.toLocaleString()} Hz · waiting for frame…`;
-  } catch (e) { closeReceiver(session); throw e; }
+    session.timer = setInterval(() => {
+      if (session.closed) return clearInterval(session.timer);
+      if (Date.now() >= session.endsAt) { clearInterval(session.timer); session.worker?.postMessage({ type: 'finish' }); }
+    }, 1000);
+    display({ status: 'LISTENING', reason: `Transmit from the other device now. Auto-stop after ${LISTEN_SECONDS} seconds; the decoder keeps a rolling 14-second window.` }, 'MICROPHONE · ARMED');
+    cell('d-sig', 'awaiting frame');
+    log(`microphone armed · ${context.sampleRate.toLocaleString()} Hz · ${session.settings.echoCancellation === false ? 'echo cancellation off' : 'echo cancellation not reported off'}`);
+    $('rx-note').textContent = `Microphone active · ${context.sampleRate.toLocaleString()} Hz · waiting for a frame…`;
+  } catch (e) { closeReceiver(session); resetDiagnostics('MICROPHONE UNAVAILABLE'); throw e; }
 });
 $('stop-rx').onclick = () => { if (rx) { $('stop-rx').disabled = true; rx.worker?.postMessage({ type: 'finish' }); } };
 $('run-attack').onclick = () => guarded(async () => {
@@ -456,14 +667,27 @@ $('run-attack').onclick = () => guarded(async () => {
     result = decoded.kind === 'packet' ? await verifyPacket(decoded.packet, cache) : { status: STATUS.corrupted, reason: decoded.reason };
   }
   display(result, `ADVERSARIAL SOFTWARE TEST · ${type.toUpperCase()}`);
+  if (decoded?.diagnostics) showDiagnostics(decoded.diagnostics, `ADVERSARIAL SOFTWARE PCM · ${type.toUpperCase()}`);
+  cell('d-sig', result.status, result.status === STATUS.verified ? 'pass' : result.status === STATUS.replay ? 'hold' : 'fail');
   showMetrics(metrics(packet));
+  log(`adversarial ${type} → ${result.status}`);
   record({ mode: 'adversarial software PCM', attack: type, ...result, successfulDecode: result.status !== STATUS.corrupted });
   $('timing').textContent = 'Adversarial software test only. No physical audio measurement.';
 });
-$('export-results').onclick = () => download('io-note-session-results.json', JSON.stringify({ app: 'io-note 0.1.0', userAgent: navigator.userAgent, securityBoundary: 'Authenticity/integrity only; no encryption; identity requires out-of-band fingerprint comparison', counters: { successfulDecodes: successes, failedDecodes: failures }, records }, null, 2));
+$('export-results').onclick = () => download('io-note-session-results.json', JSON.stringify({
+  app: 'io-note 0.1.0', userAgent: navigator.userAgent, deviceRole: mode,
+  securityBoundary: 'Authenticity/integrity only; no encryption; identity requires out-of-band fingerprint comparison',
+  scopeNote: 'A microphone row records one attempt between these two devices in this room. It is not a general physical-transport verification claim.',
+  counters: { successfulDecodes: successes, failedDecodes: failures },
+  lastDiagnostics, log: logLines, records,
+}, null, 2));
 window.addEventListener('pagehide', () => { closeReceiver(rx); if (tx) tx.source.stop(); });
-controls();
+let stored = null;
+try { stored = localStorage.getItem('io-note-mode'); } catch { /* private mode is fine */ }
+setMode(stored || 'both');
+resetDiagnostics('NO CAPTURE YET');
 if (!globalThis.crypto?.subtle) { $('gate-text').textContent = 'Web Crypto unavailable in this context.'; $('selftest').disabled = true; $('generate').disabled = true; }
+if (!globalThis.isSecureContext) $('rx-note').textContent = 'This page is not a secure context, so the microphone will not be available. Load it over HTTPS or from localhost.';
 
 })();</script>
 </body>
