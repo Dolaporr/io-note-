@@ -6,20 +6,11 @@ An isolated research PoC for an Ed25519-signed short message carried by audible 
 
 ## HTTPS preview
 
-**https://dolaporr.github.io/io-note-/**
+**https://dolaporr.github.io/io-note-/** — live.
 
-That URL serves once GitHub Pages is switched on for this repository. It is a repository
-setting, and neither this branch nor the workflow's token is permitted to change it, so it
-needs one manual choice in **Settings → Pages → Build and deployment**:
-
-- **Deploy from a branch** → branch `claude/io-note-measured-results-ga9zqe`, folder
-  `/docs`. `docs/index.html` is the committed build, byte-for-byte identical to
-  `dist/io-note.html`. Nothing else has to run, and no workflow is involved.
-- **GitHub Actions** → `.github/workflows/preview.yml` rebuilds the file from `src/`,
-  refuses to publish if the rebuild differs from the committed build, runs the tests, and
-  deploys `docs/`. If a deployment is rejected because this branch is not allowed for the
-  `github-pages` environment, allow it under Settings → Environments → github-pages, or use
-  the branch source above.
+It serves `docs/index.html`, the committed build, byte-for-byte identical to
+`dist/io-note.html`. `.github/workflows/preview.yml` rebuilds from `src/`, refuses to publish
+if the rebuild differs from the committed build, runs the tests, and deploys `docs/`.
 
 The preview is a single static file. **The host has no part in message transport**: the
 page's CSP sets `connect-src 'none'`, the app contains no fetch, WebSocket, WebRTC or
@@ -65,7 +56,9 @@ npm run measure
 - `src/selftest.mjs`: deterministic known public fixture; never the live sender identity.
 - `src/app.mjs`, `src/index.html`, `src/style.css`: local UI.
 - `scripts/build.mjs`: embeds everything into one HTML file.
-- `scripts/browser-check.mjs`: optional headless-browser run of the built file, including the microphone path against a synthetic capture device; writes `results/browser-verification.json`.
+- `scripts/browser-check.mjs`: optional headless-browser run of the built file, including the microphone path against a synthetic capture device and a raw-capture export round-trip; writes `results/browser-verification.json`.
+- `scripts/channel-experiments.mjs`, `scripts/channel-lab.mjs`: offline reproductions of a physical failure — sample rates, resampling, tone imbalance, in-band noise, interruption; writes `results/channel-experiments.json`.
+- `scripts/replay-capture.mjs`: replays an exported physical capture WAV through the same decoder, attempt by attempt.
 - `tests/`: protocol, adversarial, waveform, and simulated capture/worker integration tests.
 - `results/`: raw JSON measurements, TAP test output, public fixture WAV, browser-run output, validation status.
 - `PHYSICAL_TEST.md`: the two-device speaker-to-microphone procedure, what to record, and failure triage from the diagnostics.

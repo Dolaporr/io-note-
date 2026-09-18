@@ -76,7 +76,7 @@ body.mode-sender .grid,body.mode-receiver .grid{grid-template-columns:1fr}
     </div>
     <div class="key-row"><span>Symbol trace · strongest 64 symbols, 0 = 1,200 Hz, 1 = 2,200 Hz</span><span class="note" id="d-trace-at">—</span></div>
     <code id="d-trace">—</code>
-    <div class="key-row"><span>Receiver log</span><button id="clear-log">Clear</button></div>
+    <div class="key-row"><span>Receiver log</span><span class="button-row small"><button id="export-capture" disabled>Export raw capture</button><button id="clear-log">Clear</button></span></div>
     <pre id="d-log">Nothing captured yet.</pre>
   </section>
   <section class="measurements"><div><span>Packet</span><strong id="m-bytes">—</strong><small>encoded bytes</small></div><div><span>On air</span><strong id="m-bits">—</strong><small>bits incl. framing</small></div><div><span>Bitrate</span><strong>200</strong><small>bits / second</small></div><div><span>Audio buffer</span><strong id="m-time">—</strong><small>seconds incl. silence</small></div><div><span>Decode attempts</span><strong id="m-decodes">0 / 0</strong><small>successful / failed</small></div></section>
@@ -86,7 +86,7 @@ body.mode-sender .grid,body.mode-receiver .grid{grid-template-columns:1fr}
 </main>
 <script>'use strict';
 (async () => {
-const decoderWorkerSource = "// All multibyte integers are big endian. No JSON on the wire.\nconst VERSION = 1;\nconst MAX_MESSAGE = 96;\nconst MIN_PACKET = 123;\nconst MAX_PACKET = MIN_PACKET + MAX_MESSAGE;\nconst MAGIC = new Uint8Array([0x49, 0x4f, 0x4e, 0x31]); // ION1 / domain separation\nconst STATUS = Object.freeze({ verified: 'SIGNATURE VERIFIED', invalid: 'SIGNATURE INVALID', corrupted: 'TRANSPORT CORRUPTED', replay: 'REPLAYED PACKET' });\nconst utf8 = new TextEncoder();\nconst hex = bytes => Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');\nfunction unhex(s) {\n  if (typeof s !== 'string' || !/^(?:[a-fA-F0-9]{2})+$/.test(s)) throw new Error('Invalid hex');\n  return Uint8Array.from(s.match(/../g), b => parseInt(b, 16));\n}\nfunction concat(...parts) {\n  const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));\n  let at = 0;\n  for (const p of parts) { out.set(p, at); at += p.length; }\n  return out;\n}\nfunction crc32(bytes) {\n  let c = 0xffffffff;\n  for (const b of bytes) {\n    c ^= b;\n    for (let i = 0; i < 8; i++) c = (c >>> 1) ^ ((c & 1) ? 0xedb88320 : 0);\n  }\n  return (c ^ 0xffffffff) >>> 0;\n}\nfunction appendCRC(bytes) {\n  const out = concat(bytes, new Uint8Array(4));\n  new DataView(out.buffer).setUint32(bytes.length, crc32(bytes));\n  return out;\n}\nasync function generateIdentity() {\n  return crypto.subtle.generateKey({ name: 'Ed25519' }, true, ['sign', 'verify']);\n}\nasync function exportIdentity(keys) {\n  return { format: 'io-note-key-v1', publicKey: hex(new Uint8Array(await crypto.subtle.exportKey('raw', keys.publicKey))), privateKeyPkcs8: hex(new Uint8Array(await crypto.subtle.exportKey('pkcs8', keys.privateKey))) };\n}\nasync function importIdentity(data) {\n  if (data?.format !== 'io-note-key-v1') throw new Error('Expected io-note-key-v1 JSON');\n  const raw = unhex(data.publicKey), pkcs8 = unhex(data.privateKeyPkcs8);\n  if (raw.length !== 32 || pkcs8.length > 256) throw new Error('Invalid key size');\n  const publicKey = await crypto.subtle.importKey('raw', raw, 'Ed25519', true, ['verify']);\n  const privateKey = await crypto.subtle.importKey('pkcs8', pkcs8, 'Ed25519', true, ['sign']);\n  const challenge = utf8.encode('io-note keypair consistency check v1');\n  const sig = await crypto.subtle.sign('Ed25519', privateKey, challenge);\n  if (!await crypto.subtle.verify('Ed25519', publicKey, sig, challenge)) throw new Error('Private and public keys do not match');\n  return { publicKey, privateKey };\n}\nasync function fingerprint(publicKeyBytes) {\n  return hex(new Uint8Array(await crypto.subtle.digest('SHA-256', publicKeyBytes)));\n}\nasync function createPacket(message, keys, nonce = crypto.getRandomValues(new Uint8Array(16))) {\n  const bytes = utf8.encode(message);\n  if (new TextDecoder().decode(bytes) !== message) throw new Error('Message must be well-formed Unicode');\n  if (bytes.length > MAX_MESSAGE) throw new Error(`Message exceeds ${MAX_MESSAGE} UTF-8 bytes`);\n  if (!(nonce instanceof Uint8Array) || nonce.length !== 16) throw new Error('Nonce must be 16 bytes');\n  const pk = new Uint8Array(await crypto.subtle.exportKey('raw', keys.publicKey));\n  const header = concat(MAGIC, new Uint8Array([VERSION]), pk, nonce, new Uint8Array(2), bytes);\n  new DataView(header.buffer).setUint16(53, bytes.length);\n  const sig = new Uint8Array(await crypto.subtle.sign('Ed25519', keys.privateKey, header));\n  return appendCRC(concat(header, sig));\n}\nfunction parsePacket(packet) {\n  if (!(packet instanceof Uint8Array) || packet.length < MIN_PACKET || packet.length > MAX_PACKET) throw new Error('Packet size out of bounds / truncated');\n  const view = new DataView(packet.buffer, packet.byteOffset, packet.byteLength);\n  if (view.getUint32(packet.length - 4) !== crc32(packet.subarray(0, -4))) throw new Error('CRC-32 mismatch');\n  if (!MAGIC.every((v, i) => packet[i] === v) || packet[4] !== VERSION) throw new Error('Unsupported magic or version');\n  const length = view.getUint16(53);\n  if (length > MAX_MESSAGE || packet.length !== MIN_PACKET + length) throw new Error('Message length mismatch');\n  const payload = packet.slice(55, 55 + length);\n  // Fatal decoding prevents replacement characters hiding malformed bytes.\n  const message = new TextDecoder('utf-8', { fatal: true }).decode(payload);\n  return { message, payload, publicKey: packet.slice(5, 37), nonce: packet.slice(37, 53), signature: packet.slice(55 + length, -4), signed: packet.slice(0, 55 + length) };\n}\nclass ReplayCache {\n  constructor(limit = 1024) { this.limit = limit; this.seen = new Set(); }\n  checkAndAdd(key) {\n    if (this.seen.has(key)) return false;\n    if (this.seen.size >= this.limit) throw new Error('Replay cache full; reload starts a new receiver session');\n    this.seen.add(key);\n    return true;\n  }\n}\nasync function verifyPacket(packet, cache = new ReplayCache()) {\n  let p;\n  try { p = parsePacket(packet); }\n  catch (e) { return { status: STATUS.corrupted, reason: e.message }; }\n  let valid = false;\n  try {\n    const key = await crypto.subtle.importKey('raw', p.publicKey, 'Ed25519', false, ['verify']);\n    valid = await crypto.subtle.verify('Ed25519', key, p.signature, p.signed);\n  } catch { /* A malformed key/signature is not a verified packet. */ }\n  if (!valid) return { status: STATUS.invalid, reason: 'Ed25519 verification failed' };\n  // Atomic synchronous check-and-add AFTER verification; failed forgeries cannot poison it.\n  const fresh = cache.checkAndAdd(`${hex(p.publicKey)}:${hex(p.nonce)}`);\n  return { status: fresh ? STATUS.verified : STATUS.replay, message: p.message, nonce: hex(p.nonce), publicKey: hex(p.publicKey), fingerprint: await fingerprint(p.publicKey) };\n}\n\n\nconst BITRATE = 200;\nconst TONES = [1200, 2200];\nconst PREAMBLE_BITS = 64;\nconst SYNC = 0xd391c5a7;\nconst OVERHEAD_BITS = PREAMBLE_BITS + 32 + 16;\nfunction bytesToBits(bytes) {\n  return Uint8Array.from(Array.from(bytes).flatMap(b => Array.from({ length: 8 }, (_, i) => (b >> (7 - i)) & 1)));\n}\nfunction bitsToBytes(bits) {\n  if (bits.length % 8) throw new Error('Non-byte-aligned bit array');\n  const bytes = new Uint8Array(bits.length / 8);\n  for (let i = 0; i < bits.length; i++) bytes[i >> 3] |= bits[i] << (7 - (i & 7));\n  return bytes;\n}\nfunction frameBits(packet) {\n  if (packet.length < MIN_PACKET || packet.length > MAX_PACKET) throw new Error('Packet size out of bounds');\n  const h = new Uint8Array(6), v = new DataView(h.buffer);\n  v.setUint32(0, SYNC); v.setUint16(4, packet.length);\n  const bits = new Uint8Array(OVERHEAD_BITS + packet.length * 8);\n  for (let i = 0; i < PREAMBLE_BITS; i++) bits[i] = i % 2;\n  bits.set(bytesToBits(h), PREAMBLE_BITS);\n  bits.set(bytesToBits(packet), OVERHEAD_BITS);\n  return bits;\n}\nfunction modulateBits(bits, sampleRate = 48000, { amplitude = 0.35, leadSeconds = 0.15, tailSeconds = 0.15 } = {}) {\n  const lead = Math.round(leadSeconds * sampleRate), body = Math.round(bits.length * sampleRate / BITRATE);\n  const pcm = new Float32Array(lead + body + Math.round(tailSeconds * sampleRate));\n  let phase = 0;\n  for (let i = 0; i < body; i++) {\n    const bit = bits[Math.min(bits.length - 1, Math.floor(i * BITRATE / sampleRate))];\n    pcm[lead + i] = amplitude * Math.sin(phase);\n    phase = (phase + 2 * Math.PI * TONES[bit] / sampleRate) % (2 * Math.PI);\n  }\n  return pcm;\n}\nfunction modulate(packet, sampleRate = 48000, options) { return modulateBits(frameBits(packet), sampleRate, options); }\nfunction metrics(packet, sampleRate = 48000) {\n  const bits = OVERHEAD_BITS + packet.length * 8;\n  return { packetBytes: packet.length, packetBits: packet.length * 8, transmittedBits: bits, bitrate: BITRATE, toneSeconds: bits / BITRATE, audioSeconds: modulate(packet, sampleRate).length / sampleRate, sampleRate };\n}\n\n// Framing states reported to the operator while a physical transmission is in flight.\nconst FRAMING = Object.freeze({ none: 'NO SIGNAL', carrier: 'CARRIER; NO SYNC', sync: 'SYNC FOUND; HEADER INCOMPLETE', length: 'SYNC FOUND; LENGTH INVALID', incomplete: 'FRAME INCOMPLETE', complete: 'FRAME COMPLETE' });\nconst TRACE_SYMBOLS = 64;\nconst db = v => 20 * Math.log10(Math.max(v, 1e-6));\nconst round = (v, n = 3) => Math.round(v * 10 ** n) / 10 ** n;\nfunction levels(pcm) {\n  let peak = 0, squares = 0, clipped = 0;\n  for (let i = 0; i < pcm.length; i++) {\n    const v = pcm[i] < 0 ? -pcm[i] : pcm[i];\n    if (v > peak) peak = v;\n    if (v >= 0.999) clipped++;\n    squares += pcm[i] * pcm[i];\n  }\n  const rms = Math.sqrt(squares / Math.max(1, pcm.length));\n  return { rms: round(rms, 5), peak: round(peak, 5), rmsDbfs: round(db(rms), 1), peakDbfs: round(db(peak), 1), clippedSamples: clipped };\n}\n// Per-phase symbol telemetry. Observational only: it never feeds a decode decision.\nfunction summarise(phase, bits, strength, energyLow, energyHigh) {\n  let strong = 0, confidence = 0, low = 0, best = 0, window = 0, at = 0;\n  for (let b = 0; b < bits.length; b++) {\n    confidence += strength[b];\n    if (strength[b] >= 0.5) strong++;\n    if (bits[b] === 0) low++;\n    window += strength[b];\n    if (b >= TRACE_SYMBOLS) window -= strength[b - TRACE_SYMBOLS];\n    if (b >= TRACE_SYMBOLS - 1 && window > best) { best = window; at = b - TRACE_SYMBOLS + 1; }\n  }\n  const energy = energyLow + energyHigh;\n  return {\n    phase, symbols: bits.length, strongSymbols: strong,\n    meanConfidence: round(bits.length ? confidence / bits.length : 0),\n    lowToneSymbols: low, highToneSymbols: bits.length - low,\n    toneShare: { 1200: round(energy ? energyLow / energy : 0), 2200: round(energy ? energyHigh / energy : 0) },\n    strongestWindowStart: at, strongestWindowConfidence: round(bits.length >= TRACE_SYMBOLS ? best / TRACE_SYMBOLS : 0),\n  };\n}\nfunction trace(bits, strength, from) {\n  const start = Math.max(0, Math.min(from, bits.length - TRACE_SYMBOLS));\n  const end = Math.min(bits.length, start + TRACE_SYMBOLS);\n  const out = { fromSymbol: start, bits: '', confidence: [] };\n  for (let b = start; b < end; b++) { out.bits += bits[b]; out.confidence.push(round(strength[b], 2)); }\n  return out;\n}\n\n// Noncoherent quadrature detector. Prefix sums make each candidate symbol O(1).\n// Eight timing phases tolerate an unknown sample offset; no shared TX clock or packet.\n// Diagnostics are accumulated alongside, and never alter a decode decision.\nfunction decodeAudio(pcm, sampleRate) {\n  if (!(pcm instanceof Float32Array) || sampleRate < 8000 || sampleRate > 192000 || pcm.length > sampleRate * 16) throw new Error('Unsupported audio buffer');\n  const sums = Array.from({ length: 4 }, () => new Float64Array(pcm.length + 1));\n  for (let f = 0; f < 2; f++) {\n    const w = 2 * Math.PI * TONES[f] / sampleRate;\n    for (let i = 0; i < pcm.length; i++) {\n      sums[f * 2][i + 1] = sums[f * 2][i] + pcm[i] * Math.cos(i * w);\n      sums[f * 2 + 1][i + 1] = sums[f * 2 + 1][i] + pcm[i] * Math.sin(i * w);\n    }\n  }\n  const symbol = sampleRate / BITRATE;\n  const diagnostics = {\n    sampleRate, capturedSeconds: round(pcm.length / sampleRate, 2), symbolSamples: round(symbol, 2), tones: TONES,\n    level: levels(pcm), sync: { candidates: 0, preambleRejected: 0, qualityRejected: 0, accepted: 0, bestPreambleErrors: null, bestQuality: null, phase: null },\n    framing: FRAMING.none, declaredPacketBytes: null, bits: { framing: OVERHEAD_BITS, expectedData: null, receivedData: null, total: null },\n    checksum: 'not reached', phases: [], symbolTrace: null,\n  };\n  const phaseBits = [], phaseStrength = [];\n  let best = null, pending = null, bestPhase = null, pendingPhase = null, traceFrom = null;\n  const report = (result, phase) => {\n    const p = phase == null ? diagnostics.phases.reduce((a, b) => (b.meanConfidence > a.meanConfidence ? b : a), diagnostics.phases[0]) : diagnostics.phases[phase];\n    diagnostics.reportedPhase = p?.phase ?? null;\n    diagnostics.symbols = p ?? null;\n    if (p) diagnostics.symbolTrace = trace(phaseBits[p.phase], phaseStrength[p.phase], traceFrom ?? p.strongestWindowStart);\n    if (diagnostics.framing === FRAMING.none && p && p.meanConfidence >= 0.4 && diagnostics.level.rmsDbfs > -60) diagnostics.framing = FRAMING.carrier;\n    return { ...result, diagnostics };\n  };\n  for (let phase = 0; phase < 8; phase++) {\n    const offset = phase * symbol / 8;\n    const count = Math.max(0, Math.floor((pcm.length - offset) / symbol));\n    const bits = new Uint8Array(count), strength = new Float32Array(count);\n    let energyLow = 0, energyHigh = 0;\n    for (let b = 0; b < count; b++) {\n      const start = Math.round(offset + (b + 0.1) * symbol), end = Math.round(offset + (b + 0.9) * symbol);\n      const energy = [0, 0];\n      for (let f = 0; f < 2; f++) {\n        const re = sums[f * 2][end] - sums[f * 2][start], im = sums[f * 2 + 1][end] - sums[f * 2 + 1][start];\n        energy[f] = re * re + im * im;\n      }\n      const total = energy[0] + energy[1];\n      bits[b] = energy[1] > energy[0] ? 1 : 0;\n      strength[b] = total > 1e-5 ? Math.abs(energy[1] - energy[0]) / total : 0;\n      energyLow += energy[0]; energyHigh += energy[1];\n    }\n    phaseBits[phase] = bits; phaseStrength[phase] = strength;\n    diagnostics.phases.push(summarise(phase, bits, strength, energyLow, energyHigh));\n    let shift = 0;\n    for (let b = 0; b < count; b++) {\n      shift = ((shift << 1) | bits[b]) >>> 0;\n      if (shift !== SYNC || b < 63) continue;\n      const syncStart = b - 31;\n      let preambleErrors = 0, quality = 0;\n      for (let j = 0; j < 32; j++) {\n        if (bits[syncStart - 32 + j] !== j % 2) preambleErrors++;\n        quality += strength[syncStart + j];\n      }\n      diagnostics.sync.candidates++;\n      if (diagnostics.sync.bestQuality == null || quality / 32 > diagnostics.sync.bestQuality) {\n        diagnostics.sync.bestQuality = round(quality / 32); diagnostics.sync.bestPreambleErrors = preambleErrors; diagnostics.sync.phase = phase;\n      }\n      if (preambleErrors > 1) { diagnostics.sync.preambleRejected++; continue; }\n      if (quality / 32 < 0.4) { diagnostics.sync.qualityRejected++; continue; }\n      diagnostics.sync.accepted++;\n      traceFrom = Math.max(0, syncStart - PREAMBLE_BITS);\n      const startSample = Math.max(0, offset + (syncStart - PREAMBLE_BITS) * symbol);\n      if (b + 17 >= count) {\n        diagnostics.framing = FRAMING.sync; diagnostics.bits.receivedData = 0;\n        pending = { kind: 'partial', reason: 'Incomplete physical header', startSample }; pendingPhase = phase; continue;\n      }\n      let length = 0;\n      for (let j = 1; j <= 16; j++) length = (length << 1) | bits[b + j];\n      if (length < MIN_PACKET || length > MAX_PACKET) {\n        diagnostics.framing = FRAMING.length; diagnostics.declaredPacketBytes = length;\n        best ??= { kind: 'corrupted', reason: 'Physical length out of bounds', startSample }; bestPhase ??= phase; continue;\n      }\n      const dataStart = b + 17, end = dataStart + length * 8;\n      if (end > count) {\n        diagnostics.framing = FRAMING.incomplete; diagnostics.declaredPacketBytes = length;\n        diagnostics.bits.expectedData = length * 8; diagnostics.bits.receivedData = Math.max(0, count - dataStart);\n        pending = { kind: 'partial', reason: 'Frame detected but incomplete', expectedBytes: length, startSample }; pendingPhase = phase; continue;\n      }\n      const packet = bitsToBytes(bits.slice(dataStart, end));\n      const endSample = offset + end * symbol;\n      const frame = { kind: 'packet', packet, startSample, endSample, quality: quality / 32 };\n      const view = new DataView(packet.buffer);\n      const crcOk = view.getUint32(packet.length - 4) === crc32(packet.subarray(0, -4));\n      diagnostics.framing = FRAMING.complete; diagnostics.declaredPacketBytes = length;\n      diagnostics.bits.expectedData = length * 8; diagnostics.bits.receivedData = length * 8; diagnostics.bits.total = OVERHEAD_BITS + length * 8;\n      diagnostics.checksum = crcOk ? 'CRC-32 PASS' : 'CRC-32 FAIL';\n      // CRC selects a timing phase, not authenticity. Signature checked independently.\n      if (crcOk) return report(frame, phase);\n      if (!best || quality / 32 > (best.quality ?? 0)) { best = frame; bestPhase = phase; }\n    }\n  }\n  if (best) return report(best, bestPhase);\n  if (pending) return report(pending, pendingPhase);\n  return report({ kind: 'none', reason: 'No synchronized frame found' }, null);\n}\n\n\n// Bounded sliding capture window. decodeAudio refuses buffers over 16 s, so older\n// audio is evicted instead of ending the session: the receiver can stay armed while\n// the operator walks to the second device. Nothing here changes modulation or framing.\nconst WINDOW_SECONDS = 14;\nlet chunks = [], length = 0, dropped = 0, captured = 0, rate = 48000, lastAttempt = 0, lastDecodeMs = 0;\nfunction reset(sampleRate) { rate = sampleRate; chunks = []; length = 0; dropped = 0; captured = 0; lastAttempt = 0; lastDecodeMs = 0; }\nfunction trim() {\n  const max = Math.round(rate * WINDOW_SECONDS);\n  while (length > max && chunks.length > 1) { const old = chunks.shift(); length -= old.length; dropped += old.length; }\n}\nfunction attempt(final) {\n  const pcm = new Float32Array(length);\n  let at = 0;\n  for (const chunk of chunks) { pcm.set(chunk, at); at += chunk.length; }\n  const start = performance.now();\n  const result = decodeAudio(pcm, rate);\n  lastDecodeMs = performance.now() - start;\n  // Sample indices are reported against the start of capture, not the start of the window.\n  const message = { ...result, final, capturedSeconds: captured / rate, windowSeconds: length / rate, droppedSamples: dropped, decodeMs: lastDecodeMs };\n  if (result.startSample != null) message.startSample = result.startSample + dropped;\n  if (result.endSample != null) message.endSample = result.endSample + dropped;\n  postMessage(message);\n}\nself.onmessage = ({ data }) => {\n  try {\n    if (data.type === 'init') reset(data.sampleRate);\n    if (data.type === 'chunk') {\n      chunks.push(data.pcm); length += data.pcm.length; captured += data.pcm.length;\n      trim();\n      // Never spend more than about half the wall clock decoding; keeps the window fresh.\n      const interval = rate * Math.max(0.25, lastDecodeMs / 1000);\n      if (captured - lastAttempt >= interval) { lastAttempt = captured; attempt(false); }\n    }\n    if (data.type === 'finish') attempt(true);\n  } catch (e) { postMessage({ kind: 'error', reason: e.message }); }\n};\n";
+const decoderWorkerSource = "// All multibyte integers are big endian. No JSON on the wire.\nconst VERSION = 1;\nconst MAX_MESSAGE = 96;\nconst MIN_PACKET = 123;\nconst MAX_PACKET = MIN_PACKET + MAX_MESSAGE;\nconst MAGIC = new Uint8Array([0x49, 0x4f, 0x4e, 0x31]); // ION1 / domain separation\nconst STATUS = Object.freeze({ verified: 'SIGNATURE VERIFIED', invalid: 'SIGNATURE INVALID', corrupted: 'TRANSPORT CORRUPTED', replay: 'REPLAYED PACKET' });\nconst utf8 = new TextEncoder();\nconst hex = bytes => Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');\nfunction unhex(s) {\n  if (typeof s !== 'string' || !/^(?:[a-fA-F0-9]{2})+$/.test(s)) throw new Error('Invalid hex');\n  return Uint8Array.from(s.match(/../g), b => parseInt(b, 16));\n}\nfunction concat(...parts) {\n  const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));\n  let at = 0;\n  for (const p of parts) { out.set(p, at); at += p.length; }\n  return out;\n}\nfunction crc32(bytes) {\n  let c = 0xffffffff;\n  for (const b of bytes) {\n    c ^= b;\n    for (let i = 0; i < 8; i++) c = (c >>> 1) ^ ((c & 1) ? 0xedb88320 : 0);\n  }\n  return (c ^ 0xffffffff) >>> 0;\n}\nfunction appendCRC(bytes) {\n  const out = concat(bytes, new Uint8Array(4));\n  new DataView(out.buffer).setUint32(bytes.length, crc32(bytes));\n  return out;\n}\nasync function generateIdentity() {\n  return crypto.subtle.generateKey({ name: 'Ed25519' }, true, ['sign', 'verify']);\n}\nasync function exportIdentity(keys) {\n  return { format: 'io-note-key-v1', publicKey: hex(new Uint8Array(await crypto.subtle.exportKey('raw', keys.publicKey))), privateKeyPkcs8: hex(new Uint8Array(await crypto.subtle.exportKey('pkcs8', keys.privateKey))) };\n}\nasync function importIdentity(data) {\n  if (data?.format !== 'io-note-key-v1') throw new Error('Expected io-note-key-v1 JSON');\n  const raw = unhex(data.publicKey), pkcs8 = unhex(data.privateKeyPkcs8);\n  if (raw.length !== 32 || pkcs8.length > 256) throw new Error('Invalid key size');\n  const publicKey = await crypto.subtle.importKey('raw', raw, 'Ed25519', true, ['verify']);\n  const privateKey = await crypto.subtle.importKey('pkcs8', pkcs8, 'Ed25519', true, ['sign']);\n  const challenge = utf8.encode('io-note keypair consistency check v1');\n  const sig = await crypto.subtle.sign('Ed25519', privateKey, challenge);\n  if (!await crypto.subtle.verify('Ed25519', publicKey, sig, challenge)) throw new Error('Private and public keys do not match');\n  return { publicKey, privateKey };\n}\nasync function fingerprint(publicKeyBytes) {\n  return hex(new Uint8Array(await crypto.subtle.digest('SHA-256', publicKeyBytes)));\n}\nasync function createPacket(message, keys, nonce = crypto.getRandomValues(new Uint8Array(16))) {\n  const bytes = utf8.encode(message);\n  if (new TextDecoder().decode(bytes) !== message) throw new Error('Message must be well-formed Unicode');\n  if (bytes.length > MAX_MESSAGE) throw new Error(`Message exceeds ${MAX_MESSAGE} UTF-8 bytes`);\n  if (!(nonce instanceof Uint8Array) || nonce.length !== 16) throw new Error('Nonce must be 16 bytes');\n  const pk = new Uint8Array(await crypto.subtle.exportKey('raw', keys.publicKey));\n  const header = concat(MAGIC, new Uint8Array([VERSION]), pk, nonce, new Uint8Array(2), bytes);\n  new DataView(header.buffer).setUint16(53, bytes.length);\n  const sig = new Uint8Array(await crypto.subtle.sign('Ed25519', keys.privateKey, header));\n  return appendCRC(concat(header, sig));\n}\nfunction parsePacket(packet) {\n  if (!(packet instanceof Uint8Array) || packet.length < MIN_PACKET || packet.length > MAX_PACKET) throw new Error('Packet size out of bounds / truncated');\n  const view = new DataView(packet.buffer, packet.byteOffset, packet.byteLength);\n  if (view.getUint32(packet.length - 4) !== crc32(packet.subarray(0, -4))) throw new Error('CRC-32 mismatch');\n  if (!MAGIC.every((v, i) => packet[i] === v) || packet[4] !== VERSION) throw new Error('Unsupported magic or version');\n  const length = view.getUint16(53);\n  if (length > MAX_MESSAGE || packet.length !== MIN_PACKET + length) throw new Error('Message length mismatch');\n  const payload = packet.slice(55, 55 + length);\n  // Fatal decoding prevents replacement characters hiding malformed bytes.\n  const message = new TextDecoder('utf-8', { fatal: true }).decode(payload);\n  return { message, payload, publicKey: packet.slice(5, 37), nonce: packet.slice(37, 53), signature: packet.slice(55 + length, -4), signed: packet.slice(0, 55 + length) };\n}\nclass ReplayCache {\n  constructor(limit = 1024) { this.limit = limit; this.seen = new Set(); }\n  checkAndAdd(key) {\n    if (this.seen.has(key)) return false;\n    if (this.seen.size >= this.limit) throw new Error('Replay cache full; reload starts a new receiver session');\n    this.seen.add(key);\n    return true;\n  }\n}\nasync function verifyPacket(packet, cache = new ReplayCache()) {\n  let p;\n  try { p = parsePacket(packet); }\n  catch (e) { return { status: STATUS.corrupted, reason: e.message }; }\n  let valid = false;\n  try {\n    const key = await crypto.subtle.importKey('raw', p.publicKey, 'Ed25519', false, ['verify']);\n    valid = await crypto.subtle.verify('Ed25519', key, p.signature, p.signed);\n  } catch { /* A malformed key/signature is not a verified packet. */ }\n  if (!valid) return { status: STATUS.invalid, reason: 'Ed25519 verification failed' };\n  // Atomic synchronous check-and-add AFTER verification; failed forgeries cannot poison it.\n  const fresh = cache.checkAndAdd(`${hex(p.publicKey)}:${hex(p.nonce)}`);\n  return { status: fresh ? STATUS.verified : STATUS.replay, message: p.message, nonce: hex(p.nonce), publicKey: hex(p.publicKey), fingerprint: await fingerprint(p.publicKey) };\n}\n\n\nconst BITRATE = 200;\nconst TONES = [1200, 2200];\nconst PREAMBLE_BITS = 64;\nconst SYNC = 0xd391c5a7;\nconst OVERHEAD_BITS = PREAMBLE_BITS + 32 + 16;\nfunction bytesToBits(bytes) {\n  return Uint8Array.from(Array.from(bytes).flatMap(b => Array.from({ length: 8 }, (_, i) => (b >> (7 - i)) & 1)));\n}\nfunction bitsToBytes(bits) {\n  if (bits.length % 8) throw new Error('Non-byte-aligned bit array');\n  const bytes = new Uint8Array(bits.length / 8);\n  for (let i = 0; i < bits.length; i++) bytes[i >> 3] |= bits[i] << (7 - (i & 7));\n  return bytes;\n}\nfunction frameBits(packet) {\n  if (packet.length < MIN_PACKET || packet.length > MAX_PACKET) throw new Error('Packet size out of bounds');\n  const h = new Uint8Array(6), v = new DataView(h.buffer);\n  v.setUint32(0, SYNC); v.setUint16(4, packet.length);\n  const bits = new Uint8Array(OVERHEAD_BITS + packet.length * 8);\n  for (let i = 0; i < PREAMBLE_BITS; i++) bits[i] = i % 2;\n  bits.set(bytesToBits(h), PREAMBLE_BITS);\n  bits.set(bytesToBits(packet), OVERHEAD_BITS);\n  return bits;\n}\nfunction modulateBits(bits, sampleRate = 48000, { amplitude = 0.35, leadSeconds = 0.15, tailSeconds = 0.15 } = {}) {\n  const lead = Math.round(leadSeconds * sampleRate), body = Math.round(bits.length * sampleRate / BITRATE);\n  const pcm = new Float32Array(lead + body + Math.round(tailSeconds * sampleRate));\n  let phase = 0;\n  for (let i = 0; i < body; i++) {\n    const bit = bits[Math.min(bits.length - 1, Math.floor(i * BITRATE / sampleRate))];\n    pcm[lead + i] = amplitude * Math.sin(phase);\n    phase = (phase + 2 * Math.PI * TONES[bit] / sampleRate) % (2 * Math.PI);\n  }\n  return pcm;\n}\nfunction modulate(packet, sampleRate = 48000, options) { return modulateBits(frameBits(packet), sampleRate, options); }\nfunction metrics(packet, sampleRate = 48000) {\n  const bits = OVERHEAD_BITS + packet.length * 8;\n  return { packetBytes: packet.length, packetBits: packet.length * 8, transmittedBits: bits, bitrate: BITRATE, toneSeconds: bits / BITRATE, audioSeconds: modulate(packet, sampleRate).length / sampleRate, sampleRate };\n}\n\n// Framing states reported to the operator while a physical transmission is in flight.\nconst FRAMING = Object.freeze({ none: 'NO SIGNAL', carrier: 'CARRIER; NO SYNC', sync: 'SYNC FOUND; HEADER INCOMPLETE', length: 'SYNC FOUND; LENGTH INVALID', incomplete: 'FRAME INCOMPLETE', complete: 'FRAME COMPLETE' });\nconst TRACE_SYMBOLS = 64;\nconst MAX_CANDIDATES = 64;\nconst TIMELINE_BINS = 240;\nconst db = v => 20 * Math.log10(Math.max(v, 1e-6));\nconst round = (v, n = 3) => Math.round(v * 10 ** n) / 10 ** n;\nfunction levels(pcm) {\n  let peak = 0, squares = 0, clipped = 0;\n  for (let i = 0; i < pcm.length; i++) {\n    const v = pcm[i] < 0 ? -pcm[i] : pcm[i];\n    if (v > peak) peak = v;\n    if (v >= 0.999) clipped++;\n    squares += pcm[i] * pcm[i];\n  }\n  const rms = Math.sqrt(squares / Math.max(1, pcm.length));\n  // Crest factor separates \"a tone is here\" from \"this window is silence plus a bang\":\n  // continuous FSK sits near 3 dB, an empty window with one transient runs far higher.\n  return { rms: round(rms, 5), peak: round(peak, 5), rmsDbfs: round(db(rms), 1), peakDbfs: round(db(peak), 1), crestDb: round(db(peak) - db(rms), 1), clippedSamples: clipped };\n}\n// Per-phase symbol telemetry. Observational only: it never feeds a decode decision.\n// Two candidate trace windows are tracked. The confidence window is where the detector is\n// most certain; in near-silence that is noise, because confidence is a ratio and ignores\n// level. The energy window is where the loudest in-band audio actually is, which is what a\n// faint physical capture needs.\nfunction summarise(phase, bits, strength, energyLow, energyHigh) {\n  let strong = 0, confidence = 0, low = 0, totalLow = 0, totalHigh = 0;\n  let bestConf = 0, confWindow = 0, confAt = 0, bestEnergy = 0, energyWindow = 0, energyAt = 0;\n  for (let b = 0; b < bits.length; b++) {\n    confidence += strength[b];\n    if (strength[b] >= 0.5) strong++;\n    if (bits[b] === 0) low++;\n    totalLow += energyLow[b]; totalHigh += energyHigh[b];\n    confWindow += strength[b];\n    energyWindow += energyLow[b] + energyHigh[b];\n    if (b >= TRACE_SYMBOLS) { confWindow -= strength[b - TRACE_SYMBOLS]; energyWindow -= energyLow[b - TRACE_SYMBOLS] + energyHigh[b - TRACE_SYMBOLS]; }\n    if (b >= TRACE_SYMBOLS - 1) {\n      if (confWindow > bestConf) { bestConf = confWindow; confAt = b - TRACE_SYMBOLS + 1; }\n      if (energyWindow > bestEnergy) { bestEnergy = energyWindow; energyAt = b - TRACE_SYMBOLS + 1; }\n    }\n  }\n  const energy = totalLow + totalHigh;\n  return {\n    phase, symbols: bits.length, strongSymbols: strong,\n    meanConfidence: round(bits.length ? confidence / bits.length : 0),\n    lowToneSymbols: low, highToneSymbols: bits.length - low,\n    toneShare: { 1200: round(energy ? totalLow / energy : 0), 2200: round(energy ? totalHigh / energy : 0) },\n    strongestWindowStart: confAt, strongestWindowConfidence: round(bits.length >= TRACE_SYMBOLS ? bestConf / TRACE_SYMBOLS : 0),\n    peakEnergyWindowStart: energyAt,\n  };\n}\nfunction trace(bits, strength, from) {\n  const start = Math.max(0, Math.min(from, bits.length - TRACE_SYMBOLS));\n  const end = Math.min(bits.length, start + TRACE_SYMBOLS);\n  const out = { fromSymbol: start, bits: '', confidence: [] };\n  for (let b = start; b < end; b++) { out.bits += bits[b]; out.confidence.push(round(strength[b], 2)); }\n  return out;\n}\n// Per-tone energy against time, so a capture can be read for level collapse or tone loss.\nfunction timeline(energyLow, energyHigh, strength, symbolSamples, sampleRate) {\n  const count = energyLow.length;\n  if (!count) return { binSeconds: 0, bins: [] };\n  const per = Math.max(1, Math.ceil(count / TIMELINE_BINS)), bins = [];\n  for (let at = 0; at < count; at += per) {\n    const end = Math.min(count, at + per);\n    let low = 0, high = 0, confidence = 0;\n    for (let b = at; b < end; b++) { low += energyLow[b]; high += energyHigh[b]; confidence += strength[b]; }\n    const total = low + high, n = end - at;\n    bins.push({ atSeconds: round(at * symbolSamples / sampleRate, 3), symbols: n, energyLow: round(low / n, 6), energyHigh: round(high / n, 6), lowShare: round(total ? low / total : 0), meanConfidence: round(confidence / n) });\n  }\n  return { binSeconds: round(per * symbolSamples / sampleRate, 3), bins };\n}\n\n// Noncoherent quadrature detector. Prefix sums make each candidate symbol O(1).\n// Eight timing phases tolerate an unknown sample offset; no shared TX clock or packet.\n// Diagnostics are accumulated alongside, and never alter a decode decision. `detail` adds\n// the full per-symbol dump for offline replay; it changes nothing the decoder decides.\nfunction decodeAudio(pcm, sampleRate, { detail = false } = {}) {\n  if (!(pcm instanceof Float32Array) || sampleRate < 8000 || sampleRate > 192000 || pcm.length > sampleRate * 16) throw new Error('Unsupported audio buffer');\n  const sums = Array.from({ length: 4 }, () => new Float64Array(pcm.length + 1));\n  for (let f = 0; f < 2; f++) {\n    const w = 2 * Math.PI * TONES[f] / sampleRate;\n    for (let i = 0; i < pcm.length; i++) {\n      sums[f * 2][i + 1] = sums[f * 2][i] + pcm[i] * Math.cos(i * w);\n      sums[f * 2 + 1][i + 1] = sums[f * 2 + 1][i] + pcm[i] * Math.sin(i * w);\n    }\n  }\n  const symbol = sampleRate / BITRATE;\n  const diagnostics = {\n    sampleRate, capturedSeconds: round(pcm.length / sampleRate, 2), symbolSamples: round(symbol, 2), tones: TONES,\n    level: levels(pcm), sync: { candidates: 0, preambleRejected: 0, qualityRejected: 0, accepted: 0, bestPreambleErrors: null, bestQuality: null, phase: null },\n    framing: FRAMING.none, declaredPacketBytes: null, bits: { framing: OVERHEAD_BITS, expectedData: null, receivedData: null, total: null },\n    checksum: 'not reached', phases: [], symbolTrace: null, traceSource: null, candidates: [], candidatesTruncated: false, timeline: null,\n  };\n  const phaseBits = [], phaseStrength = [], phaseLow = [], phaseHigh = [];\n  let best = null, pending = null, bestPhase = null, pendingPhase = null, traceFrom = null, traceSource = null;\n  const note = row => { if (diagnostics.candidates.length < MAX_CANDIDATES) diagnostics.candidates.push(row); else diagnostics.candidatesTruncated = true; };\n  const report = (result, phase) => {\n    const p = phase == null ? diagnostics.phases.reduce((a, b) => (b.meanConfidence > a.meanConfidence ? b : a), diagnostics.phases[0]) : diagnostics.phases[phase];\n    diagnostics.reportedPhase = p?.phase ?? null;\n    diagnostics.symbols = p ?? null;\n    if (p) {\n      const from = traceFrom ?? p.peakEnergyWindowStart;\n      diagnostics.traceSource = traceSource ?? 'peak in-band energy';\n      diagnostics.symbolTrace = trace(phaseBits[p.phase], phaseStrength[p.phase], from);\n      diagnostics.timeline = timeline(phaseLow[p.phase], phaseHigh[p.phase], phaseStrength[p.phase], symbol, sampleRate);\n      if (detail) diagnostics.detail = {\n        phase: p.phase, symbolSamples: symbol,\n        bits: Array.from(phaseBits[p.phase]).join(''),\n        confidence: Array.from(phaseStrength[p.phase], v => round(v, 3)),\n        energyLow: Array.from(phaseLow[p.phase], v => round(v, 6)),\n        energyHigh: Array.from(phaseHigh[p.phase], v => round(v, 6)),\n      };\n    }\n    if (diagnostics.framing === FRAMING.none && p && p.meanConfidence >= 0.4 && diagnostics.level.rmsDbfs > -60) diagnostics.framing = FRAMING.carrier;\n    return { ...result, diagnostics };\n  };\n  for (let phase = 0; phase < 8; phase++) {\n    const offset = phase * symbol / 8;\n    const count = Math.max(0, Math.floor((pcm.length - offset) / symbol));\n    const bits = new Uint8Array(count), strength = new Float32Array(count);\n    const low = new Float64Array(count), high = new Float64Array(count);\n    for (let b = 0; b < count; b++) {\n      const start = Math.round(offset + (b + 0.1) * symbol), end = Math.round(offset + (b + 0.9) * symbol);\n      const energy = [0, 0];\n      for (let f = 0; f < 2; f++) {\n        const re = sums[f * 2][end] - sums[f * 2][start], im = sums[f * 2 + 1][end] - sums[f * 2 + 1][start];\n        energy[f] = re * re + im * im;\n      }\n      const total = energy[0] + energy[1];\n      bits[b] = energy[1] > energy[0] ? 1 : 0;\n      strength[b] = total > 1e-5 ? Math.abs(energy[1] - energy[0]) / total : 0;\n      low[b] = energy[0]; high[b] = energy[1];\n    }\n    phaseBits[phase] = bits; phaseStrength[phase] = strength; phaseLow[phase] = low; phaseHigh[phase] = high;\n    diagnostics.phases.push(summarise(phase, bits, strength, low, high));\n    let shift = 0;\n    for (let b = 0; b < count; b++) {\n      shift = ((shift << 1) | bits[b]) >>> 0;\n      if (shift !== SYNC || b < 63) continue;\n      const syncStart = b - 31;\n      let preambleErrors = 0, quality = 0;\n      for (let j = 0; j < 32; j++) {\n        if (bits[syncStart - 32 + j] !== j % 2) preambleErrors++;\n        quality += strength[syncStart + j];\n      }\n      diagnostics.sync.candidates++;\n      const candidate = { phase, symbol: syncStart, atSeconds: round((offset + syncStart * symbol) / sampleRate, 3), preambleErrors, quality: round(quality / 32) };\n      if (diagnostics.sync.bestQuality == null || quality / 32 > diagnostics.sync.bestQuality) {\n        diagnostics.sync.bestQuality = round(quality / 32); diagnostics.sync.bestPreambleErrors = preambleErrors; diagnostics.sync.phase = phase;\n      }\n      if (preambleErrors > 1) { diagnostics.sync.preambleRejected++; note({ ...candidate, outcome: 'rejected', reason: `preamble errors ${preambleErrors} > 1` }); continue; }\n      if (quality / 32 < 0.4) { diagnostics.sync.qualityRejected++; note({ ...candidate, outcome: 'rejected', reason: `symbol quality ${round(quality / 32)} < 0.4` }); continue; }\n      diagnostics.sync.accepted++;\n      traceFrom = Math.max(0, syncStart - PREAMBLE_BITS); traceSource = 'accepted sync candidate';\n      const startSample = Math.max(0, offset + (syncStart - PREAMBLE_BITS) * symbol);\n      if (b + 17 >= count) {\n        diagnostics.framing = FRAMING.sync; diagnostics.bits.receivedData = 0;\n        note({ ...candidate, outcome: 'accepted', reason: 'capture ends inside the physical header' });\n        pending = { kind: 'partial', reason: 'Incomplete physical header', startSample }; pendingPhase = phase; continue;\n      }\n      let length = 0;\n      for (let j = 1; j <= 16; j++) length = (length << 1) | bits[b + j];\n      if (length < MIN_PACKET || length > MAX_PACKET) {\n        diagnostics.framing = FRAMING.length; diagnostics.declaredPacketBytes = length;\n        note({ ...candidate, outcome: 'accepted', length, reason: `declared length ${length} outside ${MIN_PACKET}..${MAX_PACKET}` });\n        best ??= { kind: 'corrupted', reason: 'Physical length out of bounds', startSample }; bestPhase ??= phase; continue;\n      }\n      const dataStart = b + 17, end = dataStart + length * 8;\n      if (end > count) {\n        diagnostics.framing = FRAMING.incomplete; diagnostics.declaredPacketBytes = length;\n        diagnostics.bits.expectedData = length * 8; diagnostics.bits.receivedData = Math.max(0, count - dataStart);\n        note({ ...candidate, outcome: 'accepted', length, reason: `capture holds ${Math.max(0, count - dataStart)} of ${length * 8} data bits` });\n        pending = { kind: 'partial', reason: 'Frame detected but incomplete', expectedBytes: length, startSample }; pendingPhase = phase; continue;\n      }\n      const packet = bitsToBytes(bits.slice(dataStart, end));\n      const endSample = offset + end * symbol;\n      const frame = { kind: 'packet', packet, startSample, endSample, quality: quality / 32 };\n      const view = new DataView(packet.buffer);\n      const crcOk = view.getUint32(packet.length - 4) === crc32(packet.subarray(0, -4));\n      diagnostics.framing = FRAMING.complete; diagnostics.declaredPacketBytes = length;\n      diagnostics.bits.expectedData = length * 8; diagnostics.bits.receivedData = length * 8; diagnostics.bits.total = OVERHEAD_BITS + length * 8;\n      diagnostics.checksum = crcOk ? 'CRC-32 PASS' : 'CRC-32 FAIL';\n      note({ ...candidate, outcome: 'accepted', length, reason: crcOk ? 'complete frame, CRC-32 PASS' : 'complete frame, CRC-32 FAIL' });\n      // CRC selects a timing phase, not authenticity. Signature checked independently.\n      if (crcOk) return report(frame, phase);\n      if (!best || quality / 32 > (best.quality ?? 0)) { best = frame; bestPhase = phase; }\n    }\n  }\n  if (best) return report(best, bestPhase);\n  if (pending) return report(pending, pendingPhase);\n  return report({ kind: 'none', reason: 'No synchronized frame found' }, null);\n}\n\n\n// Bounded sliding capture window. decodeAudio refuses buffers over 16 s, so older\n// audio is evicted instead of ending the session: the receiver can stay armed while\n// the operator walks to the second device. Nothing here changes modulation or framing.\nconst WINDOW_SECONDS = 14;\n// Separately, every captured sample is retained for export, so a failed physical attempt\n// can be replayed offline through this same decoder. Bounded so a long session cannot\n// exhaust memory; once full, the oldest audio is dropped from the recording too.\nconst RECORD_SECONDS = 150;\nlet chunks = [], length = 0, dropped = 0, captured = 0, rate = 48000, lastAttempt = 0, lastDecodeMs = 0;\nlet recording = [], recorded = 0, recordDropped = 0;\nfunction reset(sampleRate) {\n  rate = sampleRate; chunks = []; length = 0; dropped = 0; captured = 0; lastAttempt = 0; lastDecodeMs = 0;\n  recording = []; recorded = 0; recordDropped = 0;\n}\nfunction trim() {\n  const max = Math.round(rate * WINDOW_SECONDS);\n  while (length > max && chunks.length > 1) { const old = chunks.shift(); length -= old.length; dropped += old.length; }\n  const recordMax = Math.round(rate * RECORD_SECONDS);\n  while (recorded > recordMax && recording.length > 1) { const old = recording.shift(); recorded -= old.length; recordDropped += old.length; }\n}\nfunction window() {\n  const pcm = new Float32Array(length);\n  let at = 0;\n  for (const chunk of chunks) { pcm.set(chunk, at); at += chunk.length; }\n  return pcm;\n}\nfunction attempt(final) {\n  const pcm = window();\n  const start = performance.now();\n  const result = decodeAudio(pcm, rate);\n  lastDecodeMs = performance.now() - start;\n  // Sample indices are reported against the start of capture, not the start of the window.\n  const message = { ...result, final, capturedSeconds: captured / rate, windowSeconds: length / rate, droppedSamples: dropped, decodeMs: lastDecodeMs };\n  if (result.startSample != null) message.startSample = result.startSample + dropped;\n  if (result.endSample != null) message.endSample = result.endSample + dropped;\n  postMessage(message);\n}\n// The exact samples the decoder saw, plus a full-detail decode of the current window.\nfunction exportCapture() {\n  const pcm = new Float32Array(recorded);\n  let at = 0;\n  for (const chunk of recording) { pcm.set(chunk, at); at += chunk.length; }\n  const decoded = decodeAudio(window(), rate, { detail: true });\n  postMessage({\n    kind: 'export', sampleRate: rate, recording: pcm,\n    recordedSamples: recorded, recordingDroppedSamples: recordDropped, recordingSeconds: recorded / rate,\n    capturedSeconds: captured / rate, windowSeconds: length / rate, windowDroppedSamples: dropped,\n    windowStartSample: dropped, windowEndSample: dropped + length,\n    result: { kind: decoded.kind, reason: decoded.reason ?? null, startSample: decoded.startSample == null ? null : decoded.startSample + dropped, endSample: decoded.endSample == null ? null : decoded.endSample + dropped },\n    diagnostics: decoded.diagnostics,\n  }, [pcm.buffer]);\n}\nself.onmessage = ({ data }) => {\n  try {\n    if (data.type === 'init') reset(data.sampleRate);\n    if (data.type === 'chunk') {\n      chunks.push(data.pcm); length += data.pcm.length; captured += data.pcm.length;\n      recording.push(data.pcm); recorded += data.pcm.length;\n      trim();\n      // Never spend more than about half the wall clock decoding; keeps the window fresh.\n      const interval = rate * Math.max(0.25, lastDecodeMs / 1000);\n      if (captured - lastAttempt >= interval) { lastAttempt = captured; attempt(false); }\n    }\n    if (data.type === 'finish') attempt(true);\n    if (data.type === 'export') exportCapture();\n  } catch (e) { postMessage({ kind: 'error', reason: e.message }); }\n};\n";
 const audioWorkletSource = "class IoNoteCapture extends AudioWorkletProcessor {\n  constructor() { super(); this.chunk = new Float32Array(4096); this.at = 0; }\n  process(inputs) {\n    const input = inputs[0]?.[0];\n    if (input) for (let i = 0; i < input.length; i++) {\n      this.chunk[this.at++] = input[i];\n      if (this.at === this.chunk.length) {\n        this.port.postMessage(this.chunk, [this.chunk.buffer]);\n        this.chunk = new Float32Array(4096); this.at = 0;\n      }\n    }\n    return true;\n  }\n}\nregisterProcessor('io-note-capture', IoNoteCapture);\n";
 // All multibyte integers are big endian. No JSON on the wire.
 const VERSION = 1;
@@ -232,6 +232,8 @@ function metrics(packet, sampleRate = 48000) {
 // Framing states reported to the operator while a physical transmission is in flight.
 const FRAMING = Object.freeze({ none: 'NO SIGNAL', carrier: 'CARRIER; NO SYNC', sync: 'SYNC FOUND; HEADER INCOMPLETE', length: 'SYNC FOUND; LENGTH INVALID', incomplete: 'FRAME INCOMPLETE', complete: 'FRAME COMPLETE' });
 const TRACE_SYMBOLS = 64;
+const MAX_CANDIDATES = 64;
+const TIMELINE_BINS = 240;
 const db = v => 20 * Math.log10(Math.max(v, 1e-6));
 const round = (v, n = 3) => Math.round(v * 10 ** n) / 10 ** n;
 function levels(pcm) {
@@ -243,26 +245,39 @@ function levels(pcm) {
     squares += pcm[i] * pcm[i];
   }
   const rms = Math.sqrt(squares / Math.max(1, pcm.length));
-  return { rms: round(rms, 5), peak: round(peak, 5), rmsDbfs: round(db(rms), 1), peakDbfs: round(db(peak), 1), clippedSamples: clipped };
+  // Crest factor separates "a tone is here" from "this window is silence plus a bang":
+  // continuous FSK sits near 3 dB, an empty window with one transient runs far higher.
+  return { rms: round(rms, 5), peak: round(peak, 5), rmsDbfs: round(db(rms), 1), peakDbfs: round(db(peak), 1), crestDb: round(db(peak) - db(rms), 1), clippedSamples: clipped };
 }
 // Per-phase symbol telemetry. Observational only: it never feeds a decode decision.
+// Two candidate trace windows are tracked. The confidence window is where the detector is
+// most certain; in near-silence that is noise, because confidence is a ratio and ignores
+// level. The energy window is where the loudest in-band audio actually is, which is what a
+// faint physical capture needs.
 function summarise(phase, bits, strength, energyLow, energyHigh) {
-  let strong = 0, confidence = 0, low = 0, best = 0, window = 0, at = 0;
+  let strong = 0, confidence = 0, low = 0, totalLow = 0, totalHigh = 0;
+  let bestConf = 0, confWindow = 0, confAt = 0, bestEnergy = 0, energyWindow = 0, energyAt = 0;
   for (let b = 0; b < bits.length; b++) {
     confidence += strength[b];
     if (strength[b] >= 0.5) strong++;
     if (bits[b] === 0) low++;
-    window += strength[b];
-    if (b >= TRACE_SYMBOLS) window -= strength[b - TRACE_SYMBOLS];
-    if (b >= TRACE_SYMBOLS - 1 && window > best) { best = window; at = b - TRACE_SYMBOLS + 1; }
+    totalLow += energyLow[b]; totalHigh += energyHigh[b];
+    confWindow += strength[b];
+    energyWindow += energyLow[b] + energyHigh[b];
+    if (b >= TRACE_SYMBOLS) { confWindow -= strength[b - TRACE_SYMBOLS]; energyWindow -= energyLow[b - TRACE_SYMBOLS] + energyHigh[b - TRACE_SYMBOLS]; }
+    if (b >= TRACE_SYMBOLS - 1) {
+      if (confWindow > bestConf) { bestConf = confWindow; confAt = b - TRACE_SYMBOLS + 1; }
+      if (energyWindow > bestEnergy) { bestEnergy = energyWindow; energyAt = b - TRACE_SYMBOLS + 1; }
+    }
   }
-  const energy = energyLow + energyHigh;
+  const energy = totalLow + totalHigh;
   return {
     phase, symbols: bits.length, strongSymbols: strong,
     meanConfidence: round(bits.length ? confidence / bits.length : 0),
     lowToneSymbols: low, highToneSymbols: bits.length - low,
-    toneShare: { 1200: round(energy ? energyLow / energy : 0), 2200: round(energy ? energyHigh / energy : 0) },
-    strongestWindowStart: at, strongestWindowConfidence: round(bits.length >= TRACE_SYMBOLS ? best / TRACE_SYMBOLS : 0),
+    toneShare: { 1200: round(energy ? totalLow / energy : 0), 2200: round(energy ? totalHigh / energy : 0) },
+    strongestWindowStart: confAt, strongestWindowConfidence: round(bits.length >= TRACE_SYMBOLS ? bestConf / TRACE_SYMBOLS : 0),
+    peakEnergyWindowStart: energyAt,
   };
 }
 function trace(bits, strength, from) {
@@ -272,11 +287,26 @@ function trace(bits, strength, from) {
   for (let b = start; b < end; b++) { out.bits += bits[b]; out.confidence.push(round(strength[b], 2)); }
   return out;
 }
+// Per-tone energy against time, so a capture can be read for level collapse or tone loss.
+function timeline(energyLow, energyHigh, strength, symbolSamples, sampleRate) {
+  const count = energyLow.length;
+  if (!count) return { binSeconds: 0, bins: [] };
+  const per = Math.max(1, Math.ceil(count / TIMELINE_BINS)), bins = [];
+  for (let at = 0; at < count; at += per) {
+    const end = Math.min(count, at + per);
+    let low = 0, high = 0, confidence = 0;
+    for (let b = at; b < end; b++) { low += energyLow[b]; high += energyHigh[b]; confidence += strength[b]; }
+    const total = low + high, n = end - at;
+    bins.push({ atSeconds: round(at * symbolSamples / sampleRate, 3), symbols: n, energyLow: round(low / n, 6), energyHigh: round(high / n, 6), lowShare: round(total ? low / total : 0), meanConfidence: round(confidence / n) });
+  }
+  return { binSeconds: round(per * symbolSamples / sampleRate, 3), bins };
+}
 
 // Noncoherent quadrature detector. Prefix sums make each candidate symbol O(1).
 // Eight timing phases tolerate an unknown sample offset; no shared TX clock or packet.
-// Diagnostics are accumulated alongside, and never alter a decode decision.
-function decodeAudio(pcm, sampleRate) {
+// Diagnostics are accumulated alongside, and never alter a decode decision. `detail` adds
+// the full per-symbol dump for offline replay; it changes nothing the decoder decides.
+function decodeAudio(pcm, sampleRate, { detail = false } = {}) {
   if (!(pcm instanceof Float32Array) || sampleRate < 8000 || sampleRate > 192000 || pcm.length > sampleRate * 16) throw new Error('Unsupported audio buffer');
   const sums = Array.from({ length: 4 }, () => new Float64Array(pcm.length + 1));
   for (let f = 0; f < 2; f++) {
@@ -291,15 +321,28 @@ function decodeAudio(pcm, sampleRate) {
     sampleRate, capturedSeconds: round(pcm.length / sampleRate, 2), symbolSamples: round(symbol, 2), tones: TONES,
     level: levels(pcm), sync: { candidates: 0, preambleRejected: 0, qualityRejected: 0, accepted: 0, bestPreambleErrors: null, bestQuality: null, phase: null },
     framing: FRAMING.none, declaredPacketBytes: null, bits: { framing: OVERHEAD_BITS, expectedData: null, receivedData: null, total: null },
-    checksum: 'not reached', phases: [], symbolTrace: null,
+    checksum: 'not reached', phases: [], symbolTrace: null, traceSource: null, candidates: [], candidatesTruncated: false, timeline: null,
   };
-  const phaseBits = [], phaseStrength = [];
-  let best = null, pending = null, bestPhase = null, pendingPhase = null, traceFrom = null;
+  const phaseBits = [], phaseStrength = [], phaseLow = [], phaseHigh = [];
+  let best = null, pending = null, bestPhase = null, pendingPhase = null, traceFrom = null, traceSource = null;
+  const note = row => { if (diagnostics.candidates.length < MAX_CANDIDATES) diagnostics.candidates.push(row); else diagnostics.candidatesTruncated = true; };
   const report = (result, phase) => {
     const p = phase == null ? diagnostics.phases.reduce((a, b) => (b.meanConfidence > a.meanConfidence ? b : a), diagnostics.phases[0]) : diagnostics.phases[phase];
     diagnostics.reportedPhase = p?.phase ?? null;
     diagnostics.symbols = p ?? null;
-    if (p) diagnostics.symbolTrace = trace(phaseBits[p.phase], phaseStrength[p.phase], traceFrom ?? p.strongestWindowStart);
+    if (p) {
+      const from = traceFrom ?? p.peakEnergyWindowStart;
+      diagnostics.traceSource = traceSource ?? 'peak in-band energy';
+      diagnostics.symbolTrace = trace(phaseBits[p.phase], phaseStrength[p.phase], from);
+      diagnostics.timeline = timeline(phaseLow[p.phase], phaseHigh[p.phase], phaseStrength[p.phase], symbol, sampleRate);
+      if (detail) diagnostics.detail = {
+        phase: p.phase, symbolSamples: symbol,
+        bits: Array.from(phaseBits[p.phase]).join(''),
+        confidence: Array.from(phaseStrength[p.phase], v => round(v, 3)),
+        energyLow: Array.from(phaseLow[p.phase], v => round(v, 6)),
+        energyHigh: Array.from(phaseHigh[p.phase], v => round(v, 6)),
+      };
+    }
     if (diagnostics.framing === FRAMING.none && p && p.meanConfidence >= 0.4 && diagnostics.level.rmsDbfs > -60) diagnostics.framing = FRAMING.carrier;
     return { ...result, diagnostics };
   };
@@ -307,7 +350,7 @@ function decodeAudio(pcm, sampleRate) {
     const offset = phase * symbol / 8;
     const count = Math.max(0, Math.floor((pcm.length - offset) / symbol));
     const bits = new Uint8Array(count), strength = new Float32Array(count);
-    let energyLow = 0, energyHigh = 0;
+    const low = new Float64Array(count), high = new Float64Array(count);
     for (let b = 0; b < count; b++) {
       const start = Math.round(offset + (b + 0.1) * symbol), end = Math.round(offset + (b + 0.9) * symbol);
       const energy = [0, 0];
@@ -318,10 +361,10 @@ function decodeAudio(pcm, sampleRate) {
       const total = energy[0] + energy[1];
       bits[b] = energy[1] > energy[0] ? 1 : 0;
       strength[b] = total > 1e-5 ? Math.abs(energy[1] - energy[0]) / total : 0;
-      energyLow += energy[0]; energyHigh += energy[1];
+      low[b] = energy[0]; high[b] = energy[1];
     }
-    phaseBits[phase] = bits; phaseStrength[phase] = strength;
-    diagnostics.phases.push(summarise(phase, bits, strength, energyLow, energyHigh));
+    phaseBits[phase] = bits; phaseStrength[phase] = strength; phaseLow[phase] = low; phaseHigh[phase] = high;
+    diagnostics.phases.push(summarise(phase, bits, strength, low, high));
     let shift = 0;
     for (let b = 0; b < count; b++) {
       shift = ((shift << 1) | bits[b]) >>> 0;
@@ -333,28 +376,32 @@ function decodeAudio(pcm, sampleRate) {
         quality += strength[syncStart + j];
       }
       diagnostics.sync.candidates++;
+      const candidate = { phase, symbol: syncStart, atSeconds: round((offset + syncStart * symbol) / sampleRate, 3), preambleErrors, quality: round(quality / 32) };
       if (diagnostics.sync.bestQuality == null || quality / 32 > diagnostics.sync.bestQuality) {
         diagnostics.sync.bestQuality = round(quality / 32); diagnostics.sync.bestPreambleErrors = preambleErrors; diagnostics.sync.phase = phase;
       }
-      if (preambleErrors > 1) { diagnostics.sync.preambleRejected++; continue; }
-      if (quality / 32 < 0.4) { diagnostics.sync.qualityRejected++; continue; }
+      if (preambleErrors > 1) { diagnostics.sync.preambleRejected++; note({ ...candidate, outcome: 'rejected', reason: `preamble errors ${preambleErrors} > 1` }); continue; }
+      if (quality / 32 < 0.4) { diagnostics.sync.qualityRejected++; note({ ...candidate, outcome: 'rejected', reason: `symbol quality ${round(quality / 32)} < 0.4` }); continue; }
       diagnostics.sync.accepted++;
-      traceFrom = Math.max(0, syncStart - PREAMBLE_BITS);
+      traceFrom = Math.max(0, syncStart - PREAMBLE_BITS); traceSource = 'accepted sync candidate';
       const startSample = Math.max(0, offset + (syncStart - PREAMBLE_BITS) * symbol);
       if (b + 17 >= count) {
         diagnostics.framing = FRAMING.sync; diagnostics.bits.receivedData = 0;
+        note({ ...candidate, outcome: 'accepted', reason: 'capture ends inside the physical header' });
         pending = { kind: 'partial', reason: 'Incomplete physical header', startSample }; pendingPhase = phase; continue;
       }
       let length = 0;
       for (let j = 1; j <= 16; j++) length = (length << 1) | bits[b + j];
       if (length < MIN_PACKET || length > MAX_PACKET) {
         diagnostics.framing = FRAMING.length; diagnostics.declaredPacketBytes = length;
+        note({ ...candidate, outcome: 'accepted', length, reason: `declared length ${length} outside ${MIN_PACKET}..${MAX_PACKET}` });
         best ??= { kind: 'corrupted', reason: 'Physical length out of bounds', startSample }; bestPhase ??= phase; continue;
       }
       const dataStart = b + 17, end = dataStart + length * 8;
       if (end > count) {
         diagnostics.framing = FRAMING.incomplete; diagnostics.declaredPacketBytes = length;
         diagnostics.bits.expectedData = length * 8; diagnostics.bits.receivedData = Math.max(0, count - dataStart);
+        note({ ...candidate, outcome: 'accepted', length, reason: `capture holds ${Math.max(0, count - dataStart)} of ${length * 8} data bits` });
         pending = { kind: 'partial', reason: 'Frame detected but incomplete', expectedBytes: length, startSample }; pendingPhase = phase; continue;
       }
       const packet = bitsToBytes(bits.slice(dataStart, end));
@@ -365,6 +412,7 @@ function decodeAudio(pcm, sampleRate) {
       diagnostics.framing = FRAMING.complete; diagnostics.declaredPacketBytes = length;
       diagnostics.bits.expectedData = length * 8; diagnostics.bits.receivedData = length * 8; diagnostics.bits.total = OVERHEAD_BITS + length * 8;
       diagnostics.checksum = crcOk ? 'CRC-32 PASS' : 'CRC-32 FAIL';
+      note({ ...candidate, outcome: 'accepted', length, reason: crcOk ? 'complete frame, CRC-32 PASS' : 'complete frame, CRC-32 FAIL' });
       // CRC selects a timing phase, not authenticity. Signature checked independently.
       if (crcOk) return report(frame, phase);
       if (!best || quality / 32 > (best.quality ?? 0)) { best = frame; bestPhase = phase; }
@@ -402,7 +450,11 @@ const MODES = ['sender', 'receiver', 'both'];
 let keys = null, gatePassed = false, busy = false, tx = null, rx = null, lastPacket = null, mode = 'both';
 const liveCache = new ReplayCache();
 const records = [];
-let successes = 0, failures = 0, logLines = [], lastDiagnostics = null;
+let successes = 0, failures = 0, logLines = [], lastDiagnostics = null, lastCapture = null;
+// Ranked so the panel can keep the most informative attempt of a capture rather than the
+// last one, which after a rolling window has usually aged the signal out entirely.
+const FRAMING_RANK = [FRAMING.none, FRAMING.carrier, FRAMING.sync, FRAMING.length, FRAMING.incomplete, FRAMING.complete];
+const rank = d => (d ? FRAMING_RANK.indexOf(d.framing) * 1000 + (d.sync?.accepted ?? 0) * 10 + (d.sync?.bestQuality ?? 0) : -1);
 
 function setMode(next) {
   mode = MODES.includes(next) ? next : 'both';
@@ -425,6 +477,7 @@ function controls() {
   $('import-key').disabled = busy || sending || receiving;
   $('export-key').disabled = !keys || busy;
   $('run-attack').disabled = !gatePassed || busy || sending || receiving;
+  $('export-capture').disabled = !lastCapture;
 }
 function display(result, label) {
   $('mode').textContent = label;
@@ -466,7 +519,7 @@ function showDiagnostics(d, when) {
   cell('d-framing', d.framing, d.framing === FRAMING.complete ? 'pass' : d.framing === FRAMING.none ? '' : 'hold');
   const quiet = d.level.rmsDbfs < -55;
   cell('d-level', `${d.level.rmsDbfs} / ${d.level.peakDbfs} dBFS`, d.level.clippedSamples > 0 ? 'fail' : quiet ? 'hold' : 'pass');
-  $('d-level-note').textContent = `RMS / peak · ${d.level.clippedSamples} clipped samples · ${d.capturedSeconds} s in decode window`;
+  $('d-level-note').textContent = `RMS / peak · crest ${d.level.crestDb} dB · ${d.level.clippedSamples} clipped · ${d.capturedSeconds} s window${d.level.crestDb > 12 ? ' · high crest: mostly not a tone' : ''}`;
   const s = d.symbols || {};
   const low = Math.round((s.toneShare?.[1200] ?? 0) * 100), high = Math.round((s.toneShare?.[2200] ?? 0) * 100);
   cell('d-tone', `${low}% / ${high}%`);
@@ -485,6 +538,26 @@ function showDiagnostics(d, when) {
     const mean = d.symbolTrace.confidence.reduce((a, b) => a + b, 0) / Math.max(1, d.symbolTrace.confidence.length);
     $('d-trace-at').textContent = `from symbol ${d.symbolTrace.fromSymbol} · mean confidence ${mean.toFixed(2)} · a clean preamble reads 0101…`;
   }
+}
+// 32-bit float WAV: the exact samples the decoder consumed, with no quantisation step
+// between the microphone and an offline replay.
+function wav(pcm, sampleRate) {
+  const buffer = new ArrayBuffer(58 + pcm.length * 4), view = new DataView(buffer);
+  const ascii = (at, s) => { for (let i = 0; i < s.length; i++) view.setUint8(at + i, s.charCodeAt(i)); };
+  ascii(0, 'RIFF'); view.setUint32(4, 50 + pcm.length * 4, true); ascii(8, 'WAVE');
+  ascii(12, 'fmt '); view.setUint32(16, 18, true);
+  view.setUint16(20, 3, true); view.setUint16(22, 1, true);
+  view.setUint32(24, sampleRate, true); view.setUint32(28, sampleRate * 4, true);
+  view.setUint16(32, 4, true); view.setUint16(34, 32, true); view.setUint16(36, 0, true);
+  ascii(38, 'fact'); view.setUint32(42, 4, true); view.setUint32(46, pcm.length, true);
+  ascii(50, 'data'); view.setUint32(54, pcm.length * 4, true);
+  for (let i = 0; i < pcm.length; i++) view.setFloat32(58 + i * 4, pcm[i], true);
+  return buffer;
+}
+function save(name, blob) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 function download(name, text) {
   const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
@@ -558,9 +631,17 @@ async function transmit(reuse) {
 $('transmit').onclick = () => guarded(() => transmit(false));
 $('resend').onclick = () => guarded(() => transmit(true));
 $('stop-tx').onclick = () => { if (tx) { tx.stopped = true; tx.source.stop(); } };
+// Ask the worker for the exact samples it decoded, then shut the session down.
+function endCapture(session) {
+  if (!session || session.closed) return;
+  if (session.exporting || !session.worker) return closeReceiver(session);
+  session.exporting = true;
+  session.exportTimer = setTimeout(() => closeReceiver(session), 8000);
+  session.worker.postMessage({ type: 'export' });
+}
 function closeReceiver(session) {
   if (!session || session.closed) return;
-  session.closed = true; clearInterval(session.timer);
+  session.closed = true; clearInterval(session.timer); clearTimeout(session.exportTimer);
   session.worker?.terminate(); session.stream?.getTracks().forEach(t => t.stop());
   session.node?.disconnect(); session.source?.disconnect(); session.context?.close();
   if (rx === session) rx = null;
@@ -568,7 +649,14 @@ function closeReceiver(session) {
 }
 async function handleAudio(session, data) {
   if (session.closed) return;
+  if (data.kind === 'export') {
+    clearTimeout(session.exportTimer);
+    lastCapture = { ...data, capturedAt: session.startedAt, endedAt: new Date().toISOString(), microphoneSettings: session.settings, contextSampleRate: session.rate, best: session.best ?? null, log: logLines.slice() };
+    log(`raw capture retained · ${data.recordingSeconds.toFixed(1)} s · ${data.sampleRate.toLocaleString()} Hz · export enabled`);
+    closeReceiver(session); return;
+  }
   if (data.diagnostics) {
+    if (rank(data.diagnostics) > rank(session.best)) session.best = data.diagnostics;
     showDiagnostics(data.diagnostics, `${data.final ? 'FINAL' : 'LIVE'} · ${data.capturedSeconds.toFixed(1)} s CAPTURED · DECODE ${data.decodeMs.toFixed(0)} ms`);
     if (data.diagnostics.framing !== session.framing) {
       session.framing = data.diagnostics.framing;
@@ -600,22 +688,27 @@ async function handleAudio(session, data) {
       $('timing').textContent = `Listen → verdict: ${(row.listenToVerdictMs / 1000).toFixed(2)} s · estimated signal → verdict: ${row.estimatedSignalToVerdictMs == null ? 'unavailable' : (row.estimatedSignalToVerdictMs / 1000).toFixed(2) + ' s'} · decode ${data.decodeMs.toFixed(1)} ms`;
       $('rx-note').textContent = 'Capture stopped. Click Listen again to receive another packet; replay memory is retained.';
     } catch (e) { display({ status: 'RECEIVER ERROR', reason: e.message }, 'MICROPHONE'); log(`verification error: ${e.message}`); record({ mode: 'microphone', successfulDecode: false, error: e.message }); }
-    finally { closeReceiver(session); }
+    finally { endCapture(session); }
   } else if (data.final) {
     const status = data.kind === 'none' ? 'NO PACKET DECODED' : STATUS.corrupted;
     display({ status, reason: data.reason }, 'MICROPHONE · DECODE FAILED');
     cell('d-sig', 'not reached');
     record({ mode: 'microphone', successfulDecode: false, status, reason: data.reason, capturedSeconds: data.capturedSeconds, diagnostics: data.diagnostics });
     log(`capture finished without a valid frame: ${data.reason}`);
-    $('rx-note').textContent = 'Capture stopped without a complete valid frame. Re-arm to try again; the diagnostics above are from the final attempt.';
-    closeReceiver(session);
+    // The final window is usually the least informative one, so show the best attempt.
+    if (session.best && rank(session.best) > rank(data.diagnostics)) {
+      showDiagnostics(session.best, `BEST ATTEMPT OF THIS CAPTURE · ${session.best.capturedSeconds} s WINDOW`);
+      log(`final window held no frame; showing the best attempt instead (${session.best.framing})`);
+    }
+    $('rx-note').textContent = 'Capture stopped without a complete valid frame. Export the raw capture before re-arming; the panel shows the best attempt of the capture, not the last one.';
+    endCapture(session);
   }
 }
 $('listen').onclick = () => guarded(async () => {
   if (!navigator.mediaDevices?.getUserMedia) throw new Error('Microphone unavailable here. Open this page over HTTPS (or localhost) in a browser that allows microphone access; a local file:// page cannot prompt for it in every browser.');
   const context = new AudioContext();
   await context.resume();
-  const session = { context, started: performance.now(), captureEpoch: null, closed: false, verifying: false, framing: null, endsAt: Date.now() + LISTEN_SECONDS * 1000 };
+  const session = { context, started: performance.now(), startedAt: new Date().toISOString(), captureEpoch: null, closed: false, verifying: false, exporting: false, framing: null, best: null, endsAt: Date.now() + LISTEN_SECONDS * 1000 };
   rx = session;
   resetDiagnostics('ARMING MICROPHONE');
   try {
@@ -673,6 +766,26 @@ $('run-attack').onclick = () => guarded(async () => {
   log(`adversarial ${type} → ${result.status}`);
   record({ mode: 'adversarial software PCM', attack: type, ...result, successfulDecode: result.status !== STATUS.corrupted });
   $('timing').textContent = 'Adversarial software test only. No physical audio measurement.';
+});
+$('export-capture').onclick = () => guarded(async () => {
+  const c = lastCapture;
+  if (!c) throw new Error('No capture retained yet. Arm the microphone and let a capture finish.');
+  const stamp = c.endedAt.replace(/[:.]/g, '-');
+  const signal = c.result.startSample == null ? null : { startSeconds: +(c.result.startSample / c.sampleRate).toFixed(3), endSeconds: c.result.endSample == null ? null : +(c.result.endSample / c.sampleRate).toFixed(3) };
+  save(`io-note-capture-${stamp}.wav`, new Blob([wav(c.recording, c.sampleRate)], { type: 'audio/wav' }));
+  download(`io-note-capture-${stamp}.json`, JSON.stringify({
+    app: 'io-note 0.1.0', kind: 'raw physical capture', userAgent: navigator.userAgent, deviceRole: mode,
+    wav: { file: `io-note-capture-${stamp}.wav`, format: '32-bit IEEE float, mono', sampleRate: c.sampleRate, samples: c.recordedSamples, seconds: c.recordingSeconds, contains: 'the exact microphone samples the decoder consumed', droppedFromStartSamples: c.recordingDroppedSamples },
+    capture: { startedAt: c.capturedAt, endedAt: c.endedAt, capturedSeconds: c.capturedSeconds, audioContextSampleRate: c.contextSampleRate, microphoneSettings: c.microphoneSettings },
+    decoderWindow: { seconds: c.windowSeconds, startSample: c.windowStartSample, endSample: c.windowEndSample, note: 'The decoder only ever sees this rolling window; the WAV holds the whole capture.' },
+    signalInterval: signal, finalResult: c.result,
+    finalWindowDiagnostics: c.diagnostics, bestAttemptDiagnostics: c.best,
+    log: c.log,
+    replay: 'node scripts/replay-capture.mjs <wav> [json] — runs this audio back through the same decoder offline.',
+    physicalAudioVerified: false,
+  }, null, 2));
+  $('rx-note').textContent = 'Raw capture exported: a 32-bit float WAV of the exact samples plus the diagnostics JSON.';
+  log('exported raw capture WAV + metadata');
 });
 $('export-results').onclick = () => download('io-note-session-results.json', JSON.stringify({
   app: 'io-note 0.1.0', userAgent: navigator.userAgent, deviceRole: mode,

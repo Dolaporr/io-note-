@@ -1,0 +1,3 @@
+# Offline replays of a specific physical capture are per-run artefacts, not results.
+results/replay-*.json
+results/.browser-check-capture/

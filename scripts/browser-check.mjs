@@ -11,7 +11,9 @@
 //
 // Stage 2 is a synthetic capture device, NOT a speaker, a room, or a second device. It
 // establishes nothing about physical acoustic transport.
-import { writeFile, readFile } from 'node:fs/promises';
+import { writeFile, readFile, mkdir, rm } from 'node:fs/promises';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createServer } from 'node:http';
 import path from 'node:path';
@@ -97,6 +99,41 @@ const diagnostics = page => page.evaluate(() => Object.fromEntries(['d-framing',
     report.microphoneStage.diagnostics = await diagnostics(page);
     report.microphoneStage.log = (await text(page, 'd-log')).split('\n');
     report.microphoneStage.counters = await text(page, 'm-decodes');
+
+    // The raw-capture export must round-trip: browser -> WAV -> the same decoder offline.
+    const out = path.join(root, 'results', '.browser-check-capture');
+    await rm(out, { recursive: true, force: true }); await mkdir(out, { recursive: true });
+    const downloads = [];
+    page.on('download', d => downloads.push(d));
+    await page.click('#export-capture');
+    await page.waitForFunction(() => document.getElementById('rx-note').textContent.includes('Raw capture exported'), null, { timeout: 60000 });
+    const saved = {};
+    for (const d of downloads) { const to = path.join(out, d.suggestedFilename()); await d.saveAs(to); saved[path.extname(to)] = to; }
+    report.microphoneStage.export = { files: Object.values(saved).map(f => path.basename(f)) };
+    if (!saved['.wav'] || !saved['.json']) failures.push(`raw capture export produced ${JSON.stringify(Object.keys(saved))}, expected .wav and .json`);
+    else {
+      const meta = JSON.parse(await readFile(saved['.json'], 'utf8'));
+      report.microphoneStage.export.metadata = {
+        sampleRate: meta.wav.sampleRate, seconds: meta.wav.seconds, format: meta.wav.format,
+        audioContextSampleRate: meta.capture.audioContextSampleRate, signalInterval: meta.signalInterval,
+        level: meta.finalWindowDiagnostics?.level, timelineBins: meta.finalWindowDiagnostics?.timeline?.bins?.length ?? 0,
+        candidates: meta.finalWindowDiagnostics?.candidates?.length ?? 0,
+        symbolDecisions: meta.finalWindowDiagnostics?.detail?.bits?.length ?? 0,
+        confidences: meta.finalWindowDiagnostics?.detail?.confidence?.length ?? 0,
+        reportedPhase: meta.finalWindowDiagnostics?.reportedPhase,
+        physicalAudioVerified: meta.physicalAudioVerified,
+      };
+      const required = ['sampleRate', 'audioContextSampleRate', 'signalInterval', 'level', 'reportedPhase'];
+      for (const k of required) if (report.microphoneStage.export.metadata[k] == null) failures.push(`raw capture metadata missing ${k}`);
+      if (!report.microphoneStage.export.metadata.symbolDecisions) failures.push('raw capture metadata carries no per-symbol decisions');
+      if (!report.microphoneStage.export.metadata.candidates) failures.push('raw capture metadata carries no sync candidates');
+      if (meta.physicalAudioVerified !== false) failures.push('raw capture metadata must not claim physical audio is verified');
+      const replay = await promisify(execFile)(process.execPath, [path.join(root, 'scripts/replay-capture.mjs'), saved['.wav'], saved['.json']], { cwd: root, maxBuffer: 1 << 24 });
+      report.microphoneStage.export.replay = replay.stdout.trim().split('\n').slice(-6);
+      if (!/SIGNATURE VERIFIED/.test(replay.stdout)) failures.push('offline replay of the exported WAV did not recover and verify the packet');
+      report.microphoneStage.export.replayRecoveredAndVerified = /SIGNATURE VERIFIED/.test(replay.stdout);
+    }
+    await rm(out, { recursive: true, force: true });
   } catch (e) {
     report.microphoneStage = { ...report.microphoneStage, error: e.message, diagnostics: await diagnostics(page).catch(() => null), log: await text(page, 'd-log').catch(() => null) };
     failures.push(`microphone stage: ${e.message}`);
@@ -116,5 +153,6 @@ await writeFile(path.join(root, 'results/browser-verification.json'), JSON.strin
 console.log(report.userAgent);
 console.log(`file:// loopback: ${report.fileStage.loopback.status}; ${report.fileStage.adversarial.map(r => `${r.attack}=${r.status}`).join(', ')}`);
 console.log(`microphone path: ${report.microphoneStage?.verdict?.status ?? report.microphoneStage?.error} · ${report.microphoneStage?.diagnostics?.framing ?? ''} · crc ${report.microphoneStage?.diagnostics?.crc ?? ''}`);
+console.log(`raw capture export: ${(report.microphoneStage?.export?.files ?? []).join(' + ') || 'none'} · offline replay recovered+verified: ${report.microphoneStage?.export?.replayRecoveredAndVerified ?? false}`);
 console.log(failures.length ? `FAILED:\n- ${failures.join('\n- ')}` : 'All browser outcomes matched expectations. Physical acoustic transport was NOT exercised and is NOT verified.');
 process.exit(failures.length ? 1 : 0);

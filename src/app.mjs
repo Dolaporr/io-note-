@@ -9,7 +9,11 @@ const MODES = ['sender', 'receiver', 'both'];
 let keys = null, gatePassed = false, busy = false, tx = null, rx = null, lastPacket = null, mode = 'both';
 const liveCache = new ReplayCache();
 const records = [];
-let successes = 0, failures = 0, logLines = [], lastDiagnostics = null;
+let successes = 0, failures = 0, logLines = [], lastDiagnostics = null, lastCapture = null;
+// Ranked so the panel can keep the most informative attempt of a capture rather than the
+// last one, which after a rolling window has usually aged the signal out entirely.
+const FRAMING_RANK = [FRAMING.none, FRAMING.carrier, FRAMING.sync, FRAMING.length, FRAMING.incomplete, FRAMING.complete];
+const rank = d => (d ? FRAMING_RANK.indexOf(d.framing) * 1000 + (d.sync?.accepted ?? 0) * 10 + (d.sync?.bestQuality ?? 0) : -1);
 
 function setMode(next) {
   mode = MODES.includes(next) ? next : 'both';
@@ -32,6 +36,7 @@ function controls() {
   $('import-key').disabled = busy || sending || receiving;
   $('export-key').disabled = !keys || busy;
   $('run-attack').disabled = !gatePassed || busy || sending || receiving;
+  $('export-capture').disabled = !lastCapture;
 }
 function display(result, label) {
   $('mode').textContent = label;
@@ -73,7 +78,7 @@ function showDiagnostics(d, when) {
   cell('d-framing', d.framing, d.framing === FRAMING.complete ? 'pass' : d.framing === FRAMING.none ? '' : 'hold');
   const quiet = d.level.rmsDbfs < -55;
   cell('d-level', `${d.level.rmsDbfs} / ${d.level.peakDbfs} dBFS`, d.level.clippedSamples > 0 ? 'fail' : quiet ? 'hold' : 'pass');
-  $('d-level-note').textContent = `RMS / peak · ${d.level.clippedSamples} clipped samples · ${d.capturedSeconds} s in decode window`;
+  $('d-level-note').textContent = `RMS / peak · crest ${d.level.crestDb} dB · ${d.level.clippedSamples} clipped · ${d.capturedSeconds} s window${d.level.crestDb > 12 ? ' · high crest: mostly not a tone' : ''}`;
   const s = d.symbols || {};
   const low = Math.round((s.toneShare?.[1200] ?? 0) * 100), high = Math.round((s.toneShare?.[2200] ?? 0) * 100);
   cell('d-tone', `${low}% / ${high}%`);
@@ -92,6 +97,26 @@ function showDiagnostics(d, when) {
     const mean = d.symbolTrace.confidence.reduce((a, b) => a + b, 0) / Math.max(1, d.symbolTrace.confidence.length);
     $('d-trace-at').textContent = `from symbol ${d.symbolTrace.fromSymbol} · mean confidence ${mean.toFixed(2)} · a clean preamble reads 0101…`;
   }
+}
+// 32-bit float WAV: the exact samples the decoder consumed, with no quantisation step
+// between the microphone and an offline replay.
+function wav(pcm, sampleRate) {
+  const buffer = new ArrayBuffer(58 + pcm.length * 4), view = new DataView(buffer);
+  const ascii = (at, s) => { for (let i = 0; i < s.length; i++) view.setUint8(at + i, s.charCodeAt(i)); };
+  ascii(0, 'RIFF'); view.setUint32(4, 50 + pcm.length * 4, true); ascii(8, 'WAVE');
+  ascii(12, 'fmt '); view.setUint32(16, 18, true);
+  view.setUint16(20, 3, true); view.setUint16(22, 1, true);
+  view.setUint32(24, sampleRate, true); view.setUint32(28, sampleRate * 4, true);
+  view.setUint16(32, 4, true); view.setUint16(34, 32, true); view.setUint16(36, 0, true);
+  ascii(38, 'fact'); view.setUint32(42, 4, true); view.setUint32(46, pcm.length, true);
+  ascii(50, 'data'); view.setUint32(54, pcm.length * 4, true);
+  for (let i = 0; i < pcm.length; i++) view.setFloat32(58 + i * 4, pcm[i], true);
+  return buffer;
+}
+function save(name, blob) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 function download(name, text) {
   const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
@@ -165,9 +190,17 @@ async function transmit(reuse) {
 $('transmit').onclick = () => guarded(() => transmit(false));
 $('resend').onclick = () => guarded(() => transmit(true));
 $('stop-tx').onclick = () => { if (tx) { tx.stopped = true; tx.source.stop(); } };
+// Ask the worker for the exact samples it decoded, then shut the session down.
+function endCapture(session) {
+  if (!session || session.closed) return;
+  if (session.exporting || !session.worker) return closeReceiver(session);
+  session.exporting = true;
+  session.exportTimer = setTimeout(() => closeReceiver(session), 8000);
+  session.worker.postMessage({ type: 'export' });
+}
 function closeReceiver(session) {
   if (!session || session.closed) return;
-  session.closed = true; clearInterval(session.timer);
+  session.closed = true; clearInterval(session.timer); clearTimeout(session.exportTimer);
   session.worker?.terminate(); session.stream?.getTracks().forEach(t => t.stop());
   session.node?.disconnect(); session.source?.disconnect(); session.context?.close();
   if (rx === session) rx = null;
@@ -175,7 +208,14 @@ function closeReceiver(session) {
 }
 async function handleAudio(session, data) {
   if (session.closed) return;
+  if (data.kind === 'export') {
+    clearTimeout(session.exportTimer);
+    lastCapture = { ...data, capturedAt: session.startedAt, endedAt: new Date().toISOString(), microphoneSettings: session.settings, contextSampleRate: session.rate, best: session.best ?? null, log: logLines.slice() };
+    log(`raw capture retained · ${data.recordingSeconds.toFixed(1)} s · ${data.sampleRate.toLocaleString()} Hz · export enabled`);
+    closeReceiver(session); return;
+  }
   if (data.diagnostics) {
+    if (rank(data.diagnostics) > rank(session.best)) session.best = data.diagnostics;
     showDiagnostics(data.diagnostics, `${data.final ? 'FINAL' : 'LIVE'} · ${data.capturedSeconds.toFixed(1)} s CAPTURED · DECODE ${data.decodeMs.toFixed(0)} ms`);
     if (data.diagnostics.framing !== session.framing) {
       session.framing = data.diagnostics.framing;
@@ -207,22 +247,27 @@ async function handleAudio(session, data) {
       $('timing').textContent = `Listen → verdict: ${(row.listenToVerdictMs / 1000).toFixed(2)} s · estimated signal → verdict: ${row.estimatedSignalToVerdictMs == null ? 'unavailable' : (row.estimatedSignalToVerdictMs / 1000).toFixed(2) + ' s'} · decode ${data.decodeMs.toFixed(1)} ms`;
       $('rx-note').textContent = 'Capture stopped. Click Listen again to receive another packet; replay memory is retained.';
     } catch (e) { display({ status: 'RECEIVER ERROR', reason: e.message }, 'MICROPHONE'); log(`verification error: ${e.message}`); record({ mode: 'microphone', successfulDecode: false, error: e.message }); }
-    finally { closeReceiver(session); }
+    finally { endCapture(session); }
   } else if (data.final) {
     const status = data.kind === 'none' ? 'NO PACKET DECODED' : STATUS.corrupted;
     display({ status, reason: data.reason }, 'MICROPHONE · DECODE FAILED');
     cell('d-sig', 'not reached');
     record({ mode: 'microphone', successfulDecode: false, status, reason: data.reason, capturedSeconds: data.capturedSeconds, diagnostics: data.diagnostics });
     log(`capture finished without a valid frame: ${data.reason}`);
-    $('rx-note').textContent = 'Capture stopped without a complete valid frame. Re-arm to try again; the diagnostics above are from the final attempt.';
-    closeReceiver(session);
+    // The final window is usually the least informative one, so show the best attempt.
+    if (session.best && rank(session.best) > rank(data.diagnostics)) {
+      showDiagnostics(session.best, `BEST ATTEMPT OF THIS CAPTURE · ${session.best.capturedSeconds} s WINDOW`);
+      log(`final window held no frame; showing the best attempt instead (${session.best.framing})`);
+    }
+    $('rx-note').textContent = 'Capture stopped without a complete valid frame. Export the raw capture before re-arming; the panel shows the best attempt of the capture, not the last one.';
+    endCapture(session);
   }
 }
 $('listen').onclick = () => guarded(async () => {
   if (!navigator.mediaDevices?.getUserMedia) throw new Error('Microphone unavailable here. Open this page over HTTPS (or localhost) in a browser that allows microphone access; a local file:// page cannot prompt for it in every browser.');
   const context = new AudioContext();
   await context.resume();
-  const session = { context, started: performance.now(), captureEpoch: null, closed: false, verifying: false, framing: null, endsAt: Date.now() + LISTEN_SECONDS * 1000 };
+  const session = { context, started: performance.now(), startedAt: new Date().toISOString(), captureEpoch: null, closed: false, verifying: false, exporting: false, framing: null, best: null, endsAt: Date.now() + LISTEN_SECONDS * 1000 };
   rx = session;
   resetDiagnostics('ARMING MICROPHONE');
   try {
@@ -280,6 +325,26 @@ $('run-attack').onclick = () => guarded(async () => {
   log(`adversarial ${type} → ${result.status}`);
   record({ mode: 'adversarial software PCM', attack: type, ...result, successfulDecode: result.status !== STATUS.corrupted });
   $('timing').textContent = 'Adversarial software test only. No physical audio measurement.';
+});
+$('export-capture').onclick = () => guarded(async () => {
+  const c = lastCapture;
+  if (!c) throw new Error('No capture retained yet. Arm the microphone and let a capture finish.');
+  const stamp = c.endedAt.replace(/[:.]/g, '-');
+  const signal = c.result.startSample == null ? null : { startSeconds: +(c.result.startSample / c.sampleRate).toFixed(3), endSeconds: c.result.endSample == null ? null : +(c.result.endSample / c.sampleRate).toFixed(3) };
+  save(`io-note-capture-${stamp}.wav`, new Blob([wav(c.recording, c.sampleRate)], { type: 'audio/wav' }));
+  download(`io-note-capture-${stamp}.json`, JSON.stringify({
+    app: 'io-note 0.1.0', kind: 'raw physical capture', userAgent: navigator.userAgent, deviceRole: mode,
+    wav: { file: `io-note-capture-${stamp}.wav`, format: '32-bit IEEE float, mono', sampleRate: c.sampleRate, samples: c.recordedSamples, seconds: c.recordingSeconds, contains: 'the exact microphone samples the decoder consumed', droppedFromStartSamples: c.recordingDroppedSamples },
+    capture: { startedAt: c.capturedAt, endedAt: c.endedAt, capturedSeconds: c.capturedSeconds, audioContextSampleRate: c.contextSampleRate, microphoneSettings: c.microphoneSettings },
+    decoderWindow: { seconds: c.windowSeconds, startSample: c.windowStartSample, endSample: c.windowEndSample, note: 'The decoder only ever sees this rolling window; the WAV holds the whole capture.' },
+    signalInterval: signal, finalResult: c.result,
+    finalWindowDiagnostics: c.diagnostics, bestAttemptDiagnostics: c.best,
+    log: c.log,
+    replay: 'node scripts/replay-capture.mjs <wav> [json] — runs this audio back through the same decoder offline.',
+    physicalAudioVerified: false,
+  }, null, 2));
+  $('rx-note').textContent = 'Raw capture exported: a 32-bit float WAV of the exact samples plus the diagnostics JSON.';
+  log('exported raw capture WAV + metadata');
 });
 $('export-results').onclick = () => download('io-note-session-results.json', JSON.stringify({
   app: 'io-note 0.1.0', userAgent: navigator.userAgent, deviceRole: mode,

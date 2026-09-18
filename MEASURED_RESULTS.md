@@ -12,8 +12,9 @@ Run date: 18 September 2026. Runtime: Node.js 24.19.0, Linux x64. Exact environm
 | Built HTML | Embedded script syntax and static no-network/CSP checks passed |
 | Browser execution of `dist/io-note.html` over `file://` | **Verified once** in headless Chromium 141.0.7390.37 (Linux x64): loopback gate, all six adversarial cases, key generation and role switching produced the documented outcomes with no console or page errors |
 | Browser microphone path (`getUserMedia` → AudioWorklet → worker → verifier) | **Exercised once end to end** in the same Chromium over a secure origin, fed by a **synthetic capture device**, not a microphone: SIGNATURE VERIFIED, CRC-32 PASS, 112 + 1,096 bits |
+| Raw capture export → offline replay | **Verified round-trip.** The browser's exported 32-bit float WAV replays through the same decoder via `scripts/replay-capture.mjs` and recovers the packet with SIGNATURE VERIFIED |
 | Real microphone hardware, speakers, or a room | **Not exercised.** No audio hardware exists in that environment |
-| Physical speaker → air → microphone, two devices | **Not attempted; no success/failure rate or physical end-to-end latency measured** |
+| Physical speaker → air → microphone, two devices | **Attempted once, 18 September 2026. FAILED at synchronisation.** No frame crossed the channel; no packet, checksum or signature was reached. Physical transport remains **UNVERIFIED** |
 
 ## Baseline signal
 
@@ -86,6 +87,55 @@ diagnostics report real state, which is what the physical attempt in `PHYSICAL_T
 in order to be debuggable.
 
 The UI was not rendered for visual inspection and no speaker output was produced.
+
+## First physical attempt — failed at synchronisation
+
+One real two-device attempt was made over air. **It failed, and nothing about physical
+transport is claimed from it.** What the receiver reported:
+
+| Reading | Value |
+| --- | --- |
+| Capture sample rate | 44,100 Hz |
+| Framing states seen | `NO SIGNAL` → `CARRIER; NO SYNC`, and in an earlier capture repeated `SYNC FOUND; LENGTH INVALID` before falling back to `CARRIER; NO SYNC` |
+| Level, final window | −51.2 dBFS RMS / −24.3 dBFS peak — a **crest factor of 26.9 dB** |
+| Clipped samples | 0 |
+| Tone share | 85 % at 1,200 Hz / 15 % at 2,200 Hz |
+| Symbols | 1,689 analysed, 1,198 strong, mean confidence 0.66 |
+| Sync candidates accepted | 0 in the final state |
+| Symbol trace | effectively all `0` |
+| Checksum / signature | never reached |
+
+Two facts are worth stating precisely. The earlier `SYNC FOUND; LENGTH INVALID` state means
+**the 64-bit preamble and the 32-bit sync word were recovered from real air** — 96 consecutive
+correct symbols, which a false positive cannot plausibly produce (the joint probability of an
+exact 32-bit sync word with at most one preamble error, over eight phases and this many
+positions, is about 3 × 10⁻⁶). The modem did lock, briefly. And 1,689 symbols at 44,100 Hz is
+**8.44 s of audio**, so the final decode window was 8.44 s, not the full 14 s — the capture was
+short relative to a 6.7 s transmission.
+
+## Offline reproductions of that failure
+
+`scripts/channel-experiments.mjs` drives the production decoder with synthesised inputs;
+`results/channel-experiments.json` holds every row. No parameter was fitted to the recording.
+
+| Hypothesis | Verdict |
+| --- | --- |
+| 44,100 Hz capture rate alone | **Not the cause.** Byte-exact recovery at 44,100 / 48,000 / 96,000 Hz |
+| 48k → 44.1k browser-style resampling | **Not the cause.** Byte-exact with linear *and* windowed-sinc resampling, both directions |
+| Tone gain imbalance | **Not the cause.** The 2,200 Hz tone attenuated by 26 dB — a 99.8 % low-tone share — still decodes byte-exact. A lopsided tone share is therefore **not evidence of failure** |
+| Broadband white noise | Tolerated to about −12 dB SNR; fails near −18 dB, and does not skew the tone share |
+| **Narrowband 1,200 Hz interference** | **Reproduces the reported final state.** At 0 dB signal-to-interferer: `CARRIER; NO SYNC`, 0 sync accepted, 82 % low-tone share, mean confidence 0.68, all-zero trace — against the reported 85 %, 0.66, all-zero |
+| **Transmission cut within 16 symbols of the sync word** | **Reproduces `SYNC FOUND; LENGTH INVALID` exactly.** The 16 length bits read as zero, which is outside 123–219 |
+| Interference that starts *after* the sync word | Produces `SYNC FOUND; LENGTH INVALID` too, so **one mechanism can explain both reported states** |
+| A window holding almost no signal | Crest factor climbs from ~4 dB (continuous tone, even at −54 dBFS) to 16.8 dB at 0.5 s of signal in 8.4 s, and 55.7 dB at 0.05 s |
+
+The single unexplained reading is the combination: 26.9 dB crest **and** an 85 % low-tone share
+**and** 0.66 mean confidence at once. Interference alone gives a ~6 dB crest; an empty window
+alone gives a ~0.5 tone share and ~0.04 confidence. A reconstruction of quiet
+low-frequency-tilted noise plus transients, with little or no signal in the window, moves every
+number in the right direction (−50.4 dBFS, 22.6–23.3 dB crest, up to 0.76 low share, 0.60
+confidence) without landing on all of them. **That mixture cannot be pinned down from summary
+statistics; it needs the raw audio**, which is why the receiver now exports it.
 
 ## Controlled synthetic channel experiments
 
