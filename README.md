@@ -6,18 +6,29 @@ An isolated research PoC for an Ed25519-signed short message carried by audible 
 
 ## HTTPS preview
 
-_Publishing; the URL is filled in once the first deployment succeeds._
+**https://dolaporr.github.io/io-note-/**
 
-The preview is a single static file on GitHub Pages. **The server has no part in message
-transport**: the page's CSP sets `connect-src 'none'`, the app contains no fetch, WebSocket,
-WebRTC or telemetry code, and the only path between two devices is sound. HTTPS exists here
-for one reason — browsers only grant microphone access in a secure context. Open the same URL
-on both devices, pick **Sender** on one and **Receiver** on the other, and follow
-[PHYSICAL_TEST.md](PHYSICAL_TEST.md).
+That URL serves once GitHub Pages is switched on for this repository. It is a repository
+setting, and neither this branch nor the workflow's token is permitted to change it, so it
+needs one manual choice in **Settings → Pages → Build and deployment**:
 
-`.github/workflows/preview.yml` rebuilds the file from `src/`, refuses to publish if the
-rebuild differs from the committed `dist/io-note.html`, runs the tests, and serves the result
-with a `Disallow: /` robots file.
+- **Deploy from a branch** → branch `claude/io-note-measured-results-ga9zqe`, folder
+  `/docs`. `docs/index.html` is the committed build, byte-for-byte identical to
+  `dist/io-note.html`. Nothing else has to run, and no workflow is involved.
+- **GitHub Actions** → `.github/workflows/preview.yml` rebuilds the file from `src/`,
+  refuses to publish if the rebuild differs from the committed build, runs the tests, and
+  deploys `docs/`. If a deployment is rejected because this branch is not allowed for the
+  `github-pages` environment, allow it under Settings → Environments → github-pages, or use
+  the branch source above.
+
+The preview is a single static file. **The host has no part in message transport**: the
+page's CSP sets `connect-src 'none'`, the app contains no fetch, WebSocket, WebRTC or
+telemetry code, and the only path between two devices is sound. HTTPS exists here for one
+reason — browsers only grant microphone access in a secure context. The page and
+`docs/robots.txt` both ask crawlers to stay away; the repository itself is public.
+
+Open the same URL on both devices, pick **Sender** on one and **Receiver** on the other,
+and follow [PHYSICAL_TEST.md](PHYSICAL_TEST.md).
 
 ## Run it
 

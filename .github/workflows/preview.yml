@@ -1,6 +1,10 @@
-# Static HTTPS preview of the branch, so browser microphone permissions behave normally.
-# GitHub Pages serves one file. It has no part in message transport: the page's CSP sets
+# Static HTTPS preview of this branch, so browser microphone permissions behave normally.
+# GitHub Pages serves one file and has no part in message transport: the page's CSP sets
 # connect-src 'none', and the app contains no fetch, WebSocket, WebRTC or telemetry code.
+#
+# `publish` stays red until GitHub Pages is enabled once in Settings -> Pages; neither this
+# workflow's token nor the branch can turn it on. `verify` is independent of that and must
+# always pass.
 name: preview
 
 on:
@@ -18,11 +22,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  preview:
+  verify:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -31,19 +32,23 @@ jobs:
       - name: Rebuild the single-file app from src/
         run: npm run build
       - name: Refuse to publish a build that differs from the committed one
-        run: git diff --exit-code dist/io-note.html
+        run: git diff --exit-code dist/io-note.html docs/
       - name: Protocol, modem and integration tests
         run: npm test
+
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
         with:
           enablement: true
-      - name: Assemble the static site
-        run: |
-          mkdir -p _site
-          cp dist/io-note.html _site/index.html
-          printf 'User-agent: *\nDisallow: /\n' > _site/robots.txt
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: docs
       - id: deploy
         uses: actions/deploy-pages@v4
