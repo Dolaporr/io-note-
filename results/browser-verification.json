@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18T19:34:13.309Z",
+  "generatedAt": "2026-09-18T19:37:01.573Z",
   "host": {
     "node": "v22.22.2",
     "platform": "linux x64"
@@ -27,7 +27,7 @@
       "packetBytes": "137",
       "transmittedBits": "1208",
       "audioSeconds": "6.34",
-      "timing": "Software pipeline: 126.9 ms compute · 6.04 s tones + 0.30 s silence. No physical audio measured."
+      "timing": "Software pipeline: 125.0 ms compute · 6.04 s tones + 0.30 s silence. No physical audio measured."
     },
     "adversarial": [
       {
@@ -74,7 +74,7 @@
     "consoleOutput": []
   },
   "microphoneStage": {
-    "origin": "http://127.0.0.1:41073",
+    "origin": "http://127.0.0.1:40951",
     "secureContext": true,
     "fakeCapture": "results/synthetic-input.wav via --use-file-for-fake-audio-capture",
     "loopback": {
@@ -87,7 +87,7 @@
       "packetBytes": "137",
       "transmittedBits": "1208",
       "audioSeconds": "6.34",
-      "timing": "Software pipeline: 126.0 ms compute · 6.04 s tones + 0.30 s silence. No physical audio measured."
+      "timing": "Software pipeline: 123.9 ms compute · 6.04 s tones + 0.30 s silence. No physical audio measured."
     },
     "armed": "Microphone active · 44,100 Hz · waiting for a frame…",
     "verdict": {
@@ -95,7 +95,7 @@
       "status": "SIGNATURE VERIFIED",
       "message": "hello, io-note",
       "fingerprint": "21fe31dfa154a261626bf854046fd2271b7bed4b6abe45aa58877ef47f9721b9",
-      "timing": "Listen → verdict: 7.29 s · estimated signal → verdict: 6.27 s · decode 31.5 ms"
+      "timing": "Listen → verdict: 7.29 s · estimated signal → verdict: 6.27 s · decode 32.5 ms"
     },
     "diagnostics": {
       "framing": "FRAME COMPLETE",
@@ -107,15 +107,15 @@
       "crc": "CRC-32 PASS",
       "sig": "SIGNATURE VERIFIED",
       "trace": "0101010101010101010101010101010101010101010101010101010101010101",
-      "updated": "LIVE · 7.2 s CAPTURED · DECODE 32 ms"
+      "updated": "LIVE · 7.2 s CAPTURED · DECODE 33 ms"
     },
     "log": [
-      "19:34:14  software loopback verified · 137 bytes · 1208 bits · 126.0 ms",
-      "19:34:15  microphone armed · 44,100 Hz · echo cancellation off",
-      "19:34:15  framing → NO SIGNAL at 0.3 s (rms -120 dBFS, confidence 0.00)",
-      "19:34:16  framing → FRAME INCOMPLETE at 1.7 s (rms -16.2 dBFS, confidence 0.39)",
-      "19:34:22  framing → FRAME COMPLETE at 7.2 s (rms -12.9 dBFS, confidence 0.83)",
-      "19:34:22  verdict SIGNATURE VERIFIED after 7.29 s · 137 bytes · checksum CRC-32 PASS"
+      "19:37:03  software loopback verified · 137 bytes · 1208 bits · 123.9 ms",
+      "19:37:03  microphone armed · 44,100 Hz · echo cancellation off",
+      "19:37:03  framing → NO SIGNAL at 0.3 s (rms -120 dBFS, confidence 0.00)",
+      "19:37:04  framing → FRAME INCOMPLETE at 1.7 s (rms -16.2 dBFS, confidence 0.39)",
+      "19:37:10  framing → FRAME COMPLETE at 7.2 s (rms -12.9 dBFS, confidence 0.83)",
+      "19:37:10  verdict SIGNATURE VERIFIED after 7.29 s · 137 bytes · checksum CRC-32 PASS"
     ],
     "counters": "2 / 0",
     "consoleOutput": []

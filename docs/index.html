@@ -16,7 +16,7 @@ body.mode-sender .grid,body.mode-receiver .grid{grid-template-columns:1fr}
 .diagnostics{margin-top:20px}
 .dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .dcell{background:#0e1517;padding:14px 16px;min-width:0}
-.dcell.wide{grid-column:span 2}
+.dcell.wide{grid-column:span 2}.dcell.full{grid-column:1/-1}
 .dcell span{display:block;font:10px/1.4 ui-monospace,monospace;letter-spacing:1.2px;color:var(--muted)}
 .dcell strong{display:block;font:17px/1.35 ui-monospace,monospace;margin:7px 0 5px;overflow-wrap:anywhere}
 .dcell small{display:block;font-size:10px;color:var(--muted);line-height:1.4}
@@ -24,7 +24,7 @@ body.mode-sender .grid,body.mode-receiver .grid{grid-template-columns:1fr}
 #d-trace{letter-spacing:1px;word-break:break-all;margin:8px 0 4px}
 #d-log{font:11px/1.6 ui-monospace,monospace;color:#b9c9cc;background:#0b1214;border:1px solid var(--line);border-radius:8px;padding:12px;max-height:190px;overflow:auto;margin:8px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
 #tx-packet{margin-top:8px}
-@media(max-width:720px){.dgrid{grid-template-columns:1fr 1fr}.dcell.wide{grid-column:span 2}}
+@media(max-width:720px){.dgrid{grid-template-columns:1fr 1fr}.dcell.wide{grid-column:span 2}.dcell.full{grid-column:1/-1}}
 </style>
 </head>
 <body class="mode-both">
@@ -72,7 +72,7 @@ body.mode-sender .grid,body.mode-receiver .grid{grid-template-columns:1fr}
       <div class="dcell"><span>Sync words</span><strong id="d-sync">—</strong><small id="d-sync-note">candidates · accepted</small></div>
       <div class="dcell"><span>Bits received</span><strong id="d-bits">—</strong><small id="d-bits-note">framing + data bits</small></div>
       <div class="dcell"><span>Checksum</span><strong id="d-crc">—</strong><small>CRC-32/ISO-HDLC over the packet</small></div>
-      <div class="dcell"><span>Signature</span><strong id="d-sig">—</strong><small>Ed25519 over magic‖version‖key‖nonce‖length‖message</small></div>
+      <div class="dcell full"><span>Signature</span><strong id="d-sig">—</strong><small>Ed25519 over magic‖version‖key‖nonce‖length‖message</small></div>
     </div>
     <div class="key-row"><span>Symbol trace · strongest 64 symbols, 0 = 1,200 Hz, 1 = 2,200 Hz</span><span class="note" id="d-trace-at">—</span></div>
     <code id="d-trace">—</code>
