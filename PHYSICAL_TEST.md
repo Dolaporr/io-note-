@@ -5,9 +5,12 @@ iPhone → iPhone, after four failures — see `MEASURED_RESULTS.md`. One succes
 attempts is a demonstration, not a reliability claim, so this procedure still matters.
 
 **The step that made it work is step 5: five seconds of recorded silence before transmitting.**
-Every earlier failure had the frame's start missing from the receiver's rolling window, and the
-decoder needs the 32 preamble symbols immediately before the sync word — lose more than 160 ms
-of the frame's beginning and synchronisation is impossible however clean the rest is.
+Every earlier failure had the frame's start missing from the receiver's rolling window.
+
+Since 20 September the preamble is 256 symbols instead of 64, which gives the receiver
+**1.12 s of join grace** instead of 0.16 s — it may now arm up to a second *after* the tones
+start and still lock. The five-second habit is still the right way to run a controlled test,
+but a missed beat is no longer fatal.
 
 ## What a successful run would establish, and what it would not
 
@@ -103,7 +106,7 @@ of 3/10 is a result; "it worked" is not.
 | `clipped samples` above 0, level near `0 dBFS` | Too loud or too close; the microphone is saturating | Lower the volume or move apart |
 | Tone share heavily one-sided (e.g. 90 % / 10 %) with low confidence | Something else in the room is at one tone frequency, or heavy filtering | Change rooms; check no audio processing is on |
 | Sync candidates > 0 but `accepted` 0, preamble errors high | Timing recovered briefly then slipped | Shorten the distance; avoid Bluetooth |
-| Framing reaches `FRAME INCOMPLETE` and stops | Transmission was cut off, or the receiver stopped early | Re-arm, transmit the whole 6.7 s |
+| Framing reaches `FRAME INCOMPLETE` and stops | Transmission was cut off, or the receiver stopped early | Re-arm, transmit the whole 7.3 s |
 | `SYNC FOUND; LENGTH INVALID` | The preamble and sync word arrived intact, then the next 16 bits did not. Reproduced offline by cutting the transmission within 80 ms of the sync word, and by interference starting just after it | Check the sender plays all 6.7 s (screen lock and backgrounding suspend audio); export the raw capture |
 | `FRAME COMPLETE` but **CRC-32 FAIL** | Bits arrived with errors — real channel damage | This is the interesting failure. Record it |
 | `CRC-32 PASS` but **SIGNATURE INVALID** | The packet is intact but not validly signed | Record it; this should not happen on an honest channel |

@@ -2,7 +2,14 @@ import { MIN_PACKET, MAX_PACKET, crc32 } from './protocol.mjs';
 
 export const BITRATE = 200;
 export const TONES = [1200, 2200];
-export const PREAMBLE_BITS = 64;
+// The preamble is an acquisition run, not a fixed header. Synchronisation only ever
+// validates the PREAMBLE_CHECK symbols immediately before the sync word, so a receiver may
+// join anywhere in the preamble and still lock: the join grace is
+// (PREAMBLE_BITS - PREAMBLE_CHECK) symbols. Lengthening it is a transmitter-side change —
+// the detector is untouched, and a longer preamble stays readable by any earlier receiver.
+export const PREAMBLE_BITS = 256;
+export const PREAMBLE_CHECK = 32;
+export const JOIN_GRACE_SECONDS = (PREAMBLE_BITS - PREAMBLE_CHECK) / 200;
 export const SYNC = 0xd391c5a7;
 export const OVERHEAD_BITS = PREAMBLE_BITS + 32 + 16;
 export function bytesToBits(bytes) {
@@ -14,14 +21,18 @@ export function bitsToBytes(bits) {
   for (let i = 0; i < bits.length; i++) bytes[i >> 3] |= bits[i] << (7 - (i & 7));
   return bytes;
 }
-export function frameBits(packet) {
+// `preambleSymbols` exists so a test can build a frame with an earlier preamble length and
+// confirm this decoder still reads it. Senders should leave it at the default.
+export function frameBits(packet, preambleSymbols = PREAMBLE_BITS) {
   if (packet.length < MIN_PACKET || packet.length > MAX_PACKET) throw new Error('Packet size out of bounds');
+  if (!Number.isInteger(preambleSymbols) || preambleSymbols < PREAMBLE_CHECK) throw new Error(`Preamble must be at least ${PREAMBLE_CHECK} symbols`);
   const h = new Uint8Array(6), v = new DataView(h.buffer);
   v.setUint32(0, SYNC); v.setUint16(4, packet.length);
-  const bits = new Uint8Array(OVERHEAD_BITS + packet.length * 8);
-  for (let i = 0; i < PREAMBLE_BITS; i++) bits[i] = i % 2;
-  bits.set(bytesToBits(h), PREAMBLE_BITS);
-  bits.set(bytesToBits(packet), OVERHEAD_BITS);
+  const header = preambleSymbols + 48;
+  const bits = new Uint8Array(header + packet.length * 8);
+  for (let i = 0; i < preambleSymbols; i++) bits[i] = i % 2;
+  bits.set(bytesToBits(h), preambleSymbols);
+  bits.set(bytesToBits(packet), header);
   return bits;
 }
 export function modulateBits(bits, sampleRate = 48000, { amplitude = 0.35, leadSeconds = 0.15, tailSeconds = 0.15 } = {}) {
@@ -195,8 +206,19 @@ export function decodeAudio(pcm, sampleRate, { detail = false } = {}) {
       if (preambleErrors > 1) { diagnostics.sync.preambleRejected++; note({ ...candidate, outcome: 'rejected', reason: `preamble errors ${preambleErrors} > 1` }); continue; }
       if (quality / 32 < 0.4) { diagnostics.sync.qualityRejected++; note({ ...candidate, outcome: 'rejected', reason: `symbol quality ${round(quality / 32)} < 0.4` }); continue; }
       diagnostics.sync.accepted++;
-      traceFrom = Math.max(0, syncStart - PREAMBLE_BITS); traceSource = 'accepted sync candidate';
-      const startSample = Math.max(0, offset + (syncStart - PREAMBLE_BITS) * symbol);
+      // Measure the acquisition run actually received rather than assuming this build's
+      // length: a sender with a different preamble, or a receiver that joined partway
+      // through one, both report honestly here. Observation only.
+      let observed = 1;
+      while (syncStart - observed - 1 >= 0 && observed < 4096 && bits[syncStart - observed - 1] !== bits[syncStart - observed]) observed++;
+      // Reported next to what this build transmits, so the reader compares rather than
+      // trusting a verdict. On real audio the run can overshoot by a few symbols when the
+      // preceding noise happens to alternate.
+      diagnostics.observedPreambleSymbols = observed;
+      diagnostics.preambleSymbolsSent = PREAMBLE_BITS;
+      diagnostics.bits.framing = observed + 48;
+      traceFrom = Math.max(0, syncStart - observed); traceSource = 'accepted sync candidate';
+      const startSample = Math.max(0, offset + (syncStart - observed) * symbol);
       if (b + 17 >= count) {
         diagnostics.framing = FRAMING.sync; diagnostics.bits.receivedData = 0;
         note({ ...candidate, outcome: 'accepted', reason: 'capture ends inside the physical header' });
@@ -222,7 +244,7 @@ export function decodeAudio(pcm, sampleRate, { detail = false } = {}) {
       const view = new DataView(packet.buffer);
       const crcOk = view.getUint32(packet.length - 4) === crc32(packet.subarray(0, -4));
       diagnostics.framing = FRAMING.complete; diagnostics.declaredPacketBytes = length;
-      diagnostics.bits.expectedData = length * 8; diagnostics.bits.receivedData = length * 8; diagnostics.bits.total = OVERHEAD_BITS + length * 8;
+      diagnostics.bits.expectedData = length * 8; diagnostics.bits.receivedData = length * 8; diagnostics.bits.total = diagnostics.bits.framing + length * 8;
       diagnostics.checksum = crcOk ? 'CRC-32 PASS' : 'CRC-32 FAIL';
       note({ ...candidate, outcome: 'accepted', length, reason: crcOk ? 'complete frame, CRC-32 PASS' : 'complete frame, CRC-32 FAIL' });
       // CRC selects a timing phase, not authenticity. Signature checked independently.

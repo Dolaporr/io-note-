@@ -4,7 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createPacket, importIdentity, hex } from '../src/protocol.mjs';
-import { decodeAudio, modulate, frameBits, FRAMING, BITRATE } from '../src/modem.mjs';
+import { decodeAudio, modulate, frameBits, FRAMING, BITRATE, PREAMBLE_BITS } from '../src/modem.mjs';
 import { TEST_IDENTITY } from '../src/selftest.mjs';
 import { resampleLinear, resampleSinc, modulateImbalanced, toneNoise, mix, pad } from '../scripts/channel-lab.mjs';
 import { readWav } from '../scripts/replay-capture.mjs';
@@ -61,7 +61,7 @@ test('a clean preamble reads as alternating 0101 in the trace; all-zero means no
 
 test('a transmission cut within 16 symbols of the sync word reproduces LENGTH INVALID', () => {
   const pcm = modulateImbalanced(bits, 44100, 1, 1);
-  const from = Math.round(0.15 * 44100 + 96 * 44100 / BITRATE); // preamble 64 + sync 32
+  const from = Math.round(0.15 * 44100 + (PREAMBLE_BITS + 32) * 44100 / BITRATE); // end of preamble + sync
   for (let i = from; i < pcm.length; i++) pcm[i] = 0;
   const decoded = decode(pcm);
   assert.equal(decoded.diagnostics.framing, FRAMING.length);

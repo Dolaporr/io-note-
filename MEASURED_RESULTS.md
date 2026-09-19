@@ -16,6 +16,30 @@ Run date: 18 September 2026. Runtime: Node.js 24.19.0, Linux x64. Exact environm
 | Real microphone hardware in the *automated* checks | **Not exercised there.** The headless environment has no audio hardware; the physical result below came from two handsets, by hand |
 | Physical speaker → air → microphone, two devices | **SUCCEEDED THREE TIMES, 19 September 2026, in both directions between an iPhone and an Android handset**, across two message lengths. All three: CRC-32 PASS, SIGNATURE VERIFIED, 0 preamble errors. **3 of 4 transmit/listen pairings in that session**, plus four failures in earlier sessions. One raw acoustic recording is committed and **replays offline through the same decoder** |
 
+## Physical framing change, 20 September 2026
+
+Every physical result in this file was measured on the **64-symbol preamble**. The preamble has
+since been lengthened to **256 symbols** to fix late joining, which changes the baseline
+numbers below but nothing about the packet, the tones, the bitrate, or the CRC.
+
+| | Before | After |
+| --- | ---: | ---: |
+| Preamble | 64 symbols (0.32 s) | 256 symbols (1.28 s) |
+| Framing bits | 112 | 304 |
+| **Join grace** | **0.16 s** | **1.12 s** |
+| Baseline tone duration | 6.04 s | 7.00 s |
+| Baseline audio buffer | 6.34 s | 7.30 s |
+
+The decoder validates only the 32 symbols immediately before the sync word, so the grace is
+`(preamble − 32) / 200` seconds and **lengthening the preamble is a transmitter-side change
+alone**. The detector is untouched; a longer preamble is still readable by any earlier receiver,
+and a frame built with the old 64-symbol preamble still decodes here — proven both by a test and
+by re-replaying the committed physical recording, which still recovers 157 bytes and verifies.
+
+This is why the three deliveries above remain valid evidence: they were carried on framing the
+current code can still read. Their measured durations belong to the older framing, and are
+labelled as such rather than restated.
+
 ## Baseline signal
 
 Message: `hello, io-note` (14 UTF-8 bytes). Fixed public test identity and nonce.
@@ -268,4 +292,10 @@ The clock-stretch experiment linearly resamples the complete waveform. It expose
 
 ## What is not established
 
-No general browser/device compatibility, physical range, room-noise tolerance, or repeatable delivery rate has been established; one successful two-device transmission and one end-to-end latency figure now exist, from a single pair of handsets; the headless Chromium runs above cover one browser build on one machine, and the only capture device involved was synthetic. The microphone path is implemented and has now run end to end in a browser against a synthetic capture device; real hardware, real speakers and a real room still need a trial on user-controlled devices. `PHYSICAL_TEST.md` is the procedure for that trial, and this file will not record a physical result until such a run produces one. No production deployment, backend, wallet, blockchain integration, or Breadlines modification was performed.
+No general browser/device compatibility, physical range, room-noise tolerance, or repeatable
+delivery rate has been established. Three deliveries and three end-to-end latency figures exist,
+from a single pair of handsets in one room; the headless Chromium runs cover one browser build
+on one machine, and the capture device there is synthetic. Ten consecutive attempts at a fixed
+distance and volume would be the first reliability number worth citing, and no range has been
+measured at all. No production deployment, backend, wallet, or blockchain integration was
+performed.

@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-18T17:55:10.724Z",
+  "generatedAt": "2026-09-19T23:13:08.800Z",
   "environment": {
-    "node": "v24.19.0",
+    "node": "v22.22.2",
     "platform": "linux x64",
-    "cpu": "INTEL(R) XEON(R) PLATINUM 8573C"
+    "cpu": "Intel(R) Xeon(R) Processor @ 2.80GHz"
   },
   "physicalAudio": {
     "attempted": false,
@@ -16,10 +16,10 @@
       "trial": 1,
       "packetBytes": 137,
       "packetBits": 1096,
-      "transmittedBits": 1208,
+      "transmittedBits": 1400,
       "bitrate": 200,
-      "toneSeconds": 6.04,
-      "audioSeconds": 6.34,
+      "toneSeconds": 7,
+      "audioSeconds": 7.3,
       "sampleRate": 44100,
       "status": "SIGNATURE VERIFIED",
       "message": "hello, io-note",
@@ -27,7 +27,7 @@
       "publicKey": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
       "fingerprint": "21fe31dfa154a261626bf854046fd2271b7bed4b6abe45aa58877ef47f9721b9",
       "successfulDecode": true,
-      "processingMs": 65.20324099999999,
+      "processingMs": 125.644946,
       "packetHex": "494f4e3101d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a000102030405060708090a0b0c0d0e0f000e68656c6c6f2c20696f2d6e6f7465b590d5977bb8b1e8a4a987a7c324ed2a47583afac514549df24c0702b4de16df28d2813adc7c41057b1167cfe625cd7a9a53328cecf4adae02861145cc29f7069515f110",
       "mode": "deterministic software PCM loopback"
     },
@@ -35,10 +35,10 @@
       "trial": 2,
       "packetBytes": 137,
       "packetBits": 1096,
-      "transmittedBits": 1208,
+      "transmittedBits": 1400,
       "bitrate": 200,
-      "toneSeconds": 6.04,
-      "audioSeconds": 6.34,
+      "toneSeconds": 7,
+      "audioSeconds": 7.3,
       "sampleRate": 44100,
       "status": "SIGNATURE VERIFIED",
       "message": "hello, io-note",
@@ -46,7 +46,7 @@
       "publicKey": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
       "fingerprint": "21fe31dfa154a261626bf854046fd2271b7bed4b6abe45aa58877ef47f9721b9",
       "successfulDecode": true,
-      "processingMs": 88.845518,
+      "processingMs": 66.73383999999999,
       "packetHex": "494f4e3101d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a000102030405060708090a0b0c0d0e0f000e68656c6c6f2c20696f2d6e6f7465b590d5977bb8b1e8a4a987a7c324ed2a47583afac514549df24c0702b4de16df28d2813adc7c41057b1167cfe625cd7a9a53328cecf4adae02861145cc29f7069515f110",
       "mode": "deterministic software PCM loopback"
     },
@@ -54,10 +54,10 @@
       "trial": 3,
       "packetBytes": 137,
       "packetBits": 1096,
-      "transmittedBits": 1208,
+      "transmittedBits": 1400,
       "bitrate": 200,
-      "toneSeconds": 6.04,
-      "audioSeconds": 6.34,
+      "toneSeconds": 7,
+      "audioSeconds": 7.3,
       "sampleRate": 44100,
       "status": "SIGNATURE VERIFIED",
       "message": "hello, io-note",
@@ -65,7 +65,7 @@
       "publicKey": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
       "fingerprint": "21fe31dfa154a261626bf854046fd2271b7bed4b6abe45aa58877ef47f9721b9",
       "successfulDecode": true,
-      "processingMs": 128.13629600000002,
+      "processingMs": 66.65591699999999,
       "packetHex": "494f4e3101d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a000102030405060708090a0b0c0d0e0f000e68656c6c6f2c20696f2d6e6f7465b590d5977bb8b1e8a4a987a7c324ed2a47583afac514549df24c0702b4de16df28d2813adc7c41057b1167cfe625cd7a9a53328cecf4adae02861145cc29f7069515f110",
       "mode": "deterministic software PCM loopback"
     },
@@ -73,10 +73,10 @@
       "trial": 4,
       "packetBytes": 137,
       "packetBits": 1096,
-      "transmittedBits": 1208,
+      "transmittedBits": 1400,
       "bitrate": 200,
-      "toneSeconds": 6.04,
-      "audioSeconds": 6.34,
+      "toneSeconds": 7,
+      "audioSeconds": 7.3,
       "sampleRate": 44100,
       "status": "SIGNATURE VERIFIED",
       "message": "hello, io-note",
@@ -84,7 +84,7 @@
       "publicKey": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
       "fingerprint": "21fe31dfa154a261626bf854046fd2271b7bed4b6abe45aa58877ef47f9721b9",
       "successfulDecode": true,
-      "processingMs": 88.04491999999999,
+      "processingMs": 66.282824,
       "packetHex": "494f4e3101d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a000102030405060708090a0b0c0d0e0f000e68656c6c6f2c20696f2d6e6f7465b590d5977bb8b1e8a4a987a7c324ed2a47583afac514549df24c0702b4de16df28d2813adc7c41057b1167cfe625cd7a9a53328cecf4adae02861145cc29f7069515f110",
       "mode": "deterministic software PCM loopback"
     },
@@ -92,10 +92,10 @@
       "trial": 5,
       "packetBytes": 137,
       "packetBits": 1096,
-      "transmittedBits": 1208,
+      "transmittedBits": 1400,
       "bitrate": 200,
-      "toneSeconds": 6.04,
-      "audioSeconds": 6.34,
+      "toneSeconds": 7,
+      "audioSeconds": 7.3,
       "sampleRate": 44100,
       "status": "SIGNATURE VERIFIED",
       "message": "hello, io-note",
@@ -103,7 +103,7 @@
       "publicKey": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
       "fingerprint": "21fe31dfa154a261626bf854046fd2271b7bed4b6abe45aa58877ef47f9721b9",
       "successfulDecode": true,
-      "processingMs": 86.25729400000006,
+      "processingMs": 65.97197299999999,
       "packetHex": "494f4e3101d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a000102030405060708090a0b0c0d0e0f000e68656c6c6f2c20696f2d6e6f7465b590d5977bb8b1e8a4a987a7c324ed2a47583afac514549df24c0702b4de16df28d2813adc7c41057b1167cfe625cd7a9a53328cecf4adae02861145cc29f7069515f110",
       "mode": "deterministic software PCM loopback"
     },
@@ -111,10 +111,10 @@
       "trial": 1,
       "packetBytes": 137,
       "packetBits": 1096,
-      "transmittedBits": 1208,
+      "transmittedBits": 1400,
       "bitrate": 200,
-      "toneSeconds": 6.04,
-      "audioSeconds": 6.34,
+      "toneSeconds": 7,
+      "audioSeconds": 7.3,
       "sampleRate": 48000,
       "status": "SIGNATURE VERIFIED",
       "message": "hello, io-note",
@@ -122,7 +122,7 @@
       "publicKey": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
       "fingerprint": "21fe31dfa154a261626bf854046fd2271b7bed4b6abe45aa58877ef47f9721b9",
       "successfulDecode": true,
-      "processingMs": 72.03103099999998,
+      "processingMs": 77.85276999999996,
       "packetHex": "494f4e3101d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a000102030405060708090a0b0c0d0e0f000e68656c6c6f2c20696f2d6e6f7465b590d5977bb8b1e8a4a987a7c324ed2a47583afac514549df24c0702b4de16df28d2813adc7c41057b1167cfe625cd7a9a53328cecf4adae02861145cc29f7069515f110",
       "mode": "deterministic software PCM loopback"
     },
@@ -130,10 +130,10 @@
       "trial": 2,
       "packetBytes": 137,
       "packetBits": 1096,
-      "transmittedBits": 1208,
+      "transmittedBits": 1400,
       "bitrate": 200,
-      "toneSeconds": 6.04,
-      "audioSeconds": 6.34,
+      "toneSeconds": 7,
+      "audioSeconds": 7.3,
       "sampleRate": 48000,
       "status": "SIGNATURE VERIFIED",
       "message": "hello, io-note",
@@ -141,7 +141,7 @@
       "publicKey": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
       "fingerprint": "21fe31dfa154a261626bf854046fd2271b7bed4b6abe45aa58877ef47f9721b9",
       "successfulDecode": true,
-      "processingMs": 36.85777399999995,
+      "processingMs": 66.19151799999997,
       "packetHex": "494f4e3101d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a000102030405060708090a0b0c0d0e0f000e68656c6c6f2c20696f2d6e6f7465b590d5977bb8b1e8a4a987a7c324ed2a47583afac514549df24c0702b4de16df28d2813adc7c41057b1167cfe625cd7a9a53328cecf4adae02861145cc29f7069515f110",
       "mode": "deterministic software PCM loopback"
     },
@@ -149,10 +149,10 @@
       "trial": 3,
       "packetBytes": 137,
       "packetBits": 1096,
-      "transmittedBits": 1208,
+      "transmittedBits": 1400,
       "bitrate": 200,
-      "toneSeconds": 6.04,
-      "audioSeconds": 6.34,
+      "toneSeconds": 7,
+      "audioSeconds": 7.3,
       "sampleRate": 48000,
       "status": "SIGNATURE VERIFIED",
       "message": "hello, io-note",
@@ -160,7 +160,7 @@
       "publicKey": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
       "fingerprint": "21fe31dfa154a261626bf854046fd2271b7bed4b6abe45aa58877ef47f9721b9",
       "successfulDecode": true,
-      "processingMs": 43.213728999999944,
+      "processingMs": 68.64504699999998,
       "packetHex": "494f4e3101d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a000102030405060708090a0b0c0d0e0f000e68656c6c6f2c20696f2d6e6f7465b590d5977bb8b1e8a4a987a7c324ed2a47583afac514549df24c0702b4de16df28d2813adc7c41057b1167cfe625cd7a9a53328cecf4adae02861145cc29f7069515f110",
       "mode": "deterministic software PCM loopback"
     },
@@ -168,10 +168,10 @@
       "trial": 4,
       "packetBytes": 137,
       "packetBits": 1096,
-      "transmittedBits": 1208,
+      "transmittedBits": 1400,
       "bitrate": 200,
-      "toneSeconds": 6.04,
-      "audioSeconds": 6.34,
+      "toneSeconds": 7,
+      "audioSeconds": 7.3,
       "sampleRate": 48000,
       "status": "SIGNATURE VERIFIED",
       "message": "hello, io-note",
@@ -179,7 +179,7 @@
       "publicKey": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
       "fingerprint": "21fe31dfa154a261626bf854046fd2271b7bed4b6abe45aa58877ef47f9721b9",
       "successfulDecode": true,
-      "processingMs": 34.84623899999997,
+      "processingMs": 73.71986500000003,
       "packetHex": "494f4e3101d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a000102030405060708090a0b0c0d0e0f000e68656c6c6f2c20696f2d6e6f7465b590d5977bb8b1e8a4a987a7c324ed2a47583afac514549df24c0702b4de16df28d2813adc7c41057b1167cfe625cd7a9a53328cecf4adae02861145cc29f7069515f110",
       "mode": "deterministic software PCM loopback"
     },
@@ -187,10 +187,10 @@
       "trial": 5,
       "packetBytes": 137,
       "packetBits": 1096,
-      "transmittedBits": 1208,
+      "transmittedBits": 1400,
       "bitrate": 200,
-      "toneSeconds": 6.04,
-      "audioSeconds": 6.34,
+      "toneSeconds": 7,
+      "audioSeconds": 7.3,
       "sampleRate": 48000,
       "status": "SIGNATURE VERIFIED",
       "message": "hello, io-note",
@@ -198,7 +198,7 @@
       "publicKey": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
       "fingerprint": "21fe31dfa154a261626bf854046fd2271b7bed4b6abe45aa58877ef47f9721b9",
       "successfulDecode": true,
-      "processingMs": 50.77666199999999,
+      "processingMs": 102.32557700000007,
       "packetHex": "494f4e3101d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a000102030405060708090a0b0c0d0e0f000e68656c6c6f2c20696f2d6e6f7465b590d5977bb8b1e8a4a987a7c324ed2a47583afac514549df24c0702b4de16df28d2813adc7c41057b1167cfe625cd7a9a53328cecf4adae02861145cc29f7069515f110",
       "mode": "deterministic software PCM loopback"
     }
@@ -209,42 +209,42 @@
       "status": "SIGNATURE INVALID",
       "demodulator": "packet",
       "successfulDecode": true,
-      "processingMs": 47.957898
+      "processingMs": 52.12197900000001
     },
     {
       "attack": "signature",
       "status": "SIGNATURE INVALID",
       "demodulator": "packet",
       "successfulDecode": true,
-      "processingMs": 70.77160100000003
+      "processingMs": 51.98293899999999
     },
     {
       "attack": "public-key",
       "status": "SIGNATURE INVALID",
       "demodulator": "packet",
       "successfulDecode": true,
-      "processingMs": 30.89473799999996
+      "processingMs": 51.26282600000002
     },
     {
       "attack": "truncated-frame",
       "status": "TRANSPORT CORRUPTED",
       "demodulator": "partial",
       "successfulDecode": false,
-      "processingMs": 32.366604999999936
+      "processingMs": 57.99101600000006
     },
     {
       "attack": "duplicate-nonce",
       "status": "REPLAYED PACKET",
       "demodulator": "packet",
       "successfulDecode": true,
-      "processingMs": 25.797708000000057
+      "processingMs": 112.26384600000006
     },
     {
       "attack": "audio-bit-corruption",
       "status": "TRANSPORT CORRUPTED",
       "demodulator": "packet",
       "successfulDecode": false,
-      "processingMs": 31.03571599999998
+      "processingMs": 59.72337500000003
     }
   ],
   "channelExperiments": [
@@ -256,7 +256,7 @@
       "demodulator": "packet",
       "status": "SIGNATURE VERIFIED",
       "successfulDecode": true,
-      "decodeAndVerifyMs": 26.174668999999994
+      "decodeAndVerifyMs": 37.60175800000002
     },
     {
       "experiment": "uniform additive seeded noise; no clipping",
@@ -266,7 +266,7 @@
       "demodulator": "packet",
       "status": "SIGNATURE VERIFIED",
       "successfulDecode": true,
-      "decodeAndVerifyMs": 25.43908199999987
+      "decodeAndVerifyMs": 37.75303400000007
     },
     {
       "experiment": "uniform additive seeded noise; no clipping",
@@ -276,7 +276,7 @@
       "demodulator": "packet",
       "status": "SIGNATURE VERIFIED",
       "successfulDecode": true,
-      "decodeAndVerifyMs": 33.701835000000074
+      "decodeAndVerifyMs": 50.0693040000001
     },
     {
       "experiment": "uniform additive seeded noise; no clipping",
@@ -286,7 +286,7 @@
       "demodulator": "none",
       "status": "NO VALID PACKET",
       "successfulDecode": false,
-      "decodeAndVerifyMs": 18.959075999999868
+      "decodeAndVerifyMs": 66.01716099999999
     },
     {
       "experiment": "synthetic sample-clock stretch; linear interpolation",
@@ -294,7 +294,7 @@
       "demodulator": "packet",
       "status": "SIGNATURE VERIFIED",
       "successfulDecode": true,
-      "decodeAndVerifyMs": 16.816416000000117
+      "decodeAndVerifyMs": 36.09093500000017
     },
     {
       "experiment": "synthetic sample-clock stretch; linear interpolation",
@@ -302,7 +302,7 @@
       "demodulator": "packet",
       "status": "TRANSPORT CORRUPTED",
       "successfulDecode": false,
-      "decodeAndVerifyMs": 27.72719600000005
+      "decodeAndVerifyMs": 37.30607800000007
     },
     {
       "experiment": "synthetic sample-clock stretch; linear interpolation",
@@ -310,7 +310,7 @@
       "demodulator": "packet",
       "status": "TRANSPORT CORRUPTED",
       "successfulDecode": false,
-      "decodeAndVerifyMs": 52.23211400000014
+      "decodeAndVerifyMs": 41.03133700000012
     }
   ]
 }

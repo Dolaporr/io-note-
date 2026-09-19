@@ -1,8 +1,33 @@
 # io-note
 
-An isolated research PoC for an Ed25519-signed short message carried by audible 2-FSK. This project is independent of Breadlines. No Breadlines files were accessed or modified. No deployment was performed.
+Sign a short message with Ed25519, play it as audible two-tone audio, and have another device
+in the room recover and verify it. No network, no pairing, no camera — the two devices share
+nothing but air. The receiver checks the signature itself and shows the sender's key
+fingerprint for out-of-band comparison.
 
-**Implemented and verified in software, in a browser, and — on 19 September 2026 — over a physical air gap in both directions between an iPhone and an Android handset.** Three verified deliveries across two message lengths, one with the raw acoustic recording committed and replayable offline: delivery is demonstrated and bidirectional, reliability is not. See [MEASURED_RESULTS.md](MEASURED_RESULTS.md) for actual successes, failures, and validation limits, and [PHYSICAL_TEST.md](PHYSICAL_TEST.md) for the two-device procedure that would change that.
+**Authenticity and integrity only.** The audio is unencrypted and anyone within earshot can
+record and decode it. A key inside a packet proves someone holds that key, not who they are.
+
+**Why sound instead of a QR code.** Sound is a broadcast: one device can authenticate a message
+to every device in earshot at once, hands-free, with nothing aimed at anything and no prior
+pairing. That property is what pays for the bitrate — and the bitrate is 200 bit/s, with
+messages capped at 96 UTF-8 bytes, so a packet is 7–10 seconds of tones. This is a channel for
+a key, a nonce, or a short attestation. It is not a transport for transactions.
+
+## Status
+
+| Layer | Result |
+| --- | --- |
+| Protocol, modem, verifier | **47 tests**, byte-exact recovery at 44.1 / 48 / 96 kHz |
+| Adversarial cases | Modified message, signature, key, truncation, replay and bit-flip all rejected as documented |
+| Browser microphone path | Runs end to end in Chromium over a secure origin |
+| **Physical, two devices** | **3 verified deliveries**, 19 September 2026, iPhone ⇄ Android, **both directions**, two message lengths |
+| Raw acoustic evidence | One delivery's recording is committed and **re-verifies offline** through the same decoder |
+| Reliability, range, device compatibility | **Not established.** 3 of 4 pairings in that session, plus 4 failures in earlier sessions |
+
+Delivery is demonstrated and bidirectional; reliability is not. Every success *and* failure is
+written down in [MEASURED_RESULTS.md](MEASURED_RESULTS.md), with the two-device procedure in
+[PHYSICAL_TEST.md](PHYSICAL_TEST.md).
 
 ## HTTPS preview
 
@@ -92,7 +117,7 @@ The import format is `{ "format": "io-note-key-v1", "publicKey": "<32 raw bytes 
 | Sequence | Size | Encoding |
 | --- | ---: | --- |
 | Lead silence | 150 ms | Not counted as transmitted bits |
-| Preamble | 64 bits | Alternating `01`, beginning with 0 |
+| Preamble | 256 bits | Alternating `01`, beginning with 0. An **acquisition run**, not a fixed header: synchronisation validates only the 32 symbols immediately before the sync word, so a receiver may join anywhere in it and still lock. Join grace = (256 − 32) / 200 = **1.12 s** |
 | Sync | 32 bits | `d391c5a7`, MSB first |
 | Packet length | 16 bits | Unsigned packet byte count, MSB first |
 | Packet | 8 × (123 + L) bits | Every byte MSB first |
@@ -102,7 +127,7 @@ The import format is `{ "format": "io-note-key-v1", "publicKey": "<32 raw bytes 
 - **200 symbols/second = 200 bits/second**; one bit per 5 ms symbol.
 - Continuous carrier phase, float PCM amplitude 0.35. Both tones are audible.
 - No encryption, error correction, retransmission protocol, ACK, carrier sensing, equalizer, or in-packet clock tracking.
-- Transmitted bits = `112 + 8 × packetBytes`.
+- Transmitted bits = `304 + 8 × packetBytes`.
 - Tone duration = `transmittedBits / 200`; audio-buffer duration adds 0.30 s of silence.
 - Maximum message produces 1,864 bits, 9.32 s of tones, and a 9.62 s audio buffer.
 
@@ -133,6 +158,7 @@ Replay memory lasts only for the current page session, up to 1,024 accepted entr
 
 - **Packet bytes** includes magic, version, key, nonce, lengths, message, signature, and CRC.
 - **Transmitted bits** includes preamble, sync, physical length, and packet, but excludes silence.
+- **Preamble length is a transmitter-side parameter.** The detector never depended on it, so lengthening it needs no decoder change and stays readable by any earlier receiver; `frameBits(packet, preambleSymbols)` builds a frame with an earlier length, and a test decodes one to prove it.
 - **Bitrate** is the configured nominal raw symbol bitrate, not measured hardware clock rate or application goodput.
 - **Audio buffer seconds** is the generated sample count divided by sample rate. This is a signal-length calculation, not proof of physical delivery.
 - **Software processing ms** is measured wall time for fixture import, signing, PCM generation, decode, and signature verification; it runs faster than real-time. It is not physical transmission latency.
