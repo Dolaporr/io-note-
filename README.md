@@ -2,7 +2,7 @@
 
 An isolated research PoC for an Ed25519-signed short message carried by audible 2-FSK. This project is independent of Breadlines. No Breadlines files were accessed or modified. No deployment was performed.
 
-**Implemented and verified in software, in a browser, and — once, on 19 September 2026 — over a physical air gap between two phones.** One success in five attempts: delivery is demonstrated, reliability is not. See [MEASURED_RESULTS.md](MEASURED_RESULTS.md) for actual successes, failures, and validation limits, and [PHYSICAL_TEST.md](PHYSICAL_TEST.md) for the two-device procedure that would change that.
+**Implemented and verified in software, in a browser, and — on 19 September 2026 — over a physical air gap in both directions between an iPhone and an Android handset.** Two verified deliveries: delivery is demonstrated and bidirectional, reliability is not. See [MEASURED_RESULTS.md](MEASURED_RESULTS.md) for actual successes, failures, and validation limits, and [PHYSICAL_TEST.md](PHYSICAL_TEST.md) for the two-device procedure that would change that.
 
 ## HTTPS preview
 

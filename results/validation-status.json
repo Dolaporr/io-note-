@@ -16,27 +16,40 @@
   },
   "physicalAudio": {
     "attempted": true,
-    "successful": 1,
-    "failed": 4,
-    "firstSuccess": "2026-09-19T22:29:34.763Z",
-    "devices": "iPhone -> iPhone, iOS 26.6.2, Chrome (CriOS 150), 48 kHz capture",
+    "verifiedDeliveries": 2,
+    "failedPairings": 1,
+    "earlierFailedAttempts": 4,
+    "bidirectional": true,
+    "crossPlatform": "iPhone (iOS 26.6.2, Chrome) <-> Android 10 (Chrome 152)",
+    "deliveries": [
+      {
+        "direction": "Android -> iPhone",
+        "at": "2026-09-19T22:29:34.763Z",
+        "nonce": "03e3a8a7c53bd5e487d286bf92790dbe",
+        "senderKey": "8b3d0efdd29a63bb8b419192fcebcdcab47bdb9b38f89f4e4bd9891d33563605",
+        "rmsDbfs": -51.0,
+        "toneShare1200": 0.73,
+        "signalOnsetToVerdictSeconds": 6.498
+      },
+      {
+        "direction": "iPhone -> Android",
+        "at": "2026-09-19T22:34:05.362Z",
+        "nonce": "1f1b66a0b37af17d5493afeab6bad555",
+        "senderKey": "5803354736aee8e30e909279043a81127fdb9a9a6cfdd81c1cfb080de1c2d6a6",
+        "rmsDbfs": -28.0,
+        "toneShare1200": 0.267,
+        "signalOnsetToVerdictSeconds": 6.613
+      }
+    ],
     "message": "we control the io pins",
-    "verdict": "SIGNATURE VERIFIED; CRC-32 PASS; 0 preamble errors",
-    "signalOnsetToVerdictSeconds": 6.498,
     "evidence": [
       "results/physical/capture-2026-09-19T22-29-34-812Z.json",
-      "results/physical/session-results-2026-09-19.json",
-      "results/physical/session-results-2026-09-19-phone-a-later-export.json"
+      "results/physical/capture-2026-09-19T22-34-05-786Z-android.json",
+      "results/physical/session-results-2026-09-19-phone-a-later-export.json",
+      "results/physical/session-results-2026-09-19-phone-b-android.json",
+      "results/physical/session-results-2026-09-19.json"
     ],
-    "scope": "One delivery between two handsets in one room. Not a success rate, range, or compatibility claim.",
-    "unconfirmedTransmissions": {
-      "count": 2,
-      "at": [
-        "2026-09-19T22:28:16.748Z",
-        "2026-09-19T22:34:05.492Z"
-      ],
-      "note": "Sent with fresh nonces from the same handset; reception is recorded only on the other phone, whose export is not yet held here. Not counted as deliveries."
-    }
+    "scope": "Two deliveries between two handsets in one room. Not a success rate, range, or general compatibility claim."
   },
   "deployed": false,
   "breadlinesModified": false

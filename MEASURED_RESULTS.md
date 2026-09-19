@@ -14,7 +14,7 @@ Run date: 18 September 2026. Runtime: Node.js 24.19.0, Linux x64. Exact environm
 | Browser microphone path (`getUserMedia` → AudioWorklet → worker → verifier) | **Exercised once end to end** in the same Chromium over a secure origin, fed by a **synthetic capture device**, not a microphone: SIGNATURE VERIFIED, CRC-32 PASS, 112 + 1,096 bits |
 | Raw capture export → offline replay | **Verified round-trip.** The browser's exported 32-bit float WAV replays through the same decoder via `scripts/replay-capture.mjs` and recovers the packet with SIGNATURE VERIFIED |
 | Real microphone hardware in the *automated* checks | **Not exercised there.** The headless environment has no audio hardware; the physical result below came from two handsets, by hand |
-| Physical speaker → air → microphone, two devices | **SUCCEEDED ONCE, 19 September 2026**, iPhone → iPhone, after four failed attempts. `we control the io pins` crossed the air and verified: CRC-32 PASS, SIGNATURE VERIFIED, 0 preamble errors. **1 success in 5 attempts** — delivery is demonstrated, not reliable |
+| Physical speaker → air → microphone, two devices | **SUCCEEDED TWICE, 19 September 2026, in both directions between an iPhone and an Android handset.** Both verified: CRC-32 PASS, SIGNATURE VERIFIED, 0 preamble errors. **2 of 3 transmit/listen pairings in that session; 2 successes across all attempts to date** — delivery is demonstrated and bidirectional, not reliable |
 
 ## Baseline signal
 
@@ -88,11 +88,57 @@ in order to be debuggable.
 
 The UI was not rendered for visual inspection and no speaker output was produced.
 
-## First successful physical delivery — 19 September 2026
+## Successful physical delivery — bidirectional, cross-platform, 19 September 2026
 
-**A signed message crossed a physical air gap between two phones and verified.** Raw evidence:
-`results/physical/capture-2026-09-19T22-29-34-812Z.json` (the receiver's own capture export)
-and `results/physical/session-results-2026-09-19.json`.
+**Signed messages crossed a physical air gap in both directions between an iPhone and an
+Android handset, and verified on each.** Both phones' exports are in `results/physical/`.
+
+### Both devices on one timeline
+
+| Time (UTC) | Device | Event |
+| --- | --- | --- |
+| 22:28:16.748 | A · iPhone | transmit, playback ended |
+| 22:28:19.263 | B · Android | receive → **NO PACKET DECODED** (14.2 s capture) |
+| 22:29:14.159 | A · iPhone | receive → NO PACKET DECODED (3.5 s capture; nothing was transmitting) |
+| 22:29:34.190 | B · Android | transmit, playback ended |
+| 22:29:34.763 | A · iPhone | receive → **SIGNATURE VERIFIED**, nonce `03e3a8a7…` |
+| 22:34:05.362 | B · Android | receive → **SIGNATURE VERIFIED**, nonce `1f1b66a0…` |
+| 22:34:05.492 | A · iPhone | transmit, playback ended |
+
+Three genuine transmit↔listen pairings, **two verified, one failed.** The 22:29:14 listen had
+nothing to hear and is not counted as a delivery attempt.
+
+### The two deliveries, side by side
+
+| | Android → iPhone | iPhone → Android |
+| --- | --- | --- |
+| Receiver | iPhone, iOS 26.6.2, Chrome | Android 10, Chrome 152 |
+| Nonce | `03e3a8a7c53bd5e487d286bf92790dbe` | `1f1b66a0b37af17d5493afeab6bad555` |
+| Sender key | `8b3d0efd…33563605` | `5803354736…0de1c2d6a6` |
+| Signal in capture | 6.360 s | 6.360 s |
+| Level | −51.0 dBFS rms, crest 10.5 dB | −28.0 dBFS rms, crest 10.8 dB |
+| Tone share | **73.0 % at 1,200 Hz** | **73.3 % at 2,200 Hz** |
+| Sync candidates | 1 accepted, 0 preamble errors | 2 accepted, 0 preamble errors |
+| Checksum | CRC-32 PASS | CRC-32 PASS |
+| Decode | 35 ms | 109 ms |
+| Signal onset → verdict | 6.498 s | 6.613 s |
+
+Three things in that table are worth more than the success itself:
+
+**The tone shares are inverted.** The iPhone heard 73 % of the energy in the 1,200 Hz bin; the
+Android heard 73 % in the 2,200 Hz bin. Two completely opposite hardware responses, both
+decoding byte-exact — the physical confirmation of the offline finding that **tone share is
+not a verdict**.
+
+**The eight-phase timing search earned its keep.** On the Android reception, two timing phases
+both found the sync word at 3.306 s: phase 1 read a complete frame that **failed** CRC-32,
+phase 2 read one that **passed**. A single-phase detector would have thrown that frame away.
+
+**The sender keys differ per direction**, and each nonce was generated on the transmitting
+handset, so neither reception can be a local artefact. The nonce and key fingerprint visible
+on the sender's screen (`1f1b66a0…`, key ending `0de1c2d6a6`) are exactly what the Android
+verified. The Android also reported `echoCancellation`, `noiseSuppression`, `autoGainControl`
+and `voiceIsolation` all honoured as `false`.
 
 | Quantity | Value |
 | --- | --- |
@@ -119,26 +165,15 @@ silence before transmitting** put the whole frame — preamble first — inside 
 window. Modulation, framing, bitrate, tones, preamble and CRC are byte-for-byte what they
 were when every attempt was failing.
 
-### Outstanding: two transmissions whose reception is unconfirmed
-
-The same handset also **transmitted** twice, at 22:28:16 and 22:34:05, each with a fresh
-nonce (`replayedNonce: false`, `interrupted: false`, 6.82 s of playback). A sender cannot
-observe delivery — the app records `receiverOutcome: "unknown on sender"` for exactly this
-reason — so whether either arrived is held by the *other* phone, whose export is not yet in
-this repository. If both were received, the session total would be three deliveries and
-bidirectional. **Neither is counted here until that export exists.**
-`results/physical/session-results-2026-09-19-phone-a-later-export.json` is the same session
-re-exported later and carries that second transmission record.
-
 ### What this does not establish
 
-One success in five physical attempts. The same session's earlier capture (3.5 s, record 3)
-still returned `NO PACKET DECODED`. No success rate, no range, no room-noise tolerance, no
-device compatibility beyond these two handsets in this room at this distance. **Delivery is
-demonstrated; reliability is not.** The received level was −51 dBFS RMS with 10.5 dB of crest
-(a 6.36 s tone inside an 11.78 s window), so the margin is thin.
+Two deliveries out of three pairings in one session, plus four failures in earlier sessions.
+No success rate worth quoting, no range, no room-noise tolerance, and no device compatibility
+beyond these two handsets in this room at this distance. **Delivery is demonstrated and works
+in both directions across two operating systems; reliability is not established.** Ten
+consecutive attempts at a fixed distance and volume would be the first number worth citing.
 
-## Earlier physical attempt — failed at synchronisation
+## Earlier physical attempts — failed at synchronisation
 
 One real two-device attempt was made over air. **It failed, and nothing about physical
 transport is claimed from it.** What the receiver reported:
