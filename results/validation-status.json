@@ -15,10 +15,19 @@
     "raw": "results/browser-verification.json"
   },
   "physicalAudio": {
-    "attempted": false,
-    "successful": null,
-    "failed": null,
-    "endToEndSeconds": null
+    "attempted": true,
+    "successful": 1,
+    "failed": 4,
+    "firstSuccess": "2026-09-19T22:29:34.763Z",
+    "devices": "iPhone -> iPhone, iOS 26.6.2, Chrome (CriOS 150), 48 kHz capture",
+    "message": "we control the io pins",
+    "verdict": "SIGNATURE VERIFIED; CRC-32 PASS; 0 preamble errors",
+    "signalOnsetToVerdictSeconds": 6.498,
+    "evidence": [
+      "results/physical/capture-2026-09-19T22-29-34-812Z.json",
+      "results/physical/session-results-2026-09-19.json"
+    ],
+    "scope": "One delivery between two handsets in one room. Not a success rate, range, or compatibility claim."
   },
   "deployed": false,
   "breadlinesModified": false

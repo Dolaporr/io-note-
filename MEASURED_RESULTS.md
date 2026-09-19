@@ -13,8 +13,8 @@ Run date: 18 September 2026. Runtime: Node.js 24.19.0, Linux x64. Exact environm
 | Browser execution of `dist/io-note.html` over `file://` | **Verified once** in headless Chromium 141.0.7390.37 (Linux x64): loopback gate, all six adversarial cases, key generation and role switching produced the documented outcomes with no console or page errors |
 | Browser microphone path (`getUserMedia` → AudioWorklet → worker → verifier) | **Exercised once end to end** in the same Chromium over a secure origin, fed by a **synthetic capture device**, not a microphone: SIGNATURE VERIFIED, CRC-32 PASS, 112 + 1,096 bits |
 | Raw capture export → offline replay | **Verified round-trip.** The browser's exported 32-bit float WAV replays through the same decoder via `scripts/replay-capture.mjs` and recovers the packet with SIGNATURE VERIFIED |
-| Real microphone hardware, speakers, or a room | **Not exercised.** No audio hardware exists in that environment |
-| Physical speaker → air → microphone, two devices | **Attempted once, 18 September 2026. FAILED at synchronisation.** No frame crossed the channel; no packet, checksum or signature was reached. Physical transport remains **UNVERIFIED** |
+| Real microphone hardware in the *automated* checks | **Not exercised there.** The headless environment has no audio hardware; the physical result below came from two handsets, by hand |
+| Physical speaker → air → microphone, two devices | **SUCCEEDED ONCE, 19 September 2026**, iPhone → iPhone, after four failed attempts. `we control the io pins` crossed the air and verified: CRC-32 PASS, SIGNATURE VERIFIED, 0 preamble errors. **1 success in 5 attempts** — delivery is demonstrated, not reliable |
 
 ## Baseline signal
 
@@ -88,7 +88,46 @@ in order to be debuggable.
 
 The UI was not rendered for visual inspection and no speaker output was produced.
 
-## First physical attempt — failed at synchronisation
+## First successful physical delivery — 19 September 2026
+
+**A signed message crossed a physical air gap between two phones and verified.** Raw evidence:
+`results/physical/capture-2026-09-19T22-29-34-812Z.json` (the receiver's own capture export)
+and `results/physical/session-results-2026-09-19.json`.
+
+| Quantity | Value |
+| --- | --- |
+| Devices | iPhone → iPhone, iOS 26.6.2, Chrome (CriOS 150), receiver capturing at 48,000 Hz |
+| Message | `we control the io pins` — 22 UTF-8 bytes, 145-byte packet, 1,272 bits on air |
+| Verdict | **SIGNATURE VERIFIED** · CRC-32 PASS · framing `FRAME COMPLETE` |
+| Sync | 1 candidate, 1 accepted, **0 preamble errors**, quality 0.886, timing phase 3 of 8 |
+| Signal interval in the capture | 5.317 s → 11.677 s = **6.360 s**, exactly 1,272 bits ÷ 200 bit/s |
+| Tone onset | 38 dB energy step at 5.30 s, against a silent floor |
+| Symbol trace | `0101010101…` — a clean alternating preamble, recovered from air |
+| Level | −51.0 dBFS RMS, −40.5 dBFS peak, crest 10.5 dB, **0 clipped samples** |
+| Signal onset → verdict | **6.498 s** (6.360 s of it is the transmission itself); decode 35 ms, verify 1 ms |
+
+**This is not a software loopback relabelled.** The two deterministic loopback records in the
+same session used the public RFC 8032 fixture — key fingerprint `21fe31df…`, fixed nonce
+`000102…0f`. The microphone record carries key fingerprint **`8b3d0efd…`** and a random nonce
+**`03e3a8a7c53bd5e487d286bf92790dbe`**, generated on the *sending* phone. The receiver had no
+way to produce either except by demodulating them out of the air.
+
+### What fixed it
+
+The procedure, not the protocol. Arming the receiver and leaving **5 seconds of recorded
+silence before transmitting** put the whole frame — preamble first — inside the rolling
+window. Modulation, framing, bitrate, tones, preamble and CRC are byte-for-byte what they
+were when every attempt was failing.
+
+### What this does not establish
+
+One success in five physical attempts. The same session's earlier capture (3.5 s, record 3)
+still returned `NO PACKET DECODED`. No success rate, no range, no room-noise tolerance, no
+device compatibility beyond these two handsets in this room at this distance. **Delivery is
+demonstrated; reliability is not.** The received level was −51 dBFS RMS with 10.5 dB of crest
+(a 6.36 s tone inside an 11.78 s window), so the margin is thin.
+
+## Earlier physical attempt — failed at synchronisation
 
 One real two-device attempt was made over air. **It failed, and nothing about physical
 transport is claimed from it.** What the receiver reported:
@@ -155,4 +194,4 @@ The clock-stretch experiment linearly resamples the complete waveform. It expose
 
 ## What is not established
 
-No general browser/device compatibility, physical range, room-noise tolerance, successful two-device live transmission, or live end-to-end latency has been established; the headless Chromium runs above cover one browser build on one machine, and the only capture device involved was synthetic. The microphone path is implemented and has now run end to end in a browser against a synthetic capture device; real hardware, real speakers and a real room still need a trial on user-controlled devices. `PHYSICAL_TEST.md` is the procedure for that trial, and this file will not record a physical result until such a run produces one. No production deployment, backend, wallet, blockchain integration, or Breadlines modification was performed.
+No general browser/device compatibility, physical range, room-noise tolerance, or repeatable delivery rate has been established; one successful two-device transmission and one end-to-end latency figure now exist, from a single pair of handsets; the headless Chromium runs above cover one browser build on one machine, and the only capture device involved was synthetic. The microphone path is implemented and has now run end to end in a browser against a synthetic capture device; real hardware, real speakers and a real room still need a trial on user-controlled devices. `PHYSICAL_TEST.md` is the procedure for that trial, and this file will not record a physical result until such a run produces one. No production deployment, backend, wallet, blockchain integration, or Breadlines modification was performed.

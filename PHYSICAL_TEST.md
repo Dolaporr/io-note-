@@ -1,8 +1,13 @@
 # Two-device physical audio test — procedure
 
-Physical speaker → air → microphone transport is **not verified**. This document is the
-procedure for attempting it. Nothing in this repository claims a physical result until a
-run recorded with these steps says so.
+Physical speaker → air → microphone transport **succeeded once**, on 19 September 2026,
+iPhone → iPhone, after four failures — see `MEASURED_RESULTS.md`. One success in five
+attempts is a demonstration, not a reliability claim, so this procedure still matters.
+
+**The step that made it work is step 5: five seconds of recorded silence before transmitting.**
+Every earlier failure had the frame's start missing from the receiver's rolling window, and the
+decoder needs the 32 preamble symbols immediately before the sync word — lose more than 160 ms
+of the frame's beginning and synchronisation is impossible however clean the rest is.
 
 ## What a successful run would establish, and what it would not
 
@@ -41,13 +46,14 @@ static, its CSP sets `connect-src 'none'`, and the only path between the devices
    fingerprint appears. Leave it on screen; you will compare it in step 8.
 4. **Sending device:** click the **we control the io pins** test message button. The counter
    reads *22 / 96 UTF-8 bytes*.
-5. **Receiving device:** click **Listen on microphone** and grant microphone access.
-   The verdict reads `LISTENING` and the receiver log records the capture sample rate.
-   The receiver stays armed for 90 seconds and decodes a rolling 14-second window, so there
-   is no rush between this step and the next.
-6. **Sending device:** click **Transmit audio**. Roughly 6.7 seconds of two-tone audio plays.
-   Do not talk over it. The sender cannot observe delivery — it only reports that playback
-   finished.
+5. **Receiving device:** click **Listen on microphone**, grant access, then **wait five full
+   seconds doing nothing.** This is the step that turned four failures into a success: it puts
+   five seconds of recorded silence in front of the frame, so the preamble is certain to be
+   inside the rolling window. The receiver stays armed for 90 seconds.
+6. **Sending device:** click **Transmit audio**. Roughly 6.4 seconds of two-tone audio plays.
+   Let it finish completely, then leave the receiver running about three more seconds before
+   pressing Finish. Do not talk over it. The sender cannot observe delivery — it only reports
+   that playback finished.
 7. **Receiving device:** watch the diagnostics panel while the tones play. Expect, in order:
    `NO SIGNAL` → `CARRIER; NO SYNC` → `FRAME INCOMPLETE` → `FRAME COMPLETE`, then a verdict
    of **SIGNATURE VERIFIED** with the message text `we control the io pins`.
