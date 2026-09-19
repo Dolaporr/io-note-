@@ -25,9 +25,18 @@
     "signalOnsetToVerdictSeconds": 6.498,
     "evidence": [
       "results/physical/capture-2026-09-19T22-29-34-812Z.json",
-      "results/physical/session-results-2026-09-19.json"
+      "results/physical/session-results-2026-09-19.json",
+      "results/physical/session-results-2026-09-19-phone-a-later-export.json"
     ],
-    "scope": "One delivery between two handsets in one room. Not a success rate, range, or compatibility claim."
+    "scope": "One delivery between two handsets in one room. Not a success rate, range, or compatibility claim.",
+    "unconfirmedTransmissions": {
+      "count": 2,
+      "at": [
+        "2026-09-19T22:28:16.748Z",
+        "2026-09-19T22:34:05.492Z"
+      ],
+      "note": "Sent with fresh nonces from the same handset; reception is recorded only on the other phone, whose export is not yet held here. Not counted as deliveries."
+    }
   },
   "deployed": false,
   "breadlinesModified": false

@@ -119,6 +119,17 @@ silence before transmitting** put the whole frame — preamble first — inside 
 window. Modulation, framing, bitrate, tones, preamble and CRC are byte-for-byte what they
 were when every attempt was failing.
 
+### Outstanding: two transmissions whose reception is unconfirmed
+
+The same handset also **transmitted** twice, at 22:28:16 and 22:34:05, each with a fresh
+nonce (`replayedNonce: false`, `interrupted: false`, 6.82 s of playback). A sender cannot
+observe delivery — the app records `receiverOutcome: "unknown on sender"` for exactly this
+reason — so whether either arrived is held by the *other* phone, whose export is not yet in
+this repository. If both were received, the session total would be three deliveries and
+bidirectional. **Neither is counted here until that export exists.**
+`results/physical/session-results-2026-09-19-phone-a-later-export.json` is the same session
+re-exported later and carries that second transmission record.
+
 ### What this does not establish
 
 One success in five physical attempts. The same session's earlier capture (3.5 s, record 3)
