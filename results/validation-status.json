@@ -16,7 +16,7 @@
   },
   "physicalAudio": {
     "attempted": true,
-    "verifiedDeliveries": 2,
+    "verifiedDeliveries": 3,
     "failedPairings": 1,
     "earlierFailedAttempts": 4,
     "bidirectional": true,
@@ -39,17 +39,36 @@
         "rmsDbfs": -28.0,
         "toneShare1200": 0.267,
         "signalOnsetToVerdictSeconds": 6.613
+      },
+      {
+        "direction": "iPhone -> Android",
+        "at": "2026-09-19T22:49:50.871Z",
+        "nonce": "89e698e6d8daef40eb3d4bfa740f86cd",
+        "senderKey": "c9838f90b5d7f5baa10a37ac06f20330205c0ee3da4bd6fd770f8d0fc1dbdf7e",
+        "message": "Hello world we control the io pins",
+        "packetBytes": 157,
+        "transmittedBits": 1368,
+        "rmsDbfs": -24.9,
+        "toneShare1200": 0.326,
+        "signalOnsetToVerdictSeconds": 6.958,
+        "rawAudio": "results/physical/capture-2026-09-19T22-49-50-980Z-android.wav",
+        "offlineReplay": "recovered 157 bytes, SIGNATURE VERIFIED, via scripts/replay-capture.mjs"
       }
     ],
-    "message": "we control the io pins",
+    "message": [
+      "we control the io pins",
+      "Hello world we control the io pins"
+    ],
     "evidence": [
       "results/physical/capture-2026-09-19T22-29-34-812Z.json",
       "results/physical/capture-2026-09-19T22-34-05-786Z-android.json",
+      "results/physical/capture-2026-09-19T22-49-50-980Z-android.json",
+      "results/physical/capture-2026-09-19T22-49-50-980Z-android.wav",
       "results/physical/session-results-2026-09-19-phone-a-later-export.json",
       "results/physical/session-results-2026-09-19-phone-b-android.json",
       "results/physical/session-results-2026-09-19.json"
     ],
-    "scope": "Two deliveries between two handsets in one room. Not a success rate, range, or general compatibility claim."
+    "scope": "Three deliveries between two handsets in one room, one with raw audio that replays offline. Not a success rate, range, or general compatibility claim."
   },
   "deployed": false,
   "breadlinesModified": false

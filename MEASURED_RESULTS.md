@@ -14,7 +14,7 @@ Run date: 18 September 2026. Runtime: Node.js 24.19.0, Linux x64. Exact environm
 | Browser microphone path (`getUserMedia` → AudioWorklet → worker → verifier) | **Exercised once end to end** in the same Chromium over a secure origin, fed by a **synthetic capture device**, not a microphone: SIGNATURE VERIFIED, CRC-32 PASS, 112 + 1,096 bits |
 | Raw capture export → offline replay | **Verified round-trip.** The browser's exported 32-bit float WAV replays through the same decoder via `scripts/replay-capture.mjs` and recovers the packet with SIGNATURE VERIFIED |
 | Real microphone hardware in the *automated* checks | **Not exercised there.** The headless environment has no audio hardware; the physical result below came from two handsets, by hand |
-| Physical speaker → air → microphone, two devices | **SUCCEEDED TWICE, 19 September 2026, in both directions between an iPhone and an Android handset.** Both verified: CRC-32 PASS, SIGNATURE VERIFIED, 0 preamble errors. **2 of 3 transmit/listen pairings in that session; 2 successes across all attempts to date** — delivery is demonstrated and bidirectional, not reliable |
+| Physical speaker → air → microphone, two devices | **SUCCEEDED THREE TIMES, 19 September 2026, in both directions between an iPhone and an Android handset**, across two message lengths. All three: CRC-32 PASS, SIGNATURE VERIFIED, 0 preamble errors. **3 of 4 transmit/listen pairings in that session**, plus four failures in earlier sessions. One raw acoustic recording is committed and **replays offline through the same decoder** |
 
 ## Baseline signal
 
@@ -104,35 +104,63 @@ Android handset, and verified on each.** Both phones' exports are in `results/ph
 | 22:29:34.763 | A · iPhone | receive → **SIGNATURE VERIFIED**, nonce `03e3a8a7…` |
 | 22:34:05.362 | B · Android | receive → **SIGNATURE VERIFIED**, nonce `1f1b66a0…` |
 | 22:34:05.492 | A · iPhone | transmit, playback ended |
+| 22:49:50.871 | B · Android | receive → **SIGNATURE VERIFIED**, nonce `89e698e6…`, **157 bytes** |
+| 22:49:51.236 | A · iPhone | transmit, playback ended |
 
-Three genuine transmit↔listen pairings, **two verified, one failed.** The 22:29:14 listen had
+Four genuine transmit↔listen pairings, **three verified, one failed.** The 22:29:14 listen had
 nothing to hear and is not counted as a delivery attempt.
 
-### The two deliveries, side by side
+### The three deliveries, side by side
 
-| | Android → iPhone | iPhone → Android |
-| --- | --- | --- |
-| Receiver | iPhone, iOS 26.6.2, Chrome | Android 10, Chrome 152 |
-| Nonce | `03e3a8a7c53bd5e487d286bf92790dbe` | `1f1b66a0b37af17d5493afeab6bad555` |
-| Sender key | `8b3d0efd…33563605` | `5803354736…0de1c2d6a6` |
-| Signal in capture | 6.360 s | 6.360 s |
-| Level | −51.0 dBFS rms, crest 10.5 dB | −28.0 dBFS rms, crest 10.8 dB |
-| Tone share | **73.0 % at 1,200 Hz** | **73.3 % at 2,200 Hz** |
-| Sync candidates | 1 accepted, 0 preamble errors | 2 accepted, 0 preamble errors |
-| Checksum | CRC-32 PASS | CRC-32 PASS |
-| Decode | 35 ms | 109 ms |
-| Signal onset → verdict | 6.498 s | 6.613 s |
+| | Android → iPhone | iPhone → Android | iPhone → Android |
+| --- | --- | --- | --- |
+| Time | 22:29:34 | 22:34:05 | 22:49:50 |
+| Message | `we control the io pins` | `we control the io pins` | **`Hello world we control the io pins`** |
+| Packet | 145 B / 1,272 bits | 145 B / 1,272 bits | **157 B / 1,368 bits** |
+| Nonce | `03e3a8a7…90dbe` | `1f1b66a0…ad555` | `89e698e6…f86cd` |
+| Sender key | `8b3d0efd…33563605` | `5803354736…0de1c2d6a6` | `c9838f90…fc1dbdf7e` |
+| Level | −51.0 dBFS rms, crest 10.5 dB | −28.0 dBFS rms, crest 10.8 dB | −24.9 dBFS rms, crest 10.6 dB |
+| Tone share | **73.0 % at 1,200 Hz** | 73.3 % at 2,200 Hz | 67.4 % at 2,200 Hz |
+| Sync candidates | 1 accepted | 2 accepted | 3 accepted |
+| Checksum | CRC-32 PASS | CRC-32 PASS | CRC-32 PASS |
+| Decode | 35 ms | 109 ms | 94 ms |
+| Signal onset → verdict | 6.498 s | 6.613 s | 6.958 s |
 
-Three things in that table are worth more than the success itself:
+**Three distinct sender keys, three distinct nonces, two message lengths.** The third delivery
+carries a payload the protocol had never moved over air before — 34 UTF-8 bytes instead of 22,
+a 157-byte packet, 1,368 bits — so the framing's length field was exercised with a real value.
+
+### The third delivery is independently re-checkable
+
+`results/physical/capture-2026-09-19T22-49-50-980Z-android.wav` is the **raw 32-bit float
+acoustic recording** the Android's decoder consumed — the actual sound that crossed the room.
+Replayed offline on an unrelated Linux machine through the same decoder:
+
+```
+$ node scripts/replay-capture.mjs capture-…-android.wav capture-…-android.json
+  framing        FRAME COMPLETE
+  sync           1 candidates · 1 accepted · 0 preamble errors
+  checksum       CRC-32 PASS
+  recovered 157 bytes · SIGNATURE VERIFIED · "Hello world we control the io pins"
+```
+
+SHA-256 of the public key recovered from that audio is
+`c9838f90b5d7f5baa10a37ac06f20330205c0ee3da4bd6fd770f8d0fc1dbdf7e`, which is exactly the
+fingerprint the receiving phone displayed, and the nonce in the packet matches its log. **The
+claim no longer rests on either phone's self-report** — anyone can re-derive it from the audio.
+
+Three things in these results are worth more than the successes themselves:
 
 **The tone shares are inverted.** The iPhone heard 73 % of the energy in the 1,200 Hz bin; the
 Android heard 73 % in the 2,200 Hz bin. Two completely opposite hardware responses, both
 decoding byte-exact — the physical confirmation of the offline finding that **tone share is
 not a verdict**.
 
-**The eight-phase timing search earned its keep.** On the Android reception, two timing phases
-both found the sync word at 3.306 s: phase 1 read a complete frame that **failed** CRC-32,
-phase 2 read one that **passed**. A single-phase detector would have thrown that frame away.
+**The eight-phase timing search earned its keep, twice.** On the 22:34 reception two phases
+found the sync word at the same instant: phase 1 read a complete frame that **failed** CRC-32,
+phase 2 read one that **passed**. On the 22:49 reception, at the moment the verdict fired,
+phases 0 and 1 held **1,255 of 1,256 data bits** — one bit short — while phase 5 had the
+complete frame and passed CRC. A single-phase detector loses both of those deliveries.
 
 **The sender keys differ per direction**, and each nonce was generated on the transmitting
 handset, so neither reception can be a local artefact. The nonce and key fingerprint visible
@@ -167,7 +195,7 @@ were when every attempt was failing.
 
 ### What this does not establish
 
-Two deliveries out of three pairings in one session, plus four failures in earlier sessions.
+Three deliveries out of four pairings in one session, plus four failures in earlier sessions.
 No success rate worth quoting, no range, no room-noise tolerance, and no device compatibility
 beyond these two handsets in this room at this distance. **Delivery is demonstrated and works
 in both directions across two operating systems; reliability is not established.** Ten

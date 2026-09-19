@@ -5,180 +5,235 @@
   "securityBoundary": "Authenticity/integrity only; no encryption; identity requires out-of-band fingerprint comparison",
   "scopeNote": "A microphone row records one attempt between these two devices in this room. It is not a general physical-transport verification claim.",
   "counters": {
-    "successfulDecodes": 4,
+    "successfulDecodes": 7,
     "failedDecodes": 1
   },
   "lastDiagnostics": {
     "sampleRate": 48000,
-    "capturedSeconds": 9.47,
+    "capturedSeconds": 8.7,
     "symbolSamples": 240,
     "tones": [
       1200,
       2200
     ],
     "level": {
-      "rms": 0.03998,
-      "peak": 0.13779,
-      "rmsDbfs": -28,
-      "peakDbfs": -17.2,
-      "crestDb": 10.7,
+      "rms": 0.05733,
+      "peak": 0.19406,
+      "rmsDbfs": -24.8,
+      "peakDbfs": -14.2,
+      "crestDb": 10.6,
       "clippedSamples": 0
     },
     "sync": {
-      "candidates": 2,
+      "candidates": 3,
       "preambleRejected": 0,
       "qualityRejected": 0,
-      "accepted": 2,
+      "accepted": 3,
       "bestPreambleErrors": 0,
-      "bestQuality": 0.836,
-      "phase": 2
+      "bestQuality": 0.976,
+      "phase": 0
     },
     "framing": "FRAME COMPLETE",
-    "declaredPacketBytes": 145,
+    "declaredPacketBytes": 157,
     "bits": {
       "framing": 112,
-      "expectedData": 1160,
-      "receivedData": 1160,
-      "total": 1272
+      "expectedData": 1256,
+      "receivedData": 1256,
+      "total": 1368
     },
     "checksum": "CRC-32 PASS",
     "phases": [
       {
         "phase": 0,
-        "symbols": 1894,
-        "strongSymbols": 1203,
-        "meanConfidence": 0.642,
-        "lowToneSymbols": 848,
-        "highToneSymbols": 1046,
+        "symbols": 1740,
+        "strongSymbols": 1573,
+        "meanConfidence": 0.866,
+        "lowToneSymbols": 1008,
+        "highToneSymbols": 732,
         "toneShare": {
-          "1200": 0.279,
-          "2200": 0.721
+          "1200": 0.326,
+          "2200": 0.674
         },
-        "strongestWindowStart": 813,
-        "strongestWindowConfidence": 0.789,
-        "peakEnergyWindowStart": 637
+        "strongestWindowStart": 1676,
+        "strongestWindowConfidence": 0.982,
+        "peakEnergyWindowStart": 406
       },
       {
         "phase": 1,
-        "symbols": 1894,
-        "strongSymbols": 1365,
-        "meanConfidence": 0.685,
-        "lowToneSymbols": 1177,
-        "highToneSymbols": 717,
+        "symbols": 1740,
+        "strongSymbols": 1360,
+        "meanConfidence": 0.757,
+        "lowToneSymbols": 1001,
+        "highToneSymbols": 739,
         "toneShare": {
-          "1200": 0.289,
-          "2200": 0.711
+          "1200": 0.306,
+          "2200": 0.694
         },
-        "strongestWindowStart": 1362,
-        "strongestWindowConfidence": 0.851,
-        "peakEnergyWindowStart": 636
+        "strongestWindowStart": 868,
+        "strongestWindowConfidence": 0.891,
+        "peakEnergyWindowStart": 406
       },
       {
         "phase": 2,
-        "symbols": 1894,
-        "strongSymbols": 1570,
-        "meanConfidence": 0.746,
-        "lowToneSymbols": 1180,
-        "highToneSymbols": 714,
+        "symbols": 1740,
+        "strongSymbols": 1213,
+        "meanConfidence": 0.699,
+        "lowToneSymbols": 963,
+        "highToneSymbols": 777,
         "toneShare": {
-          "1200": 0.267,
-          "2200": 0.733
+          "1200": 0.338,
+          "2200": 0.662
         },
-        "strongestWindowStart": 1759,
-        "strongestWindowConfidence": 0.923,
-        "peakEnergyWindowStart": 630
+        "strongestWindowStart": 868,
+        "strongestWindowConfidence": 0.84,
+        "peakEnergyWindowStart": 406
+      },
+      {
+        "phase": 3,
+        "symbols": 1740,
+        "strongSymbols": 1080,
+        "meanConfidence": 0.659,
+        "lowToneSymbols": 657,
+        "highToneSymbols": 1083,
+        "toneShare": {
+          "1200": 0.298,
+          "2200": 0.702
+        },
+        "strongestWindowStart": 495,
+        "strongestWindowConfidence": 0.819,
+        "peakEnergyWindowStart": 405
+      },
+      {
+        "phase": 4,
+        "symbols": 1740,
+        "strongSymbols": 1284,
+        "meanConfidence": 0.689,
+        "lowToneSymbols": 946,
+        "highToneSymbols": 794,
+        "toneShare": {
+          "1200": 0.297,
+          "2200": 0.703
+        },
+        "strongestWindowStart": 1290,
+        "strongestWindowConfidence": 0.829,
+        "peakEnergyWindowStart": 405
+      },
+      {
+        "phase": 5,
+        "symbols": 1740,
+        "strongSymbols": 1542,
+        "meanConfidence": 0.792,
+        "lowToneSymbols": 993,
+        "highToneSymbols": 747,
+        "toneShare": {
+          "1200": 0.264,
+          "2200": 0.736
+        },
+        "strongestWindowStart": 867,
+        "strongestWindowConfidence": 0.91,
+        "peakEnergyWindowStart": 405
       }
     ],
     "symbolTrace": {
-      "fromSymbol": 597,
-      "bits": "0111110101010101010101010101010101010101010101010101010101010101",
+      "fromSymbol": 372,
+      "bits": "0101010101010101010101010101010101010101010101010101010101010101",
       "confidence": [
-        0.95,
+        0.94,
         0.97,
-        0.32,
+        0.06,
+        0.97,
+        0.04,
+        0.96,
+        0.3,
+        0.96,
+        0.39,
         0.95,
-        0.03,
-        0.93,
-        0.19,
-        0.93,
-        0.28,
-        0.91,
         0.42,
-        0.9,
-        0.44,
-        0.89,
-        0.41,
-        0.89,
+        0.95,
+        0.51,
+        0.94,
+        0.45,
+        0.94,
+        0.43,
+        0.94,
         0.48,
-        0.89,
-        0.49,
-        0.9,
-        0.5,
-        0.89,
-        0.5,
-        0.89,
-        0.5,
-        0.89,
-        0.5,
-        0.88,
-        0.51,
-        0.88,
-        0.51,
-        0.89,
+        0.94,
         0.53,
-        0.89,
+        0.93,
+        0.54,
+        0.93,
         0.53,
-        0.88,
-        0.53,
-        0.88,
-        0.52,
-        0.88,
-        0.53,
-        0.88,
-        0.53,
-        0.87,
-        0.52,
-        0.87,
-        0.52,
-        0.88,
-        0.53,
-        0.87,
-        0.53,
-        0.87,
-        0.53,
-        0.87,
-        0.53,
-        0.87,
-        0.53,
-        0.87,
-        0.53,
-        0.88,
-        0.52,
-        0.87,
-        0.53,
-        0.87
+        0.93,
+        0.54,
+        0.93,
+        0.56,
+        0.93,
+        0.56,
+        0.93,
+        0.56,
+        0.93,
+        0.57,
+        0.92,
+        0.57,
+        0.93,
+        0.58,
+        0.92,
+        0.56,
+        0.92,
+        0.56,
+        0.92,
+        0.56,
+        0.92,
+        0.57,
+        0.92,
+        0.58,
+        0.92,
+        0.57,
+        0.92,
+        0.57,
+        0.92,
+        0.57,
+        0.92,
+        0.57,
+        0.92,
+        0.58,
+        0.92,
+        0.58,
+        0.92,
+        0.58,
+        0.92
       ]
     },
     "traceSource": "accepted sync candidate",
     "candidates": [
       {
-        "phase": 1,
-        "symbol": 661,
-        "atSeconds": 3.306,
+        "phase": 0,
+        "symbol": 437,
+        "atSeconds": 2.185,
         "preambleErrors": 0,
-        "quality": 0.734,
+        "quality": 0.976,
         "outcome": "accepted",
-        "length": 145,
-        "reason": "complete frame, CRC-32 FAIL"
+        "length": 157,
+        "reason": "capture holds 1255 of 1256 data bits"
       },
       {
-        "phase": 2,
-        "symbol": 661,
-        "atSeconds": 3.306,
+        "phase": 1,
+        "symbol": 437,
+        "atSeconds": 2.186,
         "preambleErrors": 0,
-        "quality": 0.836,
+        "quality": 0.84,
         "outcome": "accepted",
-        "length": 145,
+        "length": 157,
+        "reason": "capture holds 1255 of 1256 data bits"
+      },
+      {
+        "phase": 5,
+        "symbol": 436,
+        "atSeconds": 2.183,
+        "preambleErrors": 0,
+        "quality": 0.887,
+        "outcome": "accepted",
+        "length": 157,
         "reason": "complete frame, CRC-32 PASS"
       }
     ],
@@ -191,1914 +246,1762 @@
           "symbols": 8,
           "energyLow": 0,
           "energyHigh": 0,
-          "lowShare": 0,
+          "lowShare": 0.26,
           "meanConfidence": 0
         },
         {
           "atSeconds": 0.04,
           "symbols": 8,
-          "energyLow": 0.000005,
-          "energyHigh": 0.000003,
-          "lowShare": 0.604,
-          "meanConfidence": 0.09
+          "energyLow": 0.00001,
+          "energyHigh": 0.000002,
+          "lowShare": 0.831,
+          "meanConfidence": 0.324
         },
         {
           "atSeconds": 0.08,
           "symbols": 8,
-          "energyLow": 0.00003,
-          "energyHigh": 0.000009,
-          "lowShare": 0.768,
-          "meanConfidence": 0.393
+          "energyLow": 0.00001,
+          "energyHigh": 0.000004,
+          "lowShare": 0.739,
+          "meanConfidence": 0.361
         },
         {
           "atSeconds": 0.12,
           "symbols": 8,
-          "energyLow": 0.000019,
-          "energyHigh": 0.000003,
-          "lowShare": 0.884,
-          "meanConfidence": 0.49
+          "energyLow": 0.000009,
+          "energyHigh": 0.000002,
+          "lowShare": 0.782,
+          "meanConfidence": 0.29
         },
         {
           "atSeconds": 0.16,
           "symbols": 8,
-          "energyLow": 0.000063,
+          "energyLow": 0.000006,
           "energyHigh": 0.000006,
-          "lowShare": 0.908,
-          "meanConfidence": 0.68
+          "lowShare": 0.492,
+          "meanConfidence": 0.259
         },
         {
           "atSeconds": 0.2,
           "symbols": 8,
-          "energyLow": 0.000078,
-          "energyHigh": 0.000012,
-          "lowShare": 0.863,
-          "meanConfidence": 0.671
+          "energyLow": 0.000014,
+          "energyHigh": 0.000005,
+          "lowShare": 0.754,
+          "meanConfidence": 0.406
         },
         {
           "atSeconds": 0.24,
           "symbols": 8,
-          "energyLow": 0.000012,
-          "energyHigh": 0.000006,
-          "lowShare": 0.668,
-          "meanConfidence": 0.369
+          "energyLow": 0.000013,
+          "energyHigh": 0.000004,
+          "lowShare": 0.762,
+          "meanConfidence": 0.301
         },
         {
           "atSeconds": 0.28,
           "symbols": 8,
-          "energyLow": 0.000063,
-          "energyHigh": 0.000012,
-          "lowShare": 0.839,
-          "meanConfidence": 0.539
+          "energyLow": 0.000053,
+          "energyHigh": 0.000015,
+          "lowShare": 0.778,
+          "meanConfidence": 0.486
         },
         {
           "atSeconds": 0.32,
           "symbols": 8,
-          "energyLow": 0.000051,
-          "energyHigh": 0.000012,
-          "lowShare": 0.813,
-          "meanConfidence": 0.434
+          "energyLow": 0.000043,
+          "energyHigh": 0.000014,
+          "lowShare": 0.755,
+          "meanConfidence": 0.568
         },
         {
           "atSeconds": 0.36,
           "symbols": 8,
-          "energyLow": 0.000143,
-          "energyHigh": 0.000052,
-          "lowShare": 0.732,
-          "meanConfidence": 0.498
+          "energyLow": 0.000153,
+          "energyHigh": 0.000027,
+          "lowShare": 0.85,
+          "meanConfidence": 0.702
         },
         {
           "atSeconds": 0.4,
           "symbols": 8,
-          "energyLow": 0.000181,
-          "energyHigh": 0.000054,
-          "lowShare": 0.77,
-          "meanConfidence": 0.565
+          "energyLow": 0.000252,
+          "energyHigh": 0.000036,
+          "lowShare": 0.876,
+          "meanConfidence": 0.736
         },
         {
           "atSeconds": 0.44,
           "symbols": 8,
-          "energyLow": 0.000105,
-          "energyHigh": 0.000033,
-          "lowShare": 0.762,
-          "meanConfidence": 0.579
+          "energyLow": 0.00002,
+          "energyHigh": 0.000015,
+          "lowShare": 0.564,
+          "meanConfidence": 0.403
         },
         {
           "atSeconds": 0.48,
           "symbols": 8,
-          "energyLow": 0.000044,
-          "energyHigh": 0.000014,
-          "lowShare": 0.755,
-          "meanConfidence": 0.275
+          "energyLow": 0.000037,
+          "energyHigh": 0.000017,
+          "lowShare": 0.687,
+          "meanConfidence": 0.566
         },
         {
           "atSeconds": 0.52,
           "symbols": 8,
-          "energyLow": 0.000022,
-          "energyHigh": 0.000013,
-          "lowShare": 0.629,
-          "meanConfidence": 0.595
+          "energyLow": 0.000042,
+          "energyHigh": 0.000026,
+          "lowShare": 0.619,
+          "meanConfidence": 0.509
         },
         {
           "atSeconds": 0.56,
           "symbols": 8,
-          "energyLow": 0.000068,
-          "energyHigh": 0.000025,
-          "lowShare": 0.732,
-          "meanConfidence": 0.391
+          "energyLow": 0.000033,
+          "energyHigh": 0.000021,
+          "lowShare": 0.615,
+          "meanConfidence": 0.412
         },
         {
           "atSeconds": 0.6,
           "symbols": 8,
-          "energyLow": 0.000066,
-          "energyHigh": 0.000023,
-          "lowShare": 0.741,
-          "meanConfidence": 0.523
+          "energyLow": 0.000084,
+          "energyHigh": 0.000044,
+          "lowShare": 0.656,
+          "meanConfidence": 0.491
         },
         {
           "atSeconds": 0.64,
           "symbols": 8,
-          "energyLow": 0.000079,
-          "energyHigh": 0.00002,
-          "lowShare": 0.797,
-          "meanConfidence": 0.636
+          "energyLow": 0.000039,
+          "energyHigh": 0.00001,
+          "lowShare": 0.791,
+          "meanConfidence": 0.741
         },
         {
           "atSeconds": 0.68,
           "symbols": 8,
-          "energyLow": 0.000121,
-          "energyHigh": 0.000017,
-          "lowShare": 0.878,
-          "meanConfidence": 0.74
+          "energyLow": 0.00008,
+          "energyHigh": 0.000028,
+          "lowShare": 0.743,
+          "meanConfidence": 0.475
         },
         {
           "atSeconds": 0.72,
           "symbols": 8,
-          "energyLow": 0.000062,
-          "energyHigh": 0.000024,
-          "lowShare": 0.722,
-          "meanConfidence": 0.612
+          "energyLow": 0.000091,
+          "energyHigh": 0.000029,
+          "lowShare": 0.759,
+          "meanConfidence": 0.473
         },
         {
           "atSeconds": 0.76,
           "symbols": 8,
-          "energyLow": 0.000182,
-          "energyHigh": 0.000058,
-          "lowShare": 0.758,
-          "meanConfidence": 0.594
+          "energyLow": 0.0001,
+          "energyHigh": 0.000031,
+          "lowShare": 0.762,
+          "meanConfidence": 0.52
         },
         {
           "atSeconds": 0.8,
           "symbols": 8,
-          "energyLow": 0.000288,
-          "energyHigh": 0.000049,
-          "lowShare": 0.855,
-          "meanConfidence": 0.603
+          "energyLow": 0.000036,
+          "energyHigh": 0.000011,
+          "lowShare": 0.765,
+          "meanConfidence": 0.431
         },
         {
           "atSeconds": 0.84,
           "symbols": 8,
-          "energyLow": 0.000119,
-          "energyHigh": 0.000035,
-          "lowShare": 0.772,
-          "meanConfidence": 0.44
+          "energyLow": 0.000042,
+          "energyHigh": 0.00001,
+          "lowShare": 0.815,
+          "meanConfidence": 0.556
         },
         {
           "atSeconds": 0.88,
           "symbols": 8,
-          "energyLow": 0.000071,
-          "energyHigh": 0.00003,
-          "lowShare": 0.701,
-          "meanConfidence": 0.411
+          "energyLow": 0.000107,
+          "energyHigh": 0.000015,
+          "lowShare": 0.873,
+          "meanConfidence": 0.619
         },
         {
           "atSeconds": 0.92,
           "symbols": 8,
-          "energyLow": 0.000318,
-          "energyHigh": 0.000095,
-          "lowShare": 0.77,
-          "meanConfidence": 0.53
+          "energyLow": 0.001028,
+          "energyHigh": 0.000205,
+          "lowShare": 0.834,
+          "meanConfidence": 0.687
         },
         {
           "atSeconds": 0.96,
           "symbols": 8,
-          "energyLow": 0.000117,
-          "energyHigh": 0.000036,
-          "lowShare": 0.763,
-          "meanConfidence": 0.572
+          "energyLow": 0.000541,
+          "energyHigh": 0.000114,
+          "lowShare": 0.825,
+          "meanConfidence": 0.589
         },
         {
           "atSeconds": 1,
           "symbols": 8,
-          "energyLow": 0.000321,
-          "energyHigh": 0.000092,
-          "lowShare": 0.777,
-          "meanConfidence": 0.576
+          "energyLow": 0.000107,
+          "energyHigh": 0.000032,
+          "lowShare": 0.769,
+          "meanConfidence": 0.591
         },
         {
           "atSeconds": 1.04,
           "symbols": 8,
-          "energyLow": 0.00013,
-          "energyHigh": 0.000051,
-          "lowShare": 0.72,
-          "meanConfidence": 0.389
+          "energyLow": 0.000073,
+          "energyHigh": 0.000021,
+          "lowShare": 0.772,
+          "meanConfidence": 0.541
         },
         {
           "atSeconds": 1.08,
           "symbols": 8,
-          "energyLow": 0.000116,
-          "energyHigh": 0.000028,
-          "lowShare": 0.808,
-          "meanConfidence": 0.527
+          "energyLow": 0.000054,
+          "energyHigh": 0.00002,
+          "lowShare": 0.724,
+          "meanConfidence": 0.417
         },
         {
           "atSeconds": 1.12,
           "symbols": 8,
-          "energyLow": 0.000059,
-          "energyHigh": 0.000025,
-          "lowShare": 0.7,
-          "meanConfidence": 0.47
+          "energyLow": 0.000235,
+          "energyHigh": 0.000059,
+          "lowShare": 0.801,
+          "meanConfidence": 0.628
         },
         {
           "atSeconds": 1.16,
           "symbols": 8,
-          "energyLow": 0.000124,
-          "energyHigh": 0.000047,
-          "lowShare": 0.725,
-          "meanConfidence": 0.476
+          "energyLow": 0.000094,
+          "energyHigh": 0.000023,
+          "lowShare": 0.805,
+          "meanConfidence": 0.424
         },
         {
           "atSeconds": 1.2,
           "symbols": 8,
-          "energyLow": 0.00021,
-          "energyHigh": 0.000068,
-          "lowShare": 0.756,
-          "meanConfidence": 0.504
+          "energyLow": 0.000062,
+          "energyHigh": 0.000021,
+          "lowShare": 0.75,
+          "meanConfidence": 0.472
         },
         {
           "atSeconds": 1.24,
           "symbols": 8,
-          "energyLow": 0.000181,
-          "energyHigh": 0.000048,
-          "lowShare": 0.79,
-          "meanConfidence": 0.641
+          "energyLow": 0.000109,
+          "energyHigh": 0.000018,
+          "lowShare": 0.861,
+          "meanConfidence": 0.515
         },
         {
           "atSeconds": 1.28,
           "symbols": 8,
-          "energyLow": 0.000134,
-          "energyHigh": 0.000037,
-          "lowShare": 0.782,
-          "meanConfidence": 0.513
+          "energyLow": 0.000233,
+          "energyHigh": 0.000033,
+          "lowShare": 0.877,
+          "meanConfidence": 0.425
         },
         {
           "atSeconds": 1.32,
           "symbols": 8,
-          "energyLow": 0.000265,
-          "energyHigh": 0.000056,
-          "lowShare": 0.825,
-          "meanConfidence": 0.606
+          "energyLow": 0.000203,
+          "energyHigh": 0.000189,
+          "lowShare": 0.518,
+          "meanConfidence": 0.418
         },
         {
           "atSeconds": 1.36,
           "symbols": 8,
-          "energyLow": 0.000076,
-          "energyHigh": 0.000018,
-          "lowShare": 0.806,
-          "meanConfidence": 0.582
+          "energyLow": 0.000086,
+          "energyHigh": 0.000052,
+          "lowShare": 0.623,
+          "meanConfidence": 0.612
         },
         {
           "atSeconds": 1.4,
           "symbols": 8,
-          "energyLow": 0.000106,
-          "energyHigh": 0.000028,
-          "lowShare": 0.79,
-          "meanConfidence": 0.605
+          "energyLow": 0.000053,
+          "energyHigh": 0.00002,
+          "lowShare": 0.726,
+          "meanConfidence": 0.544
         },
         {
           "atSeconds": 1.44,
           "symbols": 8,
-          "energyLow": 0.000055,
-          "energyHigh": 0.000027,
-          "lowShare": 0.668,
-          "meanConfidence": 0.304
+          "energyLow": 0.000051,
+          "energyHigh": 0.000016,
+          "lowShare": 0.759,
+          "meanConfidence": 0.531
         },
         {
           "atSeconds": 1.48,
           "symbols": 8,
-          "energyLow": 0.000133,
-          "energyHigh": 0.000042,
-          "lowShare": 0.762,
-          "meanConfidence": 0.505
+          "energyLow": 0.000028,
+          "energyHigh": 0.000013,
+          "lowShare": 0.682,
+          "meanConfidence": 0.379
         },
         {
           "atSeconds": 1.52,
           "symbols": 8,
-          "energyLow": 0.000105,
-          "energyHigh": 0.000025,
-          "lowShare": 0.809,
-          "meanConfidence": 0.562
+          "energyLow": 0.000067,
+          "energyHigh": 0.000023,
+          "lowShare": 0.747,
+          "meanConfidence": 0.447
         },
         {
           "atSeconds": 1.56,
           "symbols": 8,
-          "energyLow": 0.000125,
-          "energyHigh": 0.000039,
-          "lowShare": 0.761,
-          "meanConfidence": 0.456
+          "energyLow": 0.000055,
+          "energyHigh": 0.000025,
+          "lowShare": 0.69,
+          "meanConfidence": 0.495
         },
         {
           "atSeconds": 1.6,
           "symbols": 8,
-          "energyLow": 0.000115,
-          "energyHigh": 0.000029,
-          "lowShare": 0.796,
-          "meanConfidence": 0.475
+          "energyLow": 0.000106,
+          "energyHigh": 0.000032,
+          "lowShare": 0.771,
+          "meanConfidence": 0.587
         },
         {
           "atSeconds": 1.64,
           "symbols": 8,
-          "energyLow": 0.000166,
-          "energyHigh": 0.000055,
-          "lowShare": 0.751,
-          "meanConfidence": 0.521
+          "energyLow": 0.000301,
+          "energyHigh": 0.000078,
+          "lowShare": 0.794,
+          "meanConfidence": 0.679
         },
         {
           "atSeconds": 1.68,
           "symbols": 8,
-          "energyLow": 0.000038,
-          "energyHigh": 0.000021,
-          "lowShare": 0.643,
-          "meanConfidence": 0.427
+          "energyLow": 0.000094,
+          "energyHigh": 0.000044,
+          "lowShare": 0.679,
+          "meanConfidence": 0.595
         },
         {
           "atSeconds": 1.72,
           "symbols": 8,
-          "energyLow": 0.000144,
-          "energyHigh": 0.000038,
-          "lowShare": 0.792,
-          "meanConfidence": 0.6
+          "energyLow": 0.000078,
+          "energyHigh": 0.000018,
+          "lowShare": 0.813,
+          "meanConfidence": 0.378
         },
         {
           "atSeconds": 1.76,
           "symbols": 8,
-          "energyLow": 0.000106,
-          "energyHigh": 0.000018,
-          "lowShare": 0.855,
-          "meanConfidence": 0.587
+          "energyLow": 0.000064,
+          "energyHigh": 0.000028,
+          "lowShare": 0.698,
+          "meanConfidence": 0.416
         },
         {
           "atSeconds": 1.8,
           "symbols": 8,
-          "energyLow": 0.00006,
-          "energyHigh": 0.000022,
-          "lowShare": 0.734,
-          "meanConfidence": 0.544
+          "energyLow": 0.000045,
+          "energyHigh": 0.000012,
+          "lowShare": 0.785,
+          "meanConfidence": 0.518
         },
         {
           "atSeconds": 1.84,
           "symbols": 8,
-          "energyLow": 0.000106,
-          "energyHigh": 0.000032,
-          "lowShare": 0.765,
-          "meanConfidence": 0.48
+          "energyLow": 0.102281,
+          "energyHigh": 3.29481,
+          "lowShare": 0.03,
+          "meanConfidence": 0.695
         },
         {
           "atSeconds": 1.88,
           "symbols": 8,
-          "energyLow": 0.00028,
-          "energyHigh": 0.000036,
-          "lowShare": 0.885,
-          "meanConfidence": 0.776
+          "energyLow": 1.78488,
+          "energyHigh": 17.949415,
+          "lowShare": 0.09,
+          "meanConfidence": 0.621
         },
         {
           "atSeconds": 1.92,
           "symbols": 8,
-          "energyLow": 0.000086,
-          "energyHigh": 0.000022,
-          "lowShare": 0.796,
-          "meanConfidence": 0.538
+          "energyLow": 5.073025,
+          "energyHigh": 33.36077,
+          "lowShare": 0.132,
+          "meanConfidence": 0.703
         },
         {
           "atSeconds": 1.96,
           "symbols": 8,
-          "energyLow": 0.000109,
-          "energyHigh": 0.000013,
-          "lowShare": 0.895,
-          "meanConfidence": 0.676
+          "energyLow": 8.175761,
+          "energyHigh": 43.793562,
+          "lowShare": 0.157,
+          "meanConfidence": 0.733
         },
         {
           "atSeconds": 2,
           "symbols": 8,
-          "energyLow": 0.000149,
-          "energyHigh": 0.000028,
-          "lowShare": 0.841,
-          "meanConfidence": 0.617
+          "energyLow": 10.766013,
+          "energyHigh": 51.899012,
+          "lowShare": 0.172,
+          "meanConfidence": 0.744
         },
         {
           "atSeconds": 2.04,
           "symbols": 8,
-          "energyLow": 0.000109,
-          "energyHigh": 0.000037,
-          "lowShare": 0.748,
-          "meanConfidence": 0.491
+          "energyLow": 12.568946,
+          "energyHigh": 57.476362,
+          "lowShare": 0.179,
+          "meanConfidence": 0.744
         },
         {
           "atSeconds": 2.08,
           "symbols": 8,
-          "energyLow": 0.000311,
-          "energyHigh": 0.000124,
-          "lowShare": 0.715,
-          "meanConfidence": 0.381
+          "energyLow": 13.720257,
+          "energyHigh": 61.116643,
+          "lowShare": 0.183,
+          "meanConfidence": 0.745
         },
         {
           "atSeconds": 2.12,
           "symbols": 8,
-          "energyLow": 0.000136,
-          "energyHigh": 0.000037,
-          "lowShare": 0.786,
-          "meanConfidence": 0.476
+          "energyLow": 14.501125,
+          "energyHigh": 63.378032,
+          "lowShare": 0.186,
+          "meanConfidence": 0.746
         },
         {
           "atSeconds": 2.16,
           "symbols": 8,
-          "energyLow": 0.000073,
-          "energyHigh": 0.000022,
-          "lowShare": 0.77,
-          "meanConfidence": 0.388
+          "energyLow": 11.236171,
+          "energyHigh": 94.414461,
+          "lowShare": 0.106,
+          "meanConfidence": 0.817
         },
         {
           "atSeconds": 2.2,
           "symbols": 8,
-          "energyLow": 0.000204,
-          "energyHigh": 0.000048,
-          "lowShare": 0.809,
-          "meanConfidence": 0.595
+          "energyLow": 17.930665,
+          "energyHigh": 80.488826,
+          "lowShare": 0.182,
+          "meanConfidence": 0.86
         },
         {
           "atSeconds": 2.24,
           "symbols": 8,
-          "energyLow": 0.000129,
-          "energyHigh": 0.000038,
-          "lowShare": 0.775,
-          "meanConfidence": 0.483
+          "energyLow": 25.525417,
+          "energyHigh": 61.300683,
+          "lowShare": 0.294,
+          "meanConfidence": 0.898
         },
         {
           "atSeconds": 2.28,
           "symbols": 8,
-          "energyLow": 0.000136,
-          "energyHigh": 0.000041,
-          "lowShare": 0.768,
-          "meanConfidence": 0.58
+          "energyLow": 15.358288,
+          "energyHigh": 76.549466,
+          "lowShare": 0.167,
+          "meanConfidence": 0.866
         },
         {
           "atSeconds": 2.32,
           "symbols": 8,
-          "energyLow": 0.000099,
-          "energyHigh": 0.000025,
-          "lowShare": 0.797,
-          "meanConfidence": 0.602
+          "energyLow": 25.858217,
+          "energyHigh": 63.831006,
+          "lowShare": 0.288,
+          "meanConfidence": 0.934
         },
         {
           "atSeconds": 2.36,
           "symbols": 8,
-          "energyLow": 0.000142,
-          "energyHigh": 0.000018,
-          "lowShare": 0.886,
-          "meanConfidence": 0.617
+          "energyLow": 29.018736,
+          "energyHigh": 17.372687,
+          "lowShare": 0.626,
+          "meanConfidence": 0.933
         },
         {
           "atSeconds": 2.4,
           "symbols": 8,
-          "energyLow": 0.00028,
-          "energyHigh": 0.000062,
-          "lowShare": 0.819,
-          "meanConfidence": 0.638
+          "energyLow": 7.498768,
+          "energyHigh": 38.316596,
+          "lowShare": 0.164,
+          "meanConfidence": 0.871
         },
         {
           "atSeconds": 2.44,
           "symbols": 8,
-          "energyLow": 0.000174,
-          "energyHigh": 0.000062,
-          "lowShare": 0.737,
-          "meanConfidence": 0.49
+          "energyLow": 10.576807,
+          "energyHigh": 30.028209,
+          "lowShare": 0.26,
+          "meanConfidence": 0.81
         },
         {
           "atSeconds": 2.48,
           "symbols": 8,
-          "energyLow": 0.000218,
-          "energyHigh": 0.000078,
-          "lowShare": 0.736,
-          "meanConfidence": 0.46
+          "energyLow": 5.456612,
+          "energyHigh": 54.736473,
+          "lowShare": 0.091,
+          "meanConfidence": 0.889
         },
         {
           "atSeconds": 2.52,
           "symbols": 8,
-          "energyLow": 0.000524,
-          "energyHigh": 0.000113,
-          "lowShare": 0.823,
-          "meanConfidence": 0.598
+          "energyLow": 8.356993,
+          "energyHigh": 50.048617,
+          "lowShare": 0.143,
+          "meanConfidence": 0.924
         },
         {
           "atSeconds": 2.56,
           "symbols": 8,
-          "energyLow": 0.00009,
-          "energyHigh": 0.000022,
-          "lowShare": 0.802,
-          "meanConfidence": 0.491
+          "energyLow": 9.051479,
+          "energyHigh": 2.334024,
+          "lowShare": 0.795,
+          "meanConfidence": 0.868
         },
         {
           "atSeconds": 2.6,
           "symbols": 8,
-          "energyLow": 0.00011,
-          "energyHigh": 0.000038,
-          "lowShare": 0.744,
-          "meanConfidence": 0.345
+          "energyLow": 6.012305,
+          "energyHigh": 18.775174,
+          "lowShare": 0.243,
+          "meanConfidence": 0.968
         },
         {
           "atSeconds": 2.64,
           "symbols": 8,
-          "energyLow": 0.000309,
-          "energyHigh": 0.000094,
-          "lowShare": 0.767,
-          "meanConfidence": 0.604
+          "energyLow": 3.587042,
+          "energyHigh": 47.324975,
+          "lowShare": 0.07,
+          "meanConfidence": 0.971
         },
         {
           "atSeconds": 2.68,
           "symbols": 8,
-          "energyLow": 0.000326,
-          "energyHigh": 0.000084,
-          "lowShare": 0.795,
-          "meanConfidence": 0.593
+          "energyLow": 9.624409,
+          "energyHigh": 43.472289,
+          "lowShare": 0.181,
+          "meanConfidence": 0.792
         },
         {
           "atSeconds": 2.72,
           "symbols": 8,
-          "energyLow": 0.000111,
-          "energyHigh": 0.000028,
-          "lowShare": 0.801,
-          "meanConfidence": 0.496
+          "energyLow": 8.492472,
+          "energyHigh": 68.269037,
+          "lowShare": 0.111,
+          "meanConfidence": 0.87
         },
         {
           "atSeconds": 2.76,
           "symbols": 8,
-          "energyLow": 0.00027,
-          "energyHigh": 0.000074,
-          "lowShare": 0.786,
-          "meanConfidence": 0.573
+          "energyLow": 15.830452,
+          "energyHigh": 49.360604,
+          "lowShare": 0.243,
+          "meanConfidence": 0.801
         },
         {
           "atSeconds": 2.8,
           "symbols": 8,
-          "energyLow": 0.000088,
-          "energyHigh": 0.000043,
-          "lowShare": 0.672,
-          "meanConfidence": 0.26
+          "energyLow": 9.60936,
+          "energyHigh": 62.706301,
+          "lowShare": 0.133,
+          "meanConfidence": 0.771
         },
         {
           "atSeconds": 2.84,
           "symbols": 8,
-          "energyLow": 0.000213,
-          "energyHigh": 0.000067,
-          "lowShare": 0.761,
-          "meanConfidence": 0.471
+          "energyLow": 5.356811,
+          "energyHigh": 80.515333,
+          "lowShare": 0.062,
+          "meanConfidence": 0.912
         },
         {
           "atSeconds": 2.88,
           "symbols": 8,
-          "energyLow": 0.000196,
-          "energyHigh": 0.000064,
-          "lowShare": 0.754,
-          "meanConfidence": 0.429
+          "energyLow": 8.311625,
+          "energyHigh": 84.431758,
+          "lowShare": 0.09,
+          "meanConfidence": 0.925
         },
         {
           "atSeconds": 2.92,
           "symbols": 8,
-          "energyLow": 0.000122,
-          "energyHigh": 0.00003,
-          "lowShare": 0.803,
-          "meanConfidence": 0.533
+          "energyLow": 14.934646,
+          "energyHigh": 48.10959,
+          "lowShare": 0.237,
+          "meanConfidence": 0.783
         },
         {
           "atSeconds": 2.96,
           "symbols": 8,
-          "energyLow": 0.077853,
-          "energyHigh": 0.77425,
-          "lowShare": 0.091,
-          "meanConfidence": 0.748
+          "energyLow": 6.263648,
+          "energyHigh": 84.75765,
+          "lowShare": 0.069,
+          "meanConfidence": 0.861
         },
         {
           "atSeconds": 3,
           "symbols": 8,
-          "energyLow": 1.461544,
-          "energyHigh": 7.702331,
-          "lowShare": 0.159,
-          "meanConfidence": 0.58
+          "energyLow": 14.406188,
+          "energyHigh": 62.017308,
+          "lowShare": 0.189,
+          "meanConfidence": 0.93
         },
         {
           "atSeconds": 3.04,
           "symbols": 8,
-          "energyLow": 4.280092,
-          "energyHigh": 17.125258,
-          "lowShare": 0.2,
-          "meanConfidence": 0.675
+          "energyLow": 29.302473,
+          "energyHigh": 4.198635,
+          "lowShare": 0.875,
+          "meanConfidence": 0.897
         },
         {
           "atSeconds": 3.08,
           "symbols": 8,
-          "energyLow": 7.06363,
-          "energyHigh": 26.05401,
-          "lowShare": 0.213,
-          "meanConfidence": 0.696
+          "energyLow": 2.780685,
+          "energyHigh": 29.874,
+          "lowShare": 0.085,
+          "meanConfidence": 0.962
         },
         {
           "atSeconds": 3.12,
           "symbols": 8,
-          "energyLow": 9.168443,
-          "energyHigh": 32.464937,
-          "lowShare": 0.22,
-          "meanConfidence": 0.703
+          "energyLow": 17.58628,
+          "energyHigh": 26.162707,
+          "lowShare": 0.402,
+          "meanConfidence": 0.885
         },
         {
           "atSeconds": 3.16,
           "symbols": 8,
-          "energyLow": 10.719665,
-          "energyHigh": 36.160799,
-          "lowShare": 0.229,
-          "meanConfidence": 0.703
+          "energyLow": 12.82255,
+          "energyHigh": 12.275843,
+          "lowShare": 0.511,
+          "meanConfidence": 0.817
         },
         {
           "atSeconds": 3.2,
           "symbols": 8,
-          "energyLow": 11.755306,
-          "energyHigh": 38.117602,
-          "lowShare": 0.236,
-          "meanConfidence": 0.701
+          "energyLow": 27.297742,
+          "energyHigh": 15.231717,
+          "lowShare": 0.642,
+          "meanConfidence": 0.942
         },
         {
           "atSeconds": 3.24,
           "symbols": 8,
-          "energyLow": 12.33019,
-          "energyHigh": 39.169731,
-          "lowShare": 0.239,
-          "meanConfidence": 0.7
+          "energyLow": 10.211988,
+          "energyHigh": 26.290223,
+          "lowShare": 0.28,
+          "meanConfidence": 0.771
         },
         {
           "atSeconds": 3.28,
           "symbols": 8,
-          "energyLow": 9.323456,
-          "energyHigh": 58.247758,
-          "lowShare": 0.138,
-          "meanConfidence": 0.782
+          "energyLow": 12.707762,
+          "energyHigh": 39.657823,
+          "lowShare": 0.243,
+          "meanConfidence": 0.871
         },
         {
           "atSeconds": 3.32,
           "symbols": 8,
-          "energyLow": 15.727736,
-          "energyHigh": 49.506725,
-          "lowShare": 0.241,
-          "meanConfidence": 0.845
+          "energyLow": 5.222753,
+          "energyHigh": 75.887917,
+          "lowShare": 0.064,
+          "meanConfidence": 0.869
         },
         {
           "atSeconds": 3.36,
           "symbols": 8,
-          "energyLow": 17.46477,
-          "energyHigh": 48.430599,
-          "lowShare": 0.265,
-          "meanConfidence": 0.815
+          "energyLow": 10.385315,
+          "energyHigh": 63.726796,
+          "lowShare": 0.14,
+          "meanConfidence": 0.888
         },
         {
           "atSeconds": 3.4,
           "symbols": 8,
-          "energyLow": 17.08817,
-          "energyHigh": 42.402305,
-          "lowShare": 0.287,
-          "meanConfidence": 0.824
+          "energyLow": 18.533614,
+          "energyHigh": 9.694394,
+          "lowShare": 0.657,
+          "meanConfidence": 0.859
         },
         {
           "atSeconds": 3.44,
           "symbols": 8,
-          "energyLow": 20.410336,
-          "energyHigh": 38.836001,
-          "lowShare": 0.344,
-          "meanConfidence": 0.866
+          "energyLow": 3.193726,
+          "energyHigh": 35.367815,
+          "lowShare": 0.083,
+          "meanConfidence": 0.914
         },
         {
           "atSeconds": 3.48,
           "symbols": 8,
-          "energyLow": 31.275693,
-          "energyHigh": 5.307277,
-          "lowShare": 0.855,
-          "meanConfidence": 0.89
+          "energyLow": 9.307622,
+          "energyHigh": 25.527244,
+          "lowShare": 0.267,
+          "meanConfidence": 0.945
         },
         {
           "atSeconds": 3.52,
           "symbols": 8,
-          "energyLow": 9.189451,
-          "energyHigh": 10.486591,
-          "lowShare": 0.467,
-          "meanConfidence": 0.779
+          "energyLow": 10.636581,
+          "energyHigh": 18.765913,
+          "lowShare": 0.362,
+          "meanConfidence": 0.797
         },
         {
           "atSeconds": 3.56,
           "symbols": 8,
-          "energyLow": 8.345899,
-          "energyHigh": 11.682227,
-          "lowShare": 0.417,
-          "meanConfidence": 0.764
+          "energyLow": 24.865774,
+          "energyHigh": 29.754361,
+          "lowShare": 0.455,
+          "meanConfidence": 0.903
         },
         {
           "atSeconds": 3.6,
           "symbols": 8,
-          "energyLow": 5.451645,
-          "energyHigh": 32.740245,
-          "lowShare": 0.143,
-          "meanConfidence": 0.851
+          "energyLow": 15.216477,
+          "energyHigh": 22.392111,
+          "lowShare": 0.405,
+          "meanConfidence": 0.846
         },
         {
           "atSeconds": 3.64,
           "symbols": 8,
-          "energyLow": 10.870714,
-          "energyHigh": 26.362844,
-          "lowShare": 0.292,
-          "meanConfidence": 0.916
+          "energyLow": 10.987444,
+          "energyHigh": 43.383738,
+          "lowShare": 0.202,
+          "meanConfidence": 0.817
         },
         {
           "atSeconds": 3.68,
           "symbols": 8,
-          "energyLow": 9.734334,
-          "energyHigh": 9.762651,
-          "lowShare": 0.499,
-          "meanConfidence": 0.791
+          "energyLow": 18.321925,
+          "energyHigh": 6.694587,
+          "lowShare": 0.732,
+          "meanConfidence": 0.894
         },
         {
           "atSeconds": 3.72,
           "symbols": 8,
-          "energyLow": 10.247263,
-          "energyHigh": 3.527737,
-          "lowShare": 0.744,
-          "meanConfidence": 0.836
+          "energyLow": 11.159407,
+          "energyHigh": 24.861052,
+          "lowShare": 0.31,
+          "meanConfidence": 0.917
         },
         {
           "atSeconds": 3.76,
           "symbols": 8,
-          "energyLow": 6.471407,
-          "energyHigh": 8.0542,
-          "lowShare": 0.446,
-          "meanConfidence": 0.867
+          "energyLow": 4.683594,
+          "energyHigh": 26.82179,
+          "lowShare": 0.149,
+          "meanConfidence": 0.877
         },
         {
           "atSeconds": 3.8,
           "symbols": 8,
-          "energyLow": 5.04686,
-          "energyHigh": 22.187754,
-          "lowShare": 0.185,
-          "meanConfidence": 0.837
+          "energyLow": 32.087123,
+          "energyHigh": 0.396336,
+          "lowShare": 0.988,
+          "meanConfidence": 0.953
         },
         {
           "atSeconds": 3.84,
           "symbols": 8,
-          "energyLow": 7.46786,
-          "energyHigh": 27.671848,
-          "lowShare": 0.213,
-          "meanConfidence": 0.837
+          "energyLow": 13.885578,
+          "energyHigh": 36.48103,
+          "lowShare": 0.276,
+          "meanConfidence": 0.929
         },
         {
           "atSeconds": 3.88,
           "symbols": 8,
-          "energyLow": 1.969538,
-          "energyHigh": 20.21341,
-          "lowShare": 0.089,
-          "meanConfidence": 0.782
+          "energyLow": 11.483856,
+          "energyHigh": 36.534199,
+          "lowShare": 0.239,
+          "meanConfidence": 0.855
         },
         {
           "atSeconds": 3.92,
           "symbols": 8,
-          "energyLow": 9.947123,
-          "energyHigh": 2.461098,
-          "lowShare": 0.802,
-          "meanConfidence": 0.784
+          "energyLow": 11.564371,
+          "energyHigh": 60.04791,
+          "lowShare": 0.161,
+          "meanConfidence": 0.895
         },
         {
           "atSeconds": 3.96,
           "symbols": 8,
-          "energyLow": 6.139291,
-          "energyHigh": 11.608519,
-          "lowShare": 0.346,
-          "meanConfidence": 0.91
+          "energyLow": 17.763298,
+          "energyHigh": 47.422379,
+          "lowShare": 0.273,
+          "meanConfidence": 0.84
         },
         {
           "atSeconds": 4,
           "symbols": 8,
-          "energyLow": 5.937334,
-          "energyHigh": 20.468256,
-          "lowShare": 0.225,
-          "meanConfidence": 0.789
+          "energyLow": 18.154736,
+          "energyHigh": 52.248252,
+          "lowShare": 0.258,
+          "meanConfidence": 0.884
         },
         {
           "atSeconds": 4.04,
           "symbols": 8,
-          "energyLow": 3.712001,
-          "energyHigh": 38.74207,
-          "lowShare": 0.087,
-          "meanConfidence": 0.826
+          "energyLow": 12.750922,
+          "energyHigh": 67.922489,
+          "lowShare": 0.158,
+          "meanConfidence": 0.88
         },
         {
           "atSeconds": 4.08,
           "symbols": 8,
-          "energyLow": 4.210414,
-          "energyHigh": 36.352887,
-          "lowShare": 0.104,
-          "meanConfidence": 0.764
+          "energyLow": 19.563966,
+          "energyHigh": 55.2655,
+          "lowShare": 0.261,
+          "meanConfidence": 0.875
         },
         {
           "atSeconds": 4.12,
           "symbols": 8,
-          "energyLow": 7.697984,
-          "energyHigh": 19.177988,
-          "lowShare": 0.286,
-          "meanConfidence": 0.753
+          "energyLow": 8.950492,
+          "energyHigh": 71.302286,
+          "lowShare": 0.112,
+          "meanConfidence": 0.85
         },
         {
           "atSeconds": 4.16,
           "symbols": 8,
-          "energyLow": 2.932768,
-          "energyHigh": 37.41261,
-          "lowShare": 0.073,
-          "meanConfidence": 0.85
+          "energyLow": 11.715078,
+          "energyHigh": 72.639315,
+          "lowShare": 0.139,
+          "meanConfidence": 0.83
         },
         {
           "atSeconds": 4.2,
           "symbols": 8,
-          "energyLow": 15.018814,
-          "energyHigh": 16.070429,
-          "lowShare": 0.483,
-          "meanConfidence": 0.876
+          "energyLow": 30.733875,
+          "energyHigh": 41.789713,
+          "lowShare": 0.424,
+          "meanConfidence": 0.911
         },
         {
           "atSeconds": 4.24,
           "symbols": 8,
-          "energyLow": 4.004885,
-          "energyHigh": 14.950041,
-          "lowShare": 0.211,
-          "meanConfidence": 0.844
+          "energyLow": 13.517383,
+          "energyHigh": 63.814767,
+          "lowShare": 0.175,
+          "meanConfidence": 0.867
         },
         {
           "atSeconds": 4.28,
           "symbols": 8,
-          "energyLow": 6.710413,
-          "energyHigh": 19.137583,
-          "lowShare": 0.26,
-          "meanConfidence": 0.829
+          "energyLow": 14.522025,
+          "energyHigh": 55.348697,
+          "lowShare": 0.208,
+          "meanConfidence": 0.807
         },
         {
           "atSeconds": 4.32,
           "symbols": 8,
-          "energyLow": 0.193536,
-          "energyHigh": 28.116105,
-          "lowShare": 0.007,
-          "meanConfidence": 0.98
+          "energyLow": 4.61206,
+          "energyHigh": 103.291478,
+          "lowShare": 0.043,
+          "meanConfidence": 0.909
         },
         {
           "atSeconds": 4.36,
           "symbols": 8,
-          "energyLow": 2.326044,
-          "energyHigh": 35.871608,
-          "lowShare": 0.061,
-          "meanConfidence": 0.833
+          "energyLow": 12.180564,
+          "energyHigh": 71.48726,
+          "lowShare": 0.146,
+          "meanConfidence": 0.892
         },
         {
           "atSeconds": 4.4,
           "symbols": 8,
-          "energyLow": 9.151679,
-          "energyHigh": 6.001384,
-          "lowShare": 0.604,
-          "meanConfidence": 0.843
+          "energyLow": 36.227479,
+          "energyHigh": 14.805187,
+          "lowShare": 0.71,
+          "meanConfidence": 0.868
         },
         {
           "atSeconds": 4.44,
           "symbols": 8,
-          "energyLow": 5.15557,
-          "energyHigh": 11.358793,
-          "lowShare": 0.312,
-          "meanConfidence": 0.709
+          "energyLow": 14.678839,
+          "energyHigh": 70.910836,
+          "lowShare": 0.172,
+          "meanConfidence": 0.933
         },
         {
           "atSeconds": 4.48,
           "symbols": 8,
-          "energyLow": 8.254514,
-          "energyHigh": 13.558206,
-          "lowShare": 0.378,
-          "meanConfidence": 0.786
+          "energyLow": 19.400923,
+          "energyHigh": 56.361174,
+          "lowShare": 0.256,
+          "meanConfidence": 0.892
         },
         {
           "atSeconds": 4.52,
           "symbols": 8,
-          "energyLow": 4.911625,
-          "energyHigh": 28.204929,
-          "lowShare": 0.148,
-          "meanConfidence": 0.876
+          "energyLow": 24.061163,
+          "energyHigh": 40.831379,
+          "lowShare": 0.371,
+          "meanConfidence": 0.894
         },
         {
           "atSeconds": 4.56,
           "symbols": 8,
-          "energyLow": 12.446507,
-          "energyHigh": 8.902246,
-          "lowShare": 0.583,
-          "meanConfidence": 0.821
+          "energyLow": 43.510015,
+          "energyHigh": 10.434905,
+          "lowShare": 0.807,
+          "meanConfidence": 0.941
         },
         {
           "atSeconds": 4.6,
           "symbols": 8,
-          "energyLow": 11.168642,
-          "energyHigh": 1.909878,
-          "lowShare": 0.854,
-          "meanConfidence": 0.875
+          "energyLow": 31.749956,
+          "energyHigh": 22.528714,
+          "lowShare": 0.585,
+          "meanConfidence": 0.908
         },
         {
           "atSeconds": 4.64,
           "symbols": 8,
-          "energyLow": 4.587537,
-          "energyHigh": 11.265511,
-          "lowShare": 0.289,
-          "meanConfidence": 0.834
+          "energyLow": 26.633161,
+          "energyHigh": 37.259031,
+          "lowShare": 0.417,
+          "meanConfidence": 0.892
         },
         {
           "atSeconds": 4.68,
           "symbols": 8,
-          "energyLow": 2.428911,
-          "energyHigh": 31.016147,
-          "lowShare": 0.073,
-          "meanConfidence": 0.873
+          "energyLow": 16.097057,
+          "energyHigh": 49.785557,
+          "lowShare": 0.244,
+          "meanConfidence": 0.828
         },
         {
           "atSeconds": 4.72,
           "symbols": 8,
-          "energyLow": 8.165851,
-          "energyHigh": 14.080258,
-          "lowShare": 0.367,
-          "meanConfidence": 0.716
+          "energyLow": 19.106763,
+          "energyHigh": 52.391172,
+          "lowShare": 0.267,
+          "meanConfidence": 0.88
         },
         {
           "atSeconds": 4.76,
           "symbols": 8,
-          "energyLow": 7.646353,
-          "energyHigh": 24.113763,
-          "lowShare": 0.241,
-          "meanConfidence": 0.761
+          "energyLow": 18.838456,
+          "energyHigh": 54.537105,
+          "lowShare": 0.257,
+          "meanConfidence": 0.863
         },
         {
           "atSeconds": 4.8,
           "symbols": 8,
-          "energyLow": 3.591522,
-          "energyHigh": 42.121017,
-          "lowShare": 0.079,
-          "meanConfidence": 0.858
+          "energyLow": 12.119847,
+          "energyHigh": 67.844455,
+          "lowShare": 0.152,
+          "meanConfidence": 0.878
         },
         {
           "atSeconds": 4.84,
           "symbols": 8,
-          "energyLow": 6.06345,
-          "energyHigh": 22.009674,
-          "lowShare": 0.216,
-          "meanConfidence": 0.75
+          "energyLow": 33.317157,
+          "energyHigh": 40.548267,
+          "lowShare": 0.451,
+          "meanConfidence": 0.959
         },
         {
           "atSeconds": 4.88,
           "symbols": 8,
-          "energyLow": 1.2092,
-          "energyHigh": 48.800331,
-          "lowShare": 0.024,
-          "meanConfidence": 0.92
+          "energyLow": 8.364989,
+          "energyHigh": 66.048356,
+          "lowShare": 0.112,
+          "meanConfidence": 0.853
         },
         {
           "atSeconds": 4.92,
           "symbols": 8,
-          "energyLow": 8.114267,
-          "energyHigh": 28.398966,
-          "lowShare": 0.222,
-          "meanConfidence": 0.836
+          "energyLow": 4.230655,
+          "energyHigh": 100.287506,
+          "lowShare": 0.04,
+          "meanConfidence": 0.886
         },
         {
           "atSeconds": 4.96,
           "symbols": 8,
-          "energyLow": 9.04867,
-          "energyHigh": 27.889777,
-          "lowShare": 0.245,
-          "meanConfidence": 0.781
+          "energyLow": 20.619899,
+          "energyHigh": 42.280481,
+          "lowShare": 0.328,
+          "meanConfidence": 0.834
         },
         {
           "atSeconds": 5,
           "symbols": 8,
-          "energyLow": 11.38543,
-          "energyHigh": 21.578495,
-          "lowShare": 0.345,
-          "meanConfidence": 0.801
+          "energyLow": 17.283852,
+          "energyHigh": 51.728246,
+          "lowShare": 0.25,
+          "meanConfidence": 0.889
         },
         {
           "atSeconds": 5.04,
           "symbols": 8,
-          "energyLow": 7.906317,
-          "energyHigh": 42.083958,
-          "lowShare": 0.158,
-          "meanConfidence": 0.93
+          "energyLow": 31.107058,
+          "energyHigh": 24.236823,
+          "lowShare": 0.562,
+          "meanConfidence": 0.885
         },
         {
           "atSeconds": 5.08,
           "symbols": 8,
-          "energyLow": 5.051493,
-          "energyHigh": 49.066499,
-          "lowShare": 0.093,
-          "meanConfidence": 0.851
+          "energyLow": 32.083596,
+          "energyHigh": 39.262287,
+          "lowShare": 0.45,
+          "meanConfidence": 0.966
         },
         {
           "atSeconds": 5.12,
           "symbols": 8,
-          "energyLow": 9.632145,
-          "energyHigh": 29.290286,
-          "lowShare": 0.247,
-          "meanConfidence": 0.789
+          "energyLow": 8.574442,
+          "energyHigh": 67.746997,
+          "lowShare": 0.112,
+          "meanConfidence": 0.861
         },
         {
           "atSeconds": 5.16,
           "symbols": 8,
-          "energyLow": 16.450268,
-          "energyHigh": 12.622399,
-          "lowShare": 0.566,
-          "meanConfidence": 0.832
+          "energyLow": 22.102662,
+          "energyHigh": 36.634361,
+          "lowShare": 0.376,
+          "meanConfidence": 0.809
         },
         {
           "atSeconds": 5.2,
           "symbols": 8,
-          "energyLow": 7.530282,
-          "energyHigh": 39.918455,
-          "lowShare": 0.159,
-          "meanConfidence": 0.872
+          "energyLow": 33.83955,
+          "energyHigh": 25.259859,
+          "lowShare": 0.573,
+          "meanConfidence": 0.923
         },
         {
           "atSeconds": 5.24,
           "symbols": 8,
-          "energyLow": 3.70072,
-          "energyHigh": 48.930876,
-          "lowShare": 0.07,
-          "meanConfidence": 0.865
+          "energyLow": 18.011291,
+          "energyHigh": 52.023611,
+          "lowShare": 0.257,
+          "meanConfidence": 0.903
         },
         {
           "atSeconds": 5.28,
           "symbols": 8,
-          "energyLow": 10.575853,
-          "energyHigh": 31.819273,
-          "lowShare": 0.249,
-          "meanConfidence": 0.866
+          "energyLow": 5.986954,
+          "energyHigh": 82.523155,
+          "lowShare": 0.068,
+          "meanConfidence": 0.857
         },
         {
           "atSeconds": 5.32,
           "symbols": 8,
-          "energyLow": 5.590001,
-          "energyHigh": 41.279155,
-          "lowShare": 0.119,
-          "meanConfidence": 0.794
+          "energyLow": 10.027624,
+          "energyHigh": 83.900445,
+          "lowShare": 0.107,
+          "meanConfidence": 0.904
         },
         {
           "atSeconds": 5.36,
           "symbols": 8,
-          "energyLow": 13.348858,
-          "energyHigh": 20.960408,
-          "lowShare": 0.389,
-          "meanConfidence": 0.8
+          "energyLow": 17.70539,
+          "energyHigh": 53.856632,
+          "lowShare": 0.247,
+          "meanConfidence": 0.826
         },
         {
           "atSeconds": 5.4,
           "symbols": 8,
-          "energyLow": 8.468436,
-          "energyHigh": 38.091677,
-          "lowShare": 0.182,
-          "meanConfidence": 0.847
+          "energyLow": 20.078098,
+          "energyHigh": 40.133599,
+          "lowShare": 0.333,
+          "meanConfidence": 0.867
         },
         {
           "atSeconds": 5.44,
           "symbols": 8,
-          "energyLow": 2.006365,
-          "energyHigh": 60.29547,
-          "lowShare": 0.032,
-          "meanConfidence": 0.932
+          "energyLow": 5.755014,
+          "energyHigh": 81.900576,
+          "lowShare": 0.066,
+          "meanConfidence": 0.868
         },
         {
           "atSeconds": 5.48,
           "symbols": 8,
-          "energyLow": 8.144449,
-          "energyHigh": 28.005019,
-          "lowShare": 0.225,
-          "meanConfidence": 0.721
+          "energyLow": 23.465078,
+          "energyHigh": 38.025483,
+          "lowShare": 0.382,
+          "meanConfidence": 0.843
         },
         {
           "atSeconds": 5.52,
           "symbols": 8,
-          "energyLow": 6.241598,
-          "energyHigh": 38.686106,
-          "lowShare": 0.139,
-          "meanConfidence": 0.782
+          "energyLow": 30.821686,
+          "energyHigh": 38.777368,
+          "lowShare": 0.443,
+          "meanConfidence": 0.955
         },
         {
           "atSeconds": 5.56,
           "symbols": 8,
-          "energyLow": 5.898022,
-          "energyHigh": 41.187839,
-          "lowShare": 0.125,
-          "meanConfidence": 0.815
+          "energyLow": 19.285875,
+          "energyHigh": 37.135873,
+          "lowShare": 0.342,
+          "meanConfidence": 0.838
         },
         {
           "atSeconds": 5.6,
           "symbols": 8,
-          "energyLow": 8.833893,
-          "energyHigh": 26.234278,
-          "lowShare": 0.252,
-          "meanConfidence": 0.765
+          "energyLow": 23.613259,
+          "energyHigh": 38.287781,
+          "lowShare": 0.381,
+          "meanConfidence": 0.869
         },
         {
           "atSeconds": 5.64,
           "symbols": 8,
-          "energyLow": 12.995352,
-          "energyHigh": 20.634929,
-          "lowShare": 0.386,
-          "meanConfidence": 0.822
+          "energyLow": 20.868424,
+          "energyHigh": 32.090538,
+          "lowShare": 0.394,
+          "meanConfidence": 0.812
         },
         {
           "atSeconds": 5.68,
           "symbols": 8,
-          "energyLow": 28.061256,
-          "energyHigh": 0.337756,
-          "lowShare": 0.988,
-          "meanConfidence": 0.976
+          "energyLow": 33.762436,
+          "energyHigh": 25.548276,
+          "lowShare": 0.569,
+          "meanConfidence": 0.941
         },
         {
           "atSeconds": 5.72,
           "symbols": 8,
-          "energyLow": 8.178022,
-          "energyHigh": 37.415836,
-          "lowShare": 0.179,
-          "meanConfidence": 0.879
+          "energyLow": 14.63329,
+          "energyHigh": 48.841177,
+          "lowShare": 0.231,
+          "meanConfidence": 0.841
         },
         {
           "atSeconds": 5.76,
           "symbols": 8,
-          "energyLow": 4.295815,
-          "energyHigh": 47.244037,
-          "lowShare": 0.083,
-          "meanConfidence": 0.899
+          "energyLow": 11.541455,
+          "energyHigh": 65.76742,
+          "lowShare": 0.149,
+          "meanConfidence": 0.853
         },
         {
           "atSeconds": 5.8,
           "symbols": 8,
-          "energyLow": 12.757573,
-          "energyHigh": 20.007282,
-          "lowShare": 0.389,
-          "meanConfidence": 0.792
+          "energyLow": 31.183345,
+          "energyHigh": 38.881643,
+          "lowShare": 0.445,
+          "meanConfidence": 0.95
         },
         {
           "atSeconds": 5.84,
           "symbols": 8,
-          "energyLow": 19.65931,
-          "energyHigh": 15.618994,
-          "lowShare": 0.557,
-          "meanConfidence": 0.901
+          "energyLow": 27.256659,
+          "energyHigh": 26.270315,
+          "lowShare": 0.509,
+          "meanConfidence": 0.868
         },
         {
           "atSeconds": 5.88,
           "symbols": 8,
-          "energyLow": 11.396973,
-          "energyHigh": 30.088631,
-          "lowShare": 0.275,
-          "meanConfidence": 0.893
+          "energyLow": 14.564941,
+          "energyHigh": 49.322604,
+          "lowShare": 0.228,
+          "meanConfidence": 0.822
         },
         {
           "atSeconds": 5.92,
           "symbols": 8,
-          "energyLow": 4.123017,
-          "energyHigh": 47.393654,
-          "lowShare": 0.08,
-          "meanConfidence": 0.899
+          "energyLow": 9.453863,
+          "energyHigh": 79.062917,
+          "lowShare": 0.107,
+          "meanConfidence": 0.91
         },
         {
           "atSeconds": 5.96,
           "symbols": 8,
-          "energyLow": 7.265696,
-          "energyHigh": 39.461023,
-          "lowShare": 0.155,
-          "meanConfidence": 0.871
+          "energyLow": 20.021391,
+          "energyHigh": 39.033145,
+          "lowShare": 0.339,
+          "meanConfidence": 0.825
         },
         {
           "atSeconds": 6,
           "symbols": 8,
-          "energyLow": 10.920483,
-          "energyHigh": 30.294483,
-          "lowShare": 0.265,
-          "meanConfidence": 0.871
+          "energyLow": 12.769069,
+          "energyHigh": 60.531227,
+          "lowShare": 0.174,
+          "meanConfidence": 0.831
         },
         {
           "atSeconds": 6.04,
           "symbols": 8,
-          "energyLow": 11.076932,
-          "energyHigh": 29.96872,
-          "lowShare": 0.27,
-          "meanConfidence": 0.875
+          "energyLow": 23.878802,
+          "energyHigh": 37.864814,
+          "lowShare": 0.387,
+          "meanConfidence": 0.886
         },
         {
           "atSeconds": 6.08,
           "symbols": 8,
-          "energyLow": 4.404752,
-          "energyHigh": 47.068603,
-          "lowShare": 0.086,
-          "meanConfidence": 0.89
+          "energyLow": 22.335668,
+          "energyHigh": 40.514443,
+          "lowShare": 0.355,
+          "meanConfidence": 0.922
         },
         {
           "atSeconds": 6.12,
           "symbols": 8,
-          "energyLow": 13.0474,
-          "energyHigh": 21.580132,
-          "lowShare": 0.377,
-          "meanConfidence": 0.845
+          "energyLow": 42.606242,
+          "energyHigh": 9.899057,
+          "lowShare": 0.811,
+          "meanConfidence": 0.954
         },
         {
           "atSeconds": 6.16,
           "symbols": 8,
-          "energyLow": 19.642443,
-          "energyHigh": 15.320834,
-          "lowShare": 0.562,
-          "meanConfidence": 0.916
+          "energyLow": 13.729075,
+          "energyHigh": 50.130524,
+          "lowShare": 0.215,
+          "meanConfidence": 0.896
         },
         {
           "atSeconds": 6.2,
           "symbols": 8,
-          "energyLow": 10.426362,
-          "energyHigh": 28.399259,
-          "lowShare": 0.269,
-          "meanConfidence": 0.884
+          "energyLow": 12.530758,
+          "energyHigh": 66.981963,
+          "lowShare": 0.158,
+          "meanConfidence": 0.835
         },
         {
           "atSeconds": 6.24,
           "symbols": 8,
-          "energyLow": 13.510341,
-          "energyHigh": 20.590654,
-          "lowShare": 0.396,
-          "meanConfidence": 0.886
+          "energyLow": 17.491166,
+          "energyHigh": 51.913438,
+          "lowShare": 0.252,
+          "meanConfidence": 0.872
         },
         {
           "atSeconds": 6.28,
           "symbols": 8,
-          "energyLow": 13.258867,
-          "energyHigh": 18.899083,
-          "lowShare": 0.412,
-          "meanConfidence": 0.826
+          "energyLow": 13.274191,
+          "energyHigh": 64.389384,
+          "lowShare": 0.171,
+          "meanConfidence": 0.877
         },
         {
           "atSeconds": 6.32,
           "symbols": 8,
-          "energyLow": 19.21066,
-          "energyHigh": 15.185272,
-          "lowShare": 0.559,
-          "meanConfidence": 0.932
+          "energyLow": 18.245992,
+          "energyHigh": 54.319412,
+          "lowShare": 0.251,
+          "meanConfidence": 0.896
         },
         {
           "atSeconds": 6.36,
           "symbols": 8,
-          "energyLow": 9.568526,
-          "energyHigh": 26.174432,
-          "lowShare": 0.268,
-          "meanConfidence": 0.831
+          "energyLow": 21.197408,
+          "energyHigh": 35.044022,
+          "lowShare": 0.377,
+          "meanConfidence": 0.821
         },
         {
           "atSeconds": 6.4,
           "symbols": 8,
-          "energyLow": 6.939894,
-          "energyHigh": 37.04304,
-          "lowShare": 0.158,
-          "meanConfidence": 0.895
+          "energyLow": 23.561037,
+          "energyHigh": 36.603809,
+          "lowShare": 0.392,
+          "meanConfidence": 0.848
         },
         {
           "atSeconds": 6.44,
           "symbols": 8,
-          "energyLow": 18.56671,
-          "energyHigh": 15.857873,
-          "lowShare": 0.539,
-          "meanConfidence": 0.897
+          "energyLow": 29.332653,
+          "energyHigh": 25.416767,
+          "lowShare": 0.536,
+          "meanConfidence": 0.902
         },
         {
           "atSeconds": 6.48,
           "symbols": 8,
-          "energyLow": 14.634596,
-          "energyHigh": 21.494773,
-          "lowShare": 0.405,
+          "energyLow": 26.598178,
+          "energyHigh": 35.251395,
+          "lowShare": 0.43,
           "meanConfidence": 0.938
         },
         {
           "atSeconds": 6.52,
           "symbols": 8,
-          "energyLow": 9.41865,
-          "energyHigh": 25.781656,
-          "lowShare": 0.268,
-          "meanConfidence": 0.835
+          "energyLow": 0.206872,
+          "energyHigh": 116.321404,
+          "lowShare": 0.002,
+          "meanConfidence": 0.996
         },
         {
           "atSeconds": 6.56,
           "symbols": 8,
-          "energyLow": 7.019033,
-          "energyHigh": 37.321223,
-          "lowShare": 0.158,
-          "meanConfidence": 0.895
+          "energyLow": 28.048053,
+          "energyHigh": 28.060155,
+          "lowShare": 0.5,
+          "meanConfidence": 0.856
         },
         {
           "atSeconds": 6.6,
           "symbols": 8,
-          "energyLow": 9.944406,
-          "energyHigh": 31.433223,
-          "lowShare": 0.24,
-          "meanConfidence": 0.881
+          "energyLow": 17.529999,
+          "energyHigh": 49.42074,
+          "lowShare": 0.262,
+          "meanConfidence": 0.911
         },
         {
           "atSeconds": 6.64,
           "symbols": 8,
-          "energyLow": 10.780833,
-          "energyHigh": 28.4594,
-          "lowShare": 0.275,
-          "meanConfidence": 0.861
+          "energyLow": 23.848249,
+          "energyHigh": 32.930846,
+          "lowShare": 0.42,
+          "meanConfidence": 0.836
         },
         {
           "atSeconds": 6.68,
           "symbols": 8,
-          "energyLow": 14.111652,
-          "energyHigh": 17.982031,
-          "lowShare": 0.44,
-          "meanConfidence": 0.854
+          "energyLow": 19.671093,
+          "energyHigh": 34.400434,
+          "lowShare": 0.364,
+          "meanConfidence": 0.835
         },
         {
           "atSeconds": 6.72,
           "symbols": 8,
-          "energyLow": 16.160849,
-          "energyHigh": 15.242397,
-          "lowShare": 0.515,
-          "meanConfidence": 0.879
+          "energyLow": 37.242954,
+          "energyHigh": 9.985139,
+          "lowShare": 0.789,
+          "meanConfidence": 0.933
         },
         {
           "atSeconds": 6.76,
           "symbols": 8,
-          "energyLow": 15.169847,
-          "energyHigh": 17.89628,
-          "lowShare": 0.459,
-          "meanConfidence": 0.884
+          "energyLow": 30.722298,
+          "energyHigh": 21.40531,
+          "lowShare": 0.589,
+          "meanConfidence": 0.903
         },
         {
           "atSeconds": 6.8,
           "symbols": 8,
-          "energyLow": 13.3585,
-          "energyHigh": 22.94172,
-          "lowShare": 0.368,
-          "meanConfidence": 0.919
+          "energyLow": 10.100354,
+          "energyHigh": 77.603784,
+          "lowShare": 0.115,
+          "meanConfidence": 0.902
         },
         {
           "atSeconds": 6.84,
           "symbols": 8,
-          "energyLow": 8.466103,
-          "energyHigh": 36.565046,
-          "lowShare": 0.188,
-          "meanConfidence": 0.94
+          "energyLow": 28.086436,
+          "energyHigh": 27.173497,
+          "lowShare": 0.508,
+          "meanConfidence": 0.885
         },
         {
           "atSeconds": 6.88,
           "symbols": 8,
-          "energyLow": 3.458381,
-          "energyHigh": 45.252771,
-          "lowShare": 0.071,
-          "meanConfidence": 0.893
+          "energyLow": 32.510881,
+          "energyHigh": 21.744905,
+          "lowShare": 0.599,
+          "meanConfidence": 0.899
         },
         {
           "atSeconds": 6.92,
           "symbols": 8,
-          "energyLow": 7.601605,
-          "energyHigh": 34.124249,
-          "lowShare": 0.182,
-          "meanConfidence": 0.857
+          "energyLow": 10.92439,
+          "energyHigh": 64.134702,
+          "lowShare": 0.146,
+          "meanConfidence": 0.895
         },
         {
           "atSeconds": 6.96,
           "symbols": 8,
-          "energyLow": 11.49959,
-          "energyHigh": 29.377532,
-          "lowShare": 0.281,
-          "meanConfidence": 0.891
+          "energyLow": 24.580613,
+          "energyHigh": 35.973739,
+          "lowShare": 0.406,
+          "meanConfidence": 0.847
         },
         {
           "atSeconds": 7,
           "symbols": 8,
-          "energyLow": 7.818248,
-          "energyHigh": 37.310846,
-          "lowShare": 0.173,
-          "meanConfidence": 0.953
+          "energyLow": 9.922913,
+          "energyHigh": 67.686924,
+          "lowShare": 0.128,
+          "meanConfidence": 0.913
         },
         {
           "atSeconds": 7.04,
           "symbols": 8,
-          "energyLow": 7.421303,
-          "energyHigh": 37.266085,
-          "lowShare": 0.166,
-          "meanConfidence": 0.945
+          "energyLow": 7.779245,
+          "energyHigh": 81.009855,
+          "lowShare": 0.088,
+          "meanConfidence": 0.854
         },
         {
           "atSeconds": 7.08,
           "symbols": 8,
-          "energyLow": 10.371499,
-          "energyHigh": 29.771611,
-          "lowShare": 0.258,
-          "meanConfidence": 0.88
+          "energyLow": 15.617043,
+          "energyHigh": 53.859838,
+          "lowShare": 0.225,
+          "meanConfidence": 0.913
         },
         {
           "atSeconds": 7.12,
           "symbols": 8,
-          "energyLow": 6.899141,
-          "energyHigh": 36.78417,
-          "lowShare": 0.158,
-          "meanConfidence": 0.889
+          "energyLow": 20.389648,
+          "energyHigh": 51.474534,
+          "lowShare": 0.284,
+          "meanConfidence": 0.885
         },
         {
           "atSeconds": 7.16,
           "symbols": 8,
-          "energyLow": 14.130882,
-          "energyHigh": 24.975918,
-          "lowShare": 0.361,
-          "meanConfidence": 0.904
+          "energyLow": 23.300704,
+          "energyHigh": 37.959847,
+          "lowShare": 0.38,
+          "meanConfidence": 0.939
         },
         {
           "atSeconds": 7.2,
           "symbols": 8,
-          "energyLow": 9.16478,
-          "energyHigh": 27.188701,
-          "lowShare": 0.252,
-          "meanConfidence": 0.828
+          "energyLow": 14.960032,
+          "energyHigh": 61.57295,
+          "lowShare": 0.195,
+          "meanConfidence": 0.924
         },
         {
           "atSeconds": 7.24,
           "symbols": 8,
-          "energyLow": 19.092843,
-          "energyHigh": 12.478096,
-          "lowShare": 0.605,
-          "meanConfidence": 0.906
+          "energyLow": 18.715975,
+          "energyHigh": 37.902009,
+          "lowShare": 0.331,
+          "meanConfidence": 0.834
         },
         {
           "atSeconds": 7.28,
           "symbols": 8,
-          "energyLow": 4.363861,
-          "energyHigh": 43.500744,
-          "lowShare": 0.091,
-          "meanConfidence": 0.902
+          "energyLow": 19.596354,
+          "energyHigh": 45.510472,
+          "lowShare": 0.301,
+          "meanConfidence": 0.838
         },
         {
           "atSeconds": 7.32,
           "symbols": 8,
-          "energyLow": 11.047276,
-          "energyHigh": 18.618249,
-          "lowShare": 0.372,
-          "meanConfidence": 0.814
+          "energyLow": 15.762279,
+          "energyHigh": 53.430627,
+          "lowShare": 0.228,
+          "meanConfidence": 0.901
         },
         {
           "atSeconds": 7.36,
           "symbols": 8,
-          "energyLow": 11.04759,
-          "energyHigh": 26.796122,
-          "lowShare": 0.292,
-          "meanConfidence": 0.855
+          "energyLow": 6.782337,
+          "energyHigh": 81.725262,
+          "lowShare": 0.077,
+          "meanConfidence": 0.836
         },
         {
           "atSeconds": 7.4,
           "symbols": 8,
-          "energyLow": 5.931032,
-          "energyHigh": 36.675203,
-          "lowShare": 0.139,
-          "meanConfidence": 0.854
+          "energyLow": 13.040801,
+          "energyHigh": 44.042576,
+          "lowShare": 0.228,
+          "meanConfidence": 0.738
         },
         {
           "atSeconds": 7.44,
           "symbols": 8,
-          "energyLow": 7.615352,
-          "energyHigh": 34.147306,
-          "lowShare": 0.182,
-          "meanConfidence": 0.877
+          "energyLow": 18.80925,
+          "energyHigh": 46.547029,
+          "lowShare": 0.288,
+          "meanConfidence": 0.859
         },
         {
           "atSeconds": 7.48,
           "symbols": 8,
-          "energyLow": 13.945993,
-          "energyHigh": 21.616911,
-          "lowShare": 0.392,
-          "meanConfidence": 0.853
+          "energyLow": 11.16161,
+          "energyHigh": 65.26311,
+          "lowShare": 0.146,
+          "meanConfidence": 0.894
         },
         {
           "atSeconds": 7.52,
           "symbols": 8,
-          "energyLow": 4.152928,
-          "energyHigh": 44.539166,
-          "lowShare": 0.085,
-          "meanConfidence": 0.902
+          "energyLow": 25.326651,
+          "energyHigh": 43.073602,
+          "lowShare": 0.37,
+          "meanConfidence": 0.92
         },
         {
           "atSeconds": 7.56,
           "symbols": 8,
-          "energyLow": 9.853741,
-          "energyHigh": 31.472288,
-          "lowShare": 0.238,
-          "meanConfidence": 0.915
+          "energyLow": 22.576326,
+          "energyHigh": 35.744627,
+          "lowShare": 0.387,
+          "meanConfidence": 0.878
         },
         {
           "atSeconds": 7.6,
           "symbols": 8,
-          "energyLow": 17.505527,
-          "energyHigh": 13.686247,
-          "lowShare": 0.561,
-          "meanConfidence": 0.882
+          "energyLow": 19.960593,
+          "energyHigh": 53.148485,
+          "lowShare": 0.273,
+          "meanConfidence": 0.95
         },
         {
           "atSeconds": 7.64,
           "symbols": 8,
-          "energyLow": 12.735604,
-          "energyHigh": 29.873668,
-          "lowShare": 0.299,
-          "meanConfidence": 0.935
+          "energyLow": 8.017611,
+          "energyHigh": 85.731764,
+          "lowShare": 0.086,
+          "meanConfidence": 0.936
         },
         {
           "atSeconds": 7.68,
           "symbols": 8,
-          "energyLow": 12.318828,
-          "energyHigh": 20.794975,
-          "lowShare": 0.372,
-          "meanConfidence": 0.873
+          "energyLow": 11.520618,
+          "energyHigh": 69.089092,
+          "lowShare": 0.143,
+          "meanConfidence": 0.853
         },
         {
           "atSeconds": 7.72,
           "symbols": 8,
-          "energyLow": 21.831813,
-          "energyHigh": 5.794832,
-          "lowShare": 0.79,
-          "meanConfidence": 0.927
+          "energyLow": 11.001059,
+          "energyHigh": 69.911416,
+          "lowShare": 0.136,
+          "meanConfidence": 0.894
         },
         {
           "atSeconds": 7.76,
           "symbols": 8,
-          "energyLow": 8.668367,
-          "energyHigh": 34.184573,
-          "lowShare": 0.202,
-          "meanConfidence": 0.894
+          "energyLow": 18.524458,
+          "energyHigh": 46.817507,
+          "lowShare": 0.284,
+          "meanConfidence": 0.853
         },
         {
           "atSeconds": 7.8,
           "symbols": 8,
-          "energyLow": 13.290137,
-          "energyHigh": 22.057439,
-          "lowShare": 0.376,
-          "meanConfidence": 0.903
+          "energyLow": 11.931328,
+          "energyHigh": 49.347402,
+          "lowShare": 0.195,
+          "meanConfidence": 0.812
         },
         {
           "atSeconds": 7.84,
           "symbols": 8,
-          "energyLow": 6.128947,
-          "energyHigh": 34.20677,
-          "lowShare": 0.152,
-          "meanConfidence": 0.837
+          "energyLow": 7.875726,
+          "energyHigh": 77.460172,
+          "lowShare": 0.092,
+          "meanConfidence": 0.861
         },
         {
           "atSeconds": 7.88,
           "symbols": 8,
-          "energyLow": 22.5173,
-          "energyHigh": 6.780588,
-          "lowShare": 0.769,
-          "meanConfidence": 0.924
+          "energyLow": 23.377533,
+          "energyHigh": 38.6923,
+          "lowShare": 0.377,
+          "meanConfidence": 0.882
         },
         {
           "atSeconds": 7.92,
           "symbols": 8,
-          "energyLow": 16.245299,
-          "energyHigh": 20.892177,
-          "lowShare": 0.437,
-          "meanConfidence": 0.93
+          "energyLow": 29.455417,
+          "energyHigh": 26.355313,
+          "lowShare": 0.528,
+          "meanConfidence": 0.938
         },
         {
           "atSeconds": 7.96,
           "symbols": 8,
-          "energyLow": 12.218647,
-          "energyHigh": 20.371582,
-          "lowShare": 0.375,
-          "meanConfidence": 0.871
+          "energyLow": 9.474793,
+          "energyHigh": 61.612212,
+          "lowShare": 0.133,
+          "meanConfidence": 0.864
         },
         {
           "atSeconds": 8,
           "symbols": 8,
-          "energyLow": 3.151336,
-          "energyHigh": 51.071269,
-          "lowShare": 0.058,
-          "meanConfidence": 0.945
+          "energyLow": 17.996393,
+          "energyHigh": 51.109186,
+          "lowShare": 0.26,
+          "meanConfidence": 0.873
         },
         {
           "atSeconds": 8.04,
           "symbols": 8,
-          "energyLow": 10.244152,
-          "energyHigh": 28.694751,
-          "lowShare": 0.263,
-          "meanConfidence": 0.866
+          "energyLow": 37.088054,
+          "energyHigh": 13.36856,
+          "lowShare": 0.735,
+          "meanConfidence": 0.903
         },
         {
           "atSeconds": 8.08,
           "symbols": 8,
-          "energyLow": 10.774268,
-          "energyHigh": 28.823784,
-          "lowShare": 0.272,
-          "meanConfidence": 0.923
+          "energyLow": 23.960359,
+          "energyHigh": 34.476101,
+          "lowShare": 0.41,
+          "meanConfidence": 0.897
         },
         {
           "atSeconds": 8.12,
           "symbols": 8,
-          "energyLow": 13.831935,
-          "energyHigh": 23.486488,
-          "lowShare": 0.371,
-          "meanConfidence": 0.918
+          "energyLow": 16.897796,
+          "energyHigh": 62.944204,
+          "lowShare": 0.212,
+          "meanConfidence": 0.933
         },
         {
           "atSeconds": 8.16,
           "symbols": 8,
-          "energyLow": 11.710135,
-          "energyHigh": 28.844144,
-          "lowShare": 0.289,
-          "meanConfidence": 0.956
+          "energyLow": 13.401429,
+          "energyHigh": 50.933584,
+          "lowShare": 0.208,
+          "meanConfidence": 0.805
         },
         {
           "atSeconds": 8.2,
           "symbols": 8,
-          "energyLow": 12.767307,
-          "energyHigh": 18.933699,
-          "lowShare": 0.403,
-          "meanConfidence": 0.851
+          "energyLow": 16.027276,
+          "energyHigh": 63.12803,
+          "lowShare": 0.202,
+          "meanConfidence": 0.907
         },
         {
           "atSeconds": 8.24,
           "symbols": 8,
-          "energyLow": 7.681897,
-          "energyHigh": 36.551308,
-          "lowShare": 0.174,
-          "meanConfidence": 0.902
+          "energyLow": 14.714513,
+          "energyHigh": 49.071209,
+          "lowShare": 0.231,
+          "meanConfidence": 0.812
         },
         {
           "atSeconds": 8.28,
           "symbols": 8,
-          "energyLow": 11.122712,
-          "energyHigh": 25.467034,
-          "lowShare": 0.304,
-          "meanConfidence": 0.878
+          "energyLow": 5.642066,
+          "energyHigh": 83.316979,
+          "lowShare": 0.063,
+          "meanConfidence": 0.907
         },
         {
           "atSeconds": 8.32,
           "symbols": 8,
-          "energyLow": 5.755207,
-          "energyHigh": 35.574449,
-          "lowShare": 0.139,
-          "meanConfidence": 0.877
+          "energyLow": 15.170307,
+          "energyHigh": 50.474281,
+          "lowShare": 0.231,
+          "meanConfidence": 0.814
         },
         {
           "atSeconds": 8.36,
           "symbols": 8,
-          "energyLow": 4.472941,
-          "energyHigh": 44.174191,
-          "lowShare": 0.092,
-          "meanConfidence": 0.907
-        },
-        {
-          "atSeconds": 8.4,
-          "symbols": 8,
-          "energyLow": 8.760255,
-          "energyHigh": 25.061247,
-          "lowShare": 0.259,
-          "meanConfidence": 0.816
-        },
-        {
-          "atSeconds": 8.44,
-          "symbols": 8,
-          "energyLow": 14.574325,
-          "energyHigh": 18.978745,
-          "lowShare": 0.434,
-          "meanConfidence": 0.865
-        },
-        {
-          "atSeconds": 8.48,
-          "symbols": 8,
-          "energyLow": 7.895063,
-          "energyHigh": 36.077808,
-          "lowShare": 0.18,
-          "meanConfidence": 0.911
-        },
-        {
-          "atSeconds": 8.52,
-          "symbols": 8,
-          "energyLow": 16.180167,
-          "energyHigh": 13.622485,
+          "energyLow": 31.272295,
+          "energyHigh": 26.306026,
           "lowShare": 0.543,
           "meanConfidence": 0.937
         },
         {
+          "atSeconds": 8.4,
+          "symbols": 8,
+          "energyLow": 28.129355,
+          "energyHigh": 34.992585,
+          "lowShare": 0.446,
+          "meanConfidence": 0.91
+        },
+        {
+          "atSeconds": 8.44,
+          "symbols": 8,
+          "energyLow": 16.853586,
+          "energyHigh": 51.832816,
+          "lowShare": 0.245,
+          "meanConfidence": 0.911
+        },
+        {
+          "atSeconds": 8.48,
+          "symbols": 8,
+          "energyLow": 38.479869,
+          "energyHigh": 11.78491,
+          "lowShare": 0.766,
+          "meanConfidence": 0.919
+        },
+        {
+          "atSeconds": 8.52,
+          "symbols": 8,
+          "energyLow": 14.114943,
+          "energyHigh": 60.388435,
+          "lowShare": 0.189,
+          "meanConfidence": 0.922
+        },
+        {
           "atSeconds": 8.56,
           "symbols": 8,
-          "energyLow": 5.45528,
-          "energyHigh": 41.477721,
-          "lowShare": 0.116,
-          "meanConfidence": 0.93
+          "energyLow": 13.000511,
+          "energyHigh": 69.312504,
+          "lowShare": 0.158,
+          "meanConfidence": 0.907
         },
         {
           "atSeconds": 8.6,
           "symbols": 8,
-          "energyLow": 7.108506,
-          "energyHigh": 38.000981,
-          "lowShare": 0.158,
-          "meanConfidence": 0.908
+          "energyLow": 15.346536,
+          "energyHigh": 49.719709,
+          "lowShare": 0.236,
+          "meanConfidence": 0.832
         },
         {
           "atSeconds": 8.64,
           "symbols": 8,
-          "energyLow": 14.065537,
-          "energyHigh": 20.60288,
-          "lowShare": 0.406,
-          "meanConfidence": 0.885
+          "energyLow": 15.109741,
+          "energyHigh": 51.555141,
+          "lowShare": 0.227,
+          "meanConfidence": 0.824
         },
         {
           "atSeconds": 8.68,
-          "symbols": 8,
-          "energyLow": 6.129109,
-          "energyHigh": 43.71616,
-          "lowShare": 0.123,
-          "meanConfidence": 0.957
-        },
-        {
-          "atSeconds": 8.72,
-          "symbols": 8,
-          "energyLow": 3.885341,
-          "energyHigh": 41.265383,
-          "lowShare": 0.086,
-          "meanConfidence": 0.917
-        },
-        {
-          "atSeconds": 8.76,
-          "symbols": 8,
-          "energyLow": 16.495352,
-          "energyHigh": 15.857632,
-          "lowShare": 0.51,
-          "meanConfidence": 0.901
-        },
-        {
-          "atSeconds": 8.8,
-          "symbols": 8,
-          "energyLow": 8.664743,
-          "energyHigh": 34.381187,
-          "lowShare": 0.201,
-          "meanConfidence": 0.904
-        },
-        {
-          "atSeconds": 8.84,
-          "symbols": 8,
-          "energyLow": 13.029185,
-          "energyHigh": 21.945059,
-          "lowShare": 0.373,
-          "meanConfidence": 0.907
-        },
-        {
-          "atSeconds": 8.88,
-          "symbols": 8,
-          "energyLow": 12.183318,
-          "energyHigh": 25.755256,
-          "lowShare": 0.321,
-          "meanConfidence": 0.916
-        },
-        {
-          "atSeconds": 8.92,
-          "symbols": 8,
-          "energyLow": 17.63235,
-          "energyHigh": 12.118392,
-          "lowShare": 0.593,
-          "meanConfidence": 0.9
-        },
-        {
-          "atSeconds": 8.96,
-          "symbols": 8,
-          "energyLow": 18.380837,
-          "energyHigh": 14.277881,
-          "lowShare": 0.563,
-          "meanConfidence": 0.951
-        },
-        {
-          "atSeconds": 9,
-          "symbols": 8,
-          "energyLow": 12.883044,
-          "energyHigh": 19.128674,
-          "lowShare": 0.402,
-          "meanConfidence": 0.901
-        },
-        {
-          "atSeconds": 9.04,
-          "symbols": 8,
-          "energyLow": 9.421663,
-          "energyHigh": 34.807083,
-          "lowShare": 0.213,
-          "meanConfidence": 0.944
-        },
-        {
-          "atSeconds": 9.08,
-          "symbols": 8,
-          "energyLow": 9.959018,
-          "energyHigh": 27.464059,
-          "lowShare": 0.266,
-          "meanConfidence": 0.945
-        },
-        {
-          "atSeconds": 9.12,
-          "symbols": 8,
-          "energyLow": 13.912916,
-          "energyHigh": 20.656073,
-          "lowShare": 0.402,
-          "meanConfidence": 0.909
-        },
-        {
-          "atSeconds": 9.16,
-          "symbols": 8,
-          "energyLow": 10.384882,
-          "energyHigh": 25.597784,
-          "lowShare": 0.289,
-          "meanConfidence": 0.87
-        },
-        {
-          "atSeconds": 9.2,
-          "symbols": 8,
-          "energyLow": 12.47094,
-          "energyHigh": 26.465165,
-          "lowShare": 0.32,
-          "meanConfidence": 0.932
-        },
-        {
-          "atSeconds": 9.24,
-          "symbols": 8,
-          "energyLow": 12.687411,
-          "energyHigh": 20.436527,
-          "lowShare": 0.383,
-          "meanConfidence": 0.907
-        },
-        {
-          "atSeconds": 9.28,
-          "symbols": 8,
-          "energyLow": 2.638912,
-          "energyHigh": 50.213818,
-          "lowShare": 0.05,
-          "meanConfidence": 0.952
-        },
-        {
-          "atSeconds": 9.32,
-          "symbols": 8,
-          "energyLow": 7.327309,
-          "energyHigh": 12.283679,
-          "lowShare": 0.374,
-          "meanConfidence": 0.716
-        },
-        {
-          "atSeconds": 9.36,
-          "symbols": 8,
-          "energyLow": 0.030567,
-          "energyHigh": 0.129687,
-          "lowShare": 0.191,
-          "meanConfidence": 0.656
-        },
-        {
-          "atSeconds": 9.4,
-          "symbols": 8,
-          "energyLow": 0.005816,
-          "energyHigh": 0.015465,
-          "lowShare": 0.273,
-          "meanConfidence": 0.487
-        },
-        {
-          "atSeconds": 9.44,
-          "symbols": 6,
-          "energyLow": 0.001098,
-          "energyHigh": 0.002759,
-          "lowShare": 0.285,
-          "meanConfidence": 0.428
+          "symbols": 4,
+          "energyLow": 16.796994,
+          "energyHigh": 48.097795,
+          "lowShare": 0.259,
+          "meanConfidence": 0.921
         }
       ]
     },
-    "reportedPhase": 2,
+    "reportedPhase": 5,
     "symbols": {
-      "phase": 2,
-      "symbols": 1894,
-      "strongSymbols": 1570,
-      "meanConfidence": 0.746,
-      "lowToneSymbols": 1180,
-      "highToneSymbols": 714,
+      "phase": 5,
+      "symbols": 1740,
+      "strongSymbols": 1542,
+      "meanConfidence": 0.792,
+      "lowToneSymbols": 993,
+      "highToneSymbols": 747,
       "toneShare": {
-        "1200": 0.267,
-        "2200": 0.733
+        "1200": 0.264,
+        "2200": 0.736
       },
-      "strongestWindowStart": 1759,
-      "strongestWindowConfidence": 0.923,
-      "peakEnergyWindowStart": 630
+      "strongestWindowStart": 867,
+      "strongestWindowConfidence": 0.91,
+      "peakEnergyWindowStart": 405
     }
   },
   "log": [
@@ -2120,7 +2023,16 @@
     "23:34:05  framing → FRAME COMPLETE at 9.5 s (rms -28 dBFS, confidence 0.75)",
     "23:34:05  verdict SIGNATURE VERIFIED after 10.05 s · 145 bytes · checksum CRC-32 PASS",
     "23:34:05  raw capture retained · 9.6 s · 48,000 Hz · export enabled",
-    "23:47:23  exported raw capture WAV + metadata"
+    "23:47:23  exported raw capture WAV + metadata",
+    "23:49:30  software loopback verified · 137 bytes · 1208 bits · 112.2 ms",
+    "23:49:35  software loopback verified · 137 bytes · 1208 bits · 121.8 ms",
+    "23:49:41  microphone armed · 48,000 Hz · echo cancellation off",
+    "23:49:42  framing → NO SIGNAL at 0.3 s (rms -77.2 dBFS, confidence 0.32)",
+    "23:49:43  framing → CARRIER; NO SYNC at 1.5 s (rms -59.8 dBFS, confidence 0.49)",
+    "23:49:44  framing → FRAME INCOMPLETE at 2.6 s (rms -29 dBFS, confidence 0.63)",
+    "23:49:50  framing → FRAME COMPLETE at 8.7 s (rms -24.8 dBFS, confidence 0.79)",
+    "23:49:50  verdict SIGNATURE VERIFIED after 9.27 s · 157 bytes · checksum CRC-32 PASS",
+    "23:49:50  raw capture retained · 8.8 s · 48,000 Hz · export enabled"
   ],
   "records": [
     {
@@ -6457,6 +6369,2078 @@
           "strongestWindowStart": 1759,
           "strongestWindowConfidence": 0.923,
           "peakEnergyWindowStart": 630
+        }
+      }
+    },
+    {
+      "at": "2026-09-19T22:49:30.341Z",
+      "deviceRole": "receiver",
+      "packetBytes": 137,
+      "packetBits": 1096,
+      "transmittedBits": 1208,
+      "bitrate": 200,
+      "toneSeconds": 6.04,
+      "audioSeconds": 6.34,
+      "sampleRate": 48000,
+      "status": "SIGNATURE VERIFIED",
+      "message": "hello, io-note",
+      "nonce": "000102030405060708090a0b0c0d0e0f",
+      "publicKey": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+      "fingerprint": "21fe31dfa154a261626bf854046fd2271b7bed4b6abe45aa58877ef47f9721b9",
+      "successfulDecode": true,
+      "processingMs": 112.19999998807907,
+      "packetHex": "494f4e3101d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a000102030405060708090a0b0c0d0e0f000e68656c6c6f2c20696f2d6e6f7465b590d5977bb8b1e8a4a987a7c324ed2a47583afac514549df24c0702b4de16df28d2813adc7c41057b1167cfe625cd7a9a53328cecf4adae02861145cc29f7069515f110",
+      "mode": "deterministic software PCM loopback"
+    },
+    {
+      "at": "2026-09-19T22:49:35.415Z",
+      "deviceRole": "receiver",
+      "packetBytes": 137,
+      "packetBits": 1096,
+      "transmittedBits": 1208,
+      "bitrate": 200,
+      "toneSeconds": 6.04,
+      "audioSeconds": 6.34,
+      "sampleRate": 48000,
+      "status": "SIGNATURE VERIFIED",
+      "message": "hello, io-note",
+      "nonce": "000102030405060708090a0b0c0d0e0f",
+      "publicKey": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+      "fingerprint": "21fe31dfa154a261626bf854046fd2271b7bed4b6abe45aa58877ef47f9721b9",
+      "successfulDecode": true,
+      "processingMs": 121.80000001192093,
+      "packetHex": "494f4e3101d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a000102030405060708090a0b0c0d0e0f000e68656c6c6f2c20696f2d6e6f7465b590d5977bb8b1e8a4a987a7c324ed2a47583afac514549df24c0702b4de16df28d2813adc7c41057b1167cfe625cd7a9a53328cecf4adae02861145cc29f7069515f110",
+      "mode": "deterministic software PCM loopback"
+    },
+    {
+      "at": "2026-09-19T22:49:50.871Z",
+      "deviceRole": "receiver",
+      "mode": "microphone",
+      "packetBytes": 157,
+      "packetBits": 1256,
+      "transmittedBits": 1368,
+      "bitrate": 200,
+      "toneSeconds": 6.84,
+      "audioSeconds": 7.14,
+      "sampleRate": 48000,
+      "status": "SIGNATURE VERIFIED",
+      "message": "Hello world we control the io pins",
+      "nonce": "89e698e6d8daef40eb3d4bfa740f86cd",
+      "publicKey": "fcf8eecc95ddefca6ede301f668a80695a57d2f21db1f5243252e21b15d008f7",
+      "fingerprint": "c9838f90b5d7f5baa10a37ac06f20330205c0ee3da4bd6fd770f8d0fc1dbdf7e",
+      "successfulDecode": true,
+      "capturedSeconds": 8.704,
+      "decodeMs": 94.30000001192093,
+      "verifyMs": 2.399999976158142,
+      "listenToVerdictMs": 9271.399999976158,
+      "estimatedSignalToVerdictMs": 6958.108333309414,
+      "frameSampleDurationSeconds": 6.84,
+      "microphoneSettings": {
+        "autoGainControl": false,
+        "channelCount": 1,
+        "deviceId": "default",
+        "echoCancellation": false,
+        "groupId": "d14f3711f52fd52476094b89de8447e5dbf4ff6381f2ae72eb9485f94ccc3ecc",
+        "latency": 0.04,
+        "noiseSuppression": false,
+        "sampleRate": 48000,
+        "sampleSize": 16,
+        "voiceIsolation": false
+      },
+      "diagnostics": {
+        "sampleRate": 48000,
+        "capturedSeconds": 8.7,
+        "symbolSamples": 240,
+        "tones": [
+          1200,
+          2200
+        ],
+        "level": {
+          "rms": 0.05733,
+          "peak": 0.19406,
+          "rmsDbfs": -24.8,
+          "peakDbfs": -14.2,
+          "crestDb": 10.6,
+          "clippedSamples": 0
+        },
+        "sync": {
+          "candidates": 3,
+          "preambleRejected": 0,
+          "qualityRejected": 0,
+          "accepted": 3,
+          "bestPreambleErrors": 0,
+          "bestQuality": 0.976,
+          "phase": 0
+        },
+        "framing": "FRAME COMPLETE",
+        "declaredPacketBytes": 157,
+        "bits": {
+          "framing": 112,
+          "expectedData": 1256,
+          "receivedData": 1256,
+          "total": 1368
+        },
+        "checksum": "CRC-32 PASS",
+        "phases": [
+          {
+            "phase": 0,
+            "symbols": 1740,
+            "strongSymbols": 1573,
+            "meanConfidence": 0.866,
+            "lowToneSymbols": 1008,
+            "highToneSymbols": 732,
+            "toneShare": {
+              "1200": 0.326,
+              "2200": 0.674
+            },
+            "strongestWindowStart": 1676,
+            "strongestWindowConfidence": 0.982,
+            "peakEnergyWindowStart": 406
+          },
+          {
+            "phase": 1,
+            "symbols": 1740,
+            "strongSymbols": 1360,
+            "meanConfidence": 0.757,
+            "lowToneSymbols": 1001,
+            "highToneSymbols": 739,
+            "toneShare": {
+              "1200": 0.306,
+              "2200": 0.694
+            },
+            "strongestWindowStart": 868,
+            "strongestWindowConfidence": 0.891,
+            "peakEnergyWindowStart": 406
+          },
+          {
+            "phase": 2,
+            "symbols": 1740,
+            "strongSymbols": 1213,
+            "meanConfidence": 0.699,
+            "lowToneSymbols": 963,
+            "highToneSymbols": 777,
+            "toneShare": {
+              "1200": 0.338,
+              "2200": 0.662
+            },
+            "strongestWindowStart": 868,
+            "strongestWindowConfidence": 0.84,
+            "peakEnergyWindowStart": 406
+          },
+          {
+            "phase": 3,
+            "symbols": 1740,
+            "strongSymbols": 1080,
+            "meanConfidence": 0.659,
+            "lowToneSymbols": 657,
+            "highToneSymbols": 1083,
+            "toneShare": {
+              "1200": 0.298,
+              "2200": 0.702
+            },
+            "strongestWindowStart": 495,
+            "strongestWindowConfidence": 0.819,
+            "peakEnergyWindowStart": 405
+          },
+          {
+            "phase": 4,
+            "symbols": 1740,
+            "strongSymbols": 1284,
+            "meanConfidence": 0.689,
+            "lowToneSymbols": 946,
+            "highToneSymbols": 794,
+            "toneShare": {
+              "1200": 0.297,
+              "2200": 0.703
+            },
+            "strongestWindowStart": 1290,
+            "strongestWindowConfidence": 0.829,
+            "peakEnergyWindowStart": 405
+          },
+          {
+            "phase": 5,
+            "symbols": 1740,
+            "strongSymbols": 1542,
+            "meanConfidence": 0.792,
+            "lowToneSymbols": 993,
+            "highToneSymbols": 747,
+            "toneShare": {
+              "1200": 0.264,
+              "2200": 0.736
+            },
+            "strongestWindowStart": 867,
+            "strongestWindowConfidence": 0.91,
+            "peakEnergyWindowStart": 405
+          }
+        ],
+        "symbolTrace": {
+          "fromSymbol": 372,
+          "bits": "0101010101010101010101010101010101010101010101010101010101010101",
+          "confidence": [
+            0.94,
+            0.97,
+            0.06,
+            0.97,
+            0.04,
+            0.96,
+            0.3,
+            0.96,
+            0.39,
+            0.95,
+            0.42,
+            0.95,
+            0.51,
+            0.94,
+            0.45,
+            0.94,
+            0.43,
+            0.94,
+            0.48,
+            0.94,
+            0.53,
+            0.93,
+            0.54,
+            0.93,
+            0.53,
+            0.93,
+            0.54,
+            0.93,
+            0.56,
+            0.93,
+            0.56,
+            0.93,
+            0.56,
+            0.93,
+            0.57,
+            0.92,
+            0.57,
+            0.93,
+            0.58,
+            0.92,
+            0.56,
+            0.92,
+            0.56,
+            0.92,
+            0.56,
+            0.92,
+            0.57,
+            0.92,
+            0.58,
+            0.92,
+            0.57,
+            0.92,
+            0.57,
+            0.92,
+            0.57,
+            0.92,
+            0.57,
+            0.92,
+            0.58,
+            0.92,
+            0.58,
+            0.92,
+            0.58,
+            0.92
+          ]
+        },
+        "traceSource": "accepted sync candidate",
+        "candidates": [
+          {
+            "phase": 0,
+            "symbol": 437,
+            "atSeconds": 2.185,
+            "preambleErrors": 0,
+            "quality": 0.976,
+            "outcome": "accepted",
+            "length": 157,
+            "reason": "capture holds 1255 of 1256 data bits"
+          },
+          {
+            "phase": 1,
+            "symbol": 437,
+            "atSeconds": 2.186,
+            "preambleErrors": 0,
+            "quality": 0.84,
+            "outcome": "accepted",
+            "length": 157,
+            "reason": "capture holds 1255 of 1256 data bits"
+          },
+          {
+            "phase": 5,
+            "symbol": 436,
+            "atSeconds": 2.183,
+            "preambleErrors": 0,
+            "quality": 0.887,
+            "outcome": "accepted",
+            "length": 157,
+            "reason": "complete frame, CRC-32 PASS"
+          }
+        ],
+        "candidatesTruncated": false,
+        "timeline": {
+          "binSeconds": 0.04,
+          "bins": [
+            {
+              "atSeconds": 0,
+              "symbols": 8,
+              "energyLow": 0,
+              "energyHigh": 0,
+              "lowShare": 0.26,
+              "meanConfidence": 0
+            },
+            {
+              "atSeconds": 0.04,
+              "symbols": 8,
+              "energyLow": 0.00001,
+              "energyHigh": 0.000002,
+              "lowShare": 0.831,
+              "meanConfidence": 0.324
+            },
+            {
+              "atSeconds": 0.08,
+              "symbols": 8,
+              "energyLow": 0.00001,
+              "energyHigh": 0.000004,
+              "lowShare": 0.739,
+              "meanConfidence": 0.361
+            },
+            {
+              "atSeconds": 0.12,
+              "symbols": 8,
+              "energyLow": 0.000009,
+              "energyHigh": 0.000002,
+              "lowShare": 0.782,
+              "meanConfidence": 0.29
+            },
+            {
+              "atSeconds": 0.16,
+              "symbols": 8,
+              "energyLow": 0.000006,
+              "energyHigh": 0.000006,
+              "lowShare": 0.492,
+              "meanConfidence": 0.259
+            },
+            {
+              "atSeconds": 0.2,
+              "symbols": 8,
+              "energyLow": 0.000014,
+              "energyHigh": 0.000005,
+              "lowShare": 0.754,
+              "meanConfidence": 0.406
+            },
+            {
+              "atSeconds": 0.24,
+              "symbols": 8,
+              "energyLow": 0.000013,
+              "energyHigh": 0.000004,
+              "lowShare": 0.762,
+              "meanConfidence": 0.301
+            },
+            {
+              "atSeconds": 0.28,
+              "symbols": 8,
+              "energyLow": 0.000053,
+              "energyHigh": 0.000015,
+              "lowShare": 0.778,
+              "meanConfidence": 0.486
+            },
+            {
+              "atSeconds": 0.32,
+              "symbols": 8,
+              "energyLow": 0.000043,
+              "energyHigh": 0.000014,
+              "lowShare": 0.755,
+              "meanConfidence": 0.568
+            },
+            {
+              "atSeconds": 0.36,
+              "symbols": 8,
+              "energyLow": 0.000153,
+              "energyHigh": 0.000027,
+              "lowShare": 0.85,
+              "meanConfidence": 0.702
+            },
+            {
+              "atSeconds": 0.4,
+              "symbols": 8,
+              "energyLow": 0.000252,
+              "energyHigh": 0.000036,
+              "lowShare": 0.876,
+              "meanConfidence": 0.736
+            },
+            {
+              "atSeconds": 0.44,
+              "symbols": 8,
+              "energyLow": 0.00002,
+              "energyHigh": 0.000015,
+              "lowShare": 0.564,
+              "meanConfidence": 0.403
+            },
+            {
+              "atSeconds": 0.48,
+              "symbols": 8,
+              "energyLow": 0.000037,
+              "energyHigh": 0.000017,
+              "lowShare": 0.687,
+              "meanConfidence": 0.566
+            },
+            {
+              "atSeconds": 0.52,
+              "symbols": 8,
+              "energyLow": 0.000042,
+              "energyHigh": 0.000026,
+              "lowShare": 0.619,
+              "meanConfidence": 0.509
+            },
+            {
+              "atSeconds": 0.56,
+              "symbols": 8,
+              "energyLow": 0.000033,
+              "energyHigh": 0.000021,
+              "lowShare": 0.615,
+              "meanConfidence": 0.412
+            },
+            {
+              "atSeconds": 0.6,
+              "symbols": 8,
+              "energyLow": 0.000084,
+              "energyHigh": 0.000044,
+              "lowShare": 0.656,
+              "meanConfidence": 0.491
+            },
+            {
+              "atSeconds": 0.64,
+              "symbols": 8,
+              "energyLow": 0.000039,
+              "energyHigh": 0.00001,
+              "lowShare": 0.791,
+              "meanConfidence": 0.741
+            },
+            {
+              "atSeconds": 0.68,
+              "symbols": 8,
+              "energyLow": 0.00008,
+              "energyHigh": 0.000028,
+              "lowShare": 0.743,
+              "meanConfidence": 0.475
+            },
+            {
+              "atSeconds": 0.72,
+              "symbols": 8,
+              "energyLow": 0.000091,
+              "energyHigh": 0.000029,
+              "lowShare": 0.759,
+              "meanConfidence": 0.473
+            },
+            {
+              "atSeconds": 0.76,
+              "symbols": 8,
+              "energyLow": 0.0001,
+              "energyHigh": 0.000031,
+              "lowShare": 0.762,
+              "meanConfidence": 0.52
+            },
+            {
+              "atSeconds": 0.8,
+              "symbols": 8,
+              "energyLow": 0.000036,
+              "energyHigh": 0.000011,
+              "lowShare": 0.765,
+              "meanConfidence": 0.431
+            },
+            {
+              "atSeconds": 0.84,
+              "symbols": 8,
+              "energyLow": 0.000042,
+              "energyHigh": 0.00001,
+              "lowShare": 0.815,
+              "meanConfidence": 0.556
+            },
+            {
+              "atSeconds": 0.88,
+              "symbols": 8,
+              "energyLow": 0.000107,
+              "energyHigh": 0.000015,
+              "lowShare": 0.873,
+              "meanConfidence": 0.619
+            },
+            {
+              "atSeconds": 0.92,
+              "symbols": 8,
+              "energyLow": 0.001028,
+              "energyHigh": 0.000205,
+              "lowShare": 0.834,
+              "meanConfidence": 0.687
+            },
+            {
+              "atSeconds": 0.96,
+              "symbols": 8,
+              "energyLow": 0.000541,
+              "energyHigh": 0.000114,
+              "lowShare": 0.825,
+              "meanConfidence": 0.589
+            },
+            {
+              "atSeconds": 1,
+              "symbols": 8,
+              "energyLow": 0.000107,
+              "energyHigh": 0.000032,
+              "lowShare": 0.769,
+              "meanConfidence": 0.591
+            },
+            {
+              "atSeconds": 1.04,
+              "symbols": 8,
+              "energyLow": 0.000073,
+              "energyHigh": 0.000021,
+              "lowShare": 0.772,
+              "meanConfidence": 0.541
+            },
+            {
+              "atSeconds": 1.08,
+              "symbols": 8,
+              "energyLow": 0.000054,
+              "energyHigh": 0.00002,
+              "lowShare": 0.724,
+              "meanConfidence": 0.417
+            },
+            {
+              "atSeconds": 1.12,
+              "symbols": 8,
+              "energyLow": 0.000235,
+              "energyHigh": 0.000059,
+              "lowShare": 0.801,
+              "meanConfidence": 0.628
+            },
+            {
+              "atSeconds": 1.16,
+              "symbols": 8,
+              "energyLow": 0.000094,
+              "energyHigh": 0.000023,
+              "lowShare": 0.805,
+              "meanConfidence": 0.424
+            },
+            {
+              "atSeconds": 1.2,
+              "symbols": 8,
+              "energyLow": 0.000062,
+              "energyHigh": 0.000021,
+              "lowShare": 0.75,
+              "meanConfidence": 0.472
+            },
+            {
+              "atSeconds": 1.24,
+              "symbols": 8,
+              "energyLow": 0.000109,
+              "energyHigh": 0.000018,
+              "lowShare": 0.861,
+              "meanConfidence": 0.515
+            },
+            {
+              "atSeconds": 1.28,
+              "symbols": 8,
+              "energyLow": 0.000233,
+              "energyHigh": 0.000033,
+              "lowShare": 0.877,
+              "meanConfidence": 0.425
+            },
+            {
+              "atSeconds": 1.32,
+              "symbols": 8,
+              "energyLow": 0.000203,
+              "energyHigh": 0.000189,
+              "lowShare": 0.518,
+              "meanConfidence": 0.418
+            },
+            {
+              "atSeconds": 1.36,
+              "symbols": 8,
+              "energyLow": 0.000086,
+              "energyHigh": 0.000052,
+              "lowShare": 0.623,
+              "meanConfidence": 0.612
+            },
+            {
+              "atSeconds": 1.4,
+              "symbols": 8,
+              "energyLow": 0.000053,
+              "energyHigh": 0.00002,
+              "lowShare": 0.726,
+              "meanConfidence": 0.544
+            },
+            {
+              "atSeconds": 1.44,
+              "symbols": 8,
+              "energyLow": 0.000051,
+              "energyHigh": 0.000016,
+              "lowShare": 0.759,
+              "meanConfidence": 0.531
+            },
+            {
+              "atSeconds": 1.48,
+              "symbols": 8,
+              "energyLow": 0.000028,
+              "energyHigh": 0.000013,
+              "lowShare": 0.682,
+              "meanConfidence": 0.379
+            },
+            {
+              "atSeconds": 1.52,
+              "symbols": 8,
+              "energyLow": 0.000067,
+              "energyHigh": 0.000023,
+              "lowShare": 0.747,
+              "meanConfidence": 0.447
+            },
+            {
+              "atSeconds": 1.56,
+              "symbols": 8,
+              "energyLow": 0.000055,
+              "energyHigh": 0.000025,
+              "lowShare": 0.69,
+              "meanConfidence": 0.495
+            },
+            {
+              "atSeconds": 1.6,
+              "symbols": 8,
+              "energyLow": 0.000106,
+              "energyHigh": 0.000032,
+              "lowShare": 0.771,
+              "meanConfidence": 0.587
+            },
+            {
+              "atSeconds": 1.64,
+              "symbols": 8,
+              "energyLow": 0.000301,
+              "energyHigh": 0.000078,
+              "lowShare": 0.794,
+              "meanConfidence": 0.679
+            },
+            {
+              "atSeconds": 1.68,
+              "symbols": 8,
+              "energyLow": 0.000094,
+              "energyHigh": 0.000044,
+              "lowShare": 0.679,
+              "meanConfidence": 0.595
+            },
+            {
+              "atSeconds": 1.72,
+              "symbols": 8,
+              "energyLow": 0.000078,
+              "energyHigh": 0.000018,
+              "lowShare": 0.813,
+              "meanConfidence": 0.378
+            },
+            {
+              "atSeconds": 1.76,
+              "symbols": 8,
+              "energyLow": 0.000064,
+              "energyHigh": 0.000028,
+              "lowShare": 0.698,
+              "meanConfidence": 0.416
+            },
+            {
+              "atSeconds": 1.8,
+              "symbols": 8,
+              "energyLow": 0.000045,
+              "energyHigh": 0.000012,
+              "lowShare": 0.785,
+              "meanConfidence": 0.518
+            },
+            {
+              "atSeconds": 1.84,
+              "symbols": 8,
+              "energyLow": 0.102281,
+              "energyHigh": 3.29481,
+              "lowShare": 0.03,
+              "meanConfidence": 0.695
+            },
+            {
+              "atSeconds": 1.88,
+              "symbols": 8,
+              "energyLow": 1.78488,
+              "energyHigh": 17.949415,
+              "lowShare": 0.09,
+              "meanConfidence": 0.621
+            },
+            {
+              "atSeconds": 1.92,
+              "symbols": 8,
+              "energyLow": 5.073025,
+              "energyHigh": 33.36077,
+              "lowShare": 0.132,
+              "meanConfidence": 0.703
+            },
+            {
+              "atSeconds": 1.96,
+              "symbols": 8,
+              "energyLow": 8.175761,
+              "energyHigh": 43.793562,
+              "lowShare": 0.157,
+              "meanConfidence": 0.733
+            },
+            {
+              "atSeconds": 2,
+              "symbols": 8,
+              "energyLow": 10.766013,
+              "energyHigh": 51.899012,
+              "lowShare": 0.172,
+              "meanConfidence": 0.744
+            },
+            {
+              "atSeconds": 2.04,
+              "symbols": 8,
+              "energyLow": 12.568946,
+              "energyHigh": 57.476362,
+              "lowShare": 0.179,
+              "meanConfidence": 0.744
+            },
+            {
+              "atSeconds": 2.08,
+              "symbols": 8,
+              "energyLow": 13.720257,
+              "energyHigh": 61.116643,
+              "lowShare": 0.183,
+              "meanConfidence": 0.745
+            },
+            {
+              "atSeconds": 2.12,
+              "symbols": 8,
+              "energyLow": 14.501125,
+              "energyHigh": 63.378032,
+              "lowShare": 0.186,
+              "meanConfidence": 0.746
+            },
+            {
+              "atSeconds": 2.16,
+              "symbols": 8,
+              "energyLow": 11.236171,
+              "energyHigh": 94.414461,
+              "lowShare": 0.106,
+              "meanConfidence": 0.817
+            },
+            {
+              "atSeconds": 2.2,
+              "symbols": 8,
+              "energyLow": 17.930665,
+              "energyHigh": 80.488826,
+              "lowShare": 0.182,
+              "meanConfidence": 0.86
+            },
+            {
+              "atSeconds": 2.24,
+              "symbols": 8,
+              "energyLow": 25.525417,
+              "energyHigh": 61.300683,
+              "lowShare": 0.294,
+              "meanConfidence": 0.898
+            },
+            {
+              "atSeconds": 2.28,
+              "symbols": 8,
+              "energyLow": 15.358288,
+              "energyHigh": 76.549466,
+              "lowShare": 0.167,
+              "meanConfidence": 0.866
+            },
+            {
+              "atSeconds": 2.32,
+              "symbols": 8,
+              "energyLow": 25.858217,
+              "energyHigh": 63.831006,
+              "lowShare": 0.288,
+              "meanConfidence": 0.934
+            },
+            {
+              "atSeconds": 2.36,
+              "symbols": 8,
+              "energyLow": 29.018736,
+              "energyHigh": 17.372687,
+              "lowShare": 0.626,
+              "meanConfidence": 0.933
+            },
+            {
+              "atSeconds": 2.4,
+              "symbols": 8,
+              "energyLow": 7.498768,
+              "energyHigh": 38.316596,
+              "lowShare": 0.164,
+              "meanConfidence": 0.871
+            },
+            {
+              "atSeconds": 2.44,
+              "symbols": 8,
+              "energyLow": 10.576807,
+              "energyHigh": 30.028209,
+              "lowShare": 0.26,
+              "meanConfidence": 0.81
+            },
+            {
+              "atSeconds": 2.48,
+              "symbols": 8,
+              "energyLow": 5.456612,
+              "energyHigh": 54.736473,
+              "lowShare": 0.091,
+              "meanConfidence": 0.889
+            },
+            {
+              "atSeconds": 2.52,
+              "symbols": 8,
+              "energyLow": 8.356993,
+              "energyHigh": 50.048617,
+              "lowShare": 0.143,
+              "meanConfidence": 0.924
+            },
+            {
+              "atSeconds": 2.56,
+              "symbols": 8,
+              "energyLow": 9.051479,
+              "energyHigh": 2.334024,
+              "lowShare": 0.795,
+              "meanConfidence": 0.868
+            },
+            {
+              "atSeconds": 2.6,
+              "symbols": 8,
+              "energyLow": 6.012305,
+              "energyHigh": 18.775174,
+              "lowShare": 0.243,
+              "meanConfidence": 0.968
+            },
+            {
+              "atSeconds": 2.64,
+              "symbols": 8,
+              "energyLow": 3.587042,
+              "energyHigh": 47.324975,
+              "lowShare": 0.07,
+              "meanConfidence": 0.971
+            },
+            {
+              "atSeconds": 2.68,
+              "symbols": 8,
+              "energyLow": 9.624409,
+              "energyHigh": 43.472289,
+              "lowShare": 0.181,
+              "meanConfidence": 0.792
+            },
+            {
+              "atSeconds": 2.72,
+              "symbols": 8,
+              "energyLow": 8.492472,
+              "energyHigh": 68.269037,
+              "lowShare": 0.111,
+              "meanConfidence": 0.87
+            },
+            {
+              "atSeconds": 2.76,
+              "symbols": 8,
+              "energyLow": 15.830452,
+              "energyHigh": 49.360604,
+              "lowShare": 0.243,
+              "meanConfidence": 0.801
+            },
+            {
+              "atSeconds": 2.8,
+              "symbols": 8,
+              "energyLow": 9.60936,
+              "energyHigh": 62.706301,
+              "lowShare": 0.133,
+              "meanConfidence": 0.771
+            },
+            {
+              "atSeconds": 2.84,
+              "symbols": 8,
+              "energyLow": 5.356811,
+              "energyHigh": 80.515333,
+              "lowShare": 0.062,
+              "meanConfidence": 0.912
+            },
+            {
+              "atSeconds": 2.88,
+              "symbols": 8,
+              "energyLow": 8.311625,
+              "energyHigh": 84.431758,
+              "lowShare": 0.09,
+              "meanConfidence": 0.925
+            },
+            {
+              "atSeconds": 2.92,
+              "symbols": 8,
+              "energyLow": 14.934646,
+              "energyHigh": 48.10959,
+              "lowShare": 0.237,
+              "meanConfidence": 0.783
+            },
+            {
+              "atSeconds": 2.96,
+              "symbols": 8,
+              "energyLow": 6.263648,
+              "energyHigh": 84.75765,
+              "lowShare": 0.069,
+              "meanConfidence": 0.861
+            },
+            {
+              "atSeconds": 3,
+              "symbols": 8,
+              "energyLow": 14.406188,
+              "energyHigh": 62.017308,
+              "lowShare": 0.189,
+              "meanConfidence": 0.93
+            },
+            {
+              "atSeconds": 3.04,
+              "symbols": 8,
+              "energyLow": 29.302473,
+              "energyHigh": 4.198635,
+              "lowShare": 0.875,
+              "meanConfidence": 0.897
+            },
+            {
+              "atSeconds": 3.08,
+              "symbols": 8,
+              "energyLow": 2.780685,
+              "energyHigh": 29.874,
+              "lowShare": 0.085,
+              "meanConfidence": 0.962
+            },
+            {
+              "atSeconds": 3.12,
+              "symbols": 8,
+              "energyLow": 17.58628,
+              "energyHigh": 26.162707,
+              "lowShare": 0.402,
+              "meanConfidence": 0.885
+            },
+            {
+              "atSeconds": 3.16,
+              "symbols": 8,
+              "energyLow": 12.82255,
+              "energyHigh": 12.275843,
+              "lowShare": 0.511,
+              "meanConfidence": 0.817
+            },
+            {
+              "atSeconds": 3.2,
+              "symbols": 8,
+              "energyLow": 27.297742,
+              "energyHigh": 15.231717,
+              "lowShare": 0.642,
+              "meanConfidence": 0.942
+            },
+            {
+              "atSeconds": 3.24,
+              "symbols": 8,
+              "energyLow": 10.211988,
+              "energyHigh": 26.290223,
+              "lowShare": 0.28,
+              "meanConfidence": 0.771
+            },
+            {
+              "atSeconds": 3.28,
+              "symbols": 8,
+              "energyLow": 12.707762,
+              "energyHigh": 39.657823,
+              "lowShare": 0.243,
+              "meanConfidence": 0.871
+            },
+            {
+              "atSeconds": 3.32,
+              "symbols": 8,
+              "energyLow": 5.222753,
+              "energyHigh": 75.887917,
+              "lowShare": 0.064,
+              "meanConfidence": 0.869
+            },
+            {
+              "atSeconds": 3.36,
+              "symbols": 8,
+              "energyLow": 10.385315,
+              "energyHigh": 63.726796,
+              "lowShare": 0.14,
+              "meanConfidence": 0.888
+            },
+            {
+              "atSeconds": 3.4,
+              "symbols": 8,
+              "energyLow": 18.533614,
+              "energyHigh": 9.694394,
+              "lowShare": 0.657,
+              "meanConfidence": 0.859
+            },
+            {
+              "atSeconds": 3.44,
+              "symbols": 8,
+              "energyLow": 3.193726,
+              "energyHigh": 35.367815,
+              "lowShare": 0.083,
+              "meanConfidence": 0.914
+            },
+            {
+              "atSeconds": 3.48,
+              "symbols": 8,
+              "energyLow": 9.307622,
+              "energyHigh": 25.527244,
+              "lowShare": 0.267,
+              "meanConfidence": 0.945
+            },
+            {
+              "atSeconds": 3.52,
+              "symbols": 8,
+              "energyLow": 10.636581,
+              "energyHigh": 18.765913,
+              "lowShare": 0.362,
+              "meanConfidence": 0.797
+            },
+            {
+              "atSeconds": 3.56,
+              "symbols": 8,
+              "energyLow": 24.865774,
+              "energyHigh": 29.754361,
+              "lowShare": 0.455,
+              "meanConfidence": 0.903
+            },
+            {
+              "atSeconds": 3.6,
+              "symbols": 8,
+              "energyLow": 15.216477,
+              "energyHigh": 22.392111,
+              "lowShare": 0.405,
+              "meanConfidence": 0.846
+            },
+            {
+              "atSeconds": 3.64,
+              "symbols": 8,
+              "energyLow": 10.987444,
+              "energyHigh": 43.383738,
+              "lowShare": 0.202,
+              "meanConfidence": 0.817
+            },
+            {
+              "atSeconds": 3.68,
+              "symbols": 8,
+              "energyLow": 18.321925,
+              "energyHigh": 6.694587,
+              "lowShare": 0.732,
+              "meanConfidence": 0.894
+            },
+            {
+              "atSeconds": 3.72,
+              "symbols": 8,
+              "energyLow": 11.159407,
+              "energyHigh": 24.861052,
+              "lowShare": 0.31,
+              "meanConfidence": 0.917
+            },
+            {
+              "atSeconds": 3.76,
+              "symbols": 8,
+              "energyLow": 4.683594,
+              "energyHigh": 26.82179,
+              "lowShare": 0.149,
+              "meanConfidence": 0.877
+            },
+            {
+              "atSeconds": 3.8,
+              "symbols": 8,
+              "energyLow": 32.087123,
+              "energyHigh": 0.396336,
+              "lowShare": 0.988,
+              "meanConfidence": 0.953
+            },
+            {
+              "atSeconds": 3.84,
+              "symbols": 8,
+              "energyLow": 13.885578,
+              "energyHigh": 36.48103,
+              "lowShare": 0.276,
+              "meanConfidence": 0.929
+            },
+            {
+              "atSeconds": 3.88,
+              "symbols": 8,
+              "energyLow": 11.483856,
+              "energyHigh": 36.534199,
+              "lowShare": 0.239,
+              "meanConfidence": 0.855
+            },
+            {
+              "atSeconds": 3.92,
+              "symbols": 8,
+              "energyLow": 11.564371,
+              "energyHigh": 60.04791,
+              "lowShare": 0.161,
+              "meanConfidence": 0.895
+            },
+            {
+              "atSeconds": 3.96,
+              "symbols": 8,
+              "energyLow": 17.763298,
+              "energyHigh": 47.422379,
+              "lowShare": 0.273,
+              "meanConfidence": 0.84
+            },
+            {
+              "atSeconds": 4,
+              "symbols": 8,
+              "energyLow": 18.154736,
+              "energyHigh": 52.248252,
+              "lowShare": 0.258,
+              "meanConfidence": 0.884
+            },
+            {
+              "atSeconds": 4.04,
+              "symbols": 8,
+              "energyLow": 12.750922,
+              "energyHigh": 67.922489,
+              "lowShare": 0.158,
+              "meanConfidence": 0.88
+            },
+            {
+              "atSeconds": 4.08,
+              "symbols": 8,
+              "energyLow": 19.563966,
+              "energyHigh": 55.2655,
+              "lowShare": 0.261,
+              "meanConfidence": 0.875
+            },
+            {
+              "atSeconds": 4.12,
+              "symbols": 8,
+              "energyLow": 8.950492,
+              "energyHigh": 71.302286,
+              "lowShare": 0.112,
+              "meanConfidence": 0.85
+            },
+            {
+              "atSeconds": 4.16,
+              "symbols": 8,
+              "energyLow": 11.715078,
+              "energyHigh": 72.639315,
+              "lowShare": 0.139,
+              "meanConfidence": 0.83
+            },
+            {
+              "atSeconds": 4.2,
+              "symbols": 8,
+              "energyLow": 30.733875,
+              "energyHigh": 41.789713,
+              "lowShare": 0.424,
+              "meanConfidence": 0.911
+            },
+            {
+              "atSeconds": 4.24,
+              "symbols": 8,
+              "energyLow": 13.517383,
+              "energyHigh": 63.814767,
+              "lowShare": 0.175,
+              "meanConfidence": 0.867
+            },
+            {
+              "atSeconds": 4.28,
+              "symbols": 8,
+              "energyLow": 14.522025,
+              "energyHigh": 55.348697,
+              "lowShare": 0.208,
+              "meanConfidence": 0.807
+            },
+            {
+              "atSeconds": 4.32,
+              "symbols": 8,
+              "energyLow": 4.61206,
+              "energyHigh": 103.291478,
+              "lowShare": 0.043,
+              "meanConfidence": 0.909
+            },
+            {
+              "atSeconds": 4.36,
+              "symbols": 8,
+              "energyLow": 12.180564,
+              "energyHigh": 71.48726,
+              "lowShare": 0.146,
+              "meanConfidence": 0.892
+            },
+            {
+              "atSeconds": 4.4,
+              "symbols": 8,
+              "energyLow": 36.227479,
+              "energyHigh": 14.805187,
+              "lowShare": 0.71,
+              "meanConfidence": 0.868
+            },
+            {
+              "atSeconds": 4.44,
+              "symbols": 8,
+              "energyLow": 14.678839,
+              "energyHigh": 70.910836,
+              "lowShare": 0.172,
+              "meanConfidence": 0.933
+            },
+            {
+              "atSeconds": 4.48,
+              "symbols": 8,
+              "energyLow": 19.400923,
+              "energyHigh": 56.361174,
+              "lowShare": 0.256,
+              "meanConfidence": 0.892
+            },
+            {
+              "atSeconds": 4.52,
+              "symbols": 8,
+              "energyLow": 24.061163,
+              "energyHigh": 40.831379,
+              "lowShare": 0.371,
+              "meanConfidence": 0.894
+            },
+            {
+              "atSeconds": 4.56,
+              "symbols": 8,
+              "energyLow": 43.510015,
+              "energyHigh": 10.434905,
+              "lowShare": 0.807,
+              "meanConfidence": 0.941
+            },
+            {
+              "atSeconds": 4.6,
+              "symbols": 8,
+              "energyLow": 31.749956,
+              "energyHigh": 22.528714,
+              "lowShare": 0.585,
+              "meanConfidence": 0.908
+            },
+            {
+              "atSeconds": 4.64,
+              "symbols": 8,
+              "energyLow": 26.633161,
+              "energyHigh": 37.259031,
+              "lowShare": 0.417,
+              "meanConfidence": 0.892
+            },
+            {
+              "atSeconds": 4.68,
+              "symbols": 8,
+              "energyLow": 16.097057,
+              "energyHigh": 49.785557,
+              "lowShare": 0.244,
+              "meanConfidence": 0.828
+            },
+            {
+              "atSeconds": 4.72,
+              "symbols": 8,
+              "energyLow": 19.106763,
+              "energyHigh": 52.391172,
+              "lowShare": 0.267,
+              "meanConfidence": 0.88
+            },
+            {
+              "atSeconds": 4.76,
+              "symbols": 8,
+              "energyLow": 18.838456,
+              "energyHigh": 54.537105,
+              "lowShare": 0.257,
+              "meanConfidence": 0.863
+            },
+            {
+              "atSeconds": 4.8,
+              "symbols": 8,
+              "energyLow": 12.119847,
+              "energyHigh": 67.844455,
+              "lowShare": 0.152,
+              "meanConfidence": 0.878
+            },
+            {
+              "atSeconds": 4.84,
+              "symbols": 8,
+              "energyLow": 33.317157,
+              "energyHigh": 40.548267,
+              "lowShare": 0.451,
+              "meanConfidence": 0.959
+            },
+            {
+              "atSeconds": 4.88,
+              "symbols": 8,
+              "energyLow": 8.364989,
+              "energyHigh": 66.048356,
+              "lowShare": 0.112,
+              "meanConfidence": 0.853
+            },
+            {
+              "atSeconds": 4.92,
+              "symbols": 8,
+              "energyLow": 4.230655,
+              "energyHigh": 100.287506,
+              "lowShare": 0.04,
+              "meanConfidence": 0.886
+            },
+            {
+              "atSeconds": 4.96,
+              "symbols": 8,
+              "energyLow": 20.619899,
+              "energyHigh": 42.280481,
+              "lowShare": 0.328,
+              "meanConfidence": 0.834
+            },
+            {
+              "atSeconds": 5,
+              "symbols": 8,
+              "energyLow": 17.283852,
+              "energyHigh": 51.728246,
+              "lowShare": 0.25,
+              "meanConfidence": 0.889
+            },
+            {
+              "atSeconds": 5.04,
+              "symbols": 8,
+              "energyLow": 31.107058,
+              "energyHigh": 24.236823,
+              "lowShare": 0.562,
+              "meanConfidence": 0.885
+            },
+            {
+              "atSeconds": 5.08,
+              "symbols": 8,
+              "energyLow": 32.083596,
+              "energyHigh": 39.262287,
+              "lowShare": 0.45,
+              "meanConfidence": 0.966
+            },
+            {
+              "atSeconds": 5.12,
+              "symbols": 8,
+              "energyLow": 8.574442,
+              "energyHigh": 67.746997,
+              "lowShare": 0.112,
+              "meanConfidence": 0.861
+            },
+            {
+              "atSeconds": 5.16,
+              "symbols": 8,
+              "energyLow": 22.102662,
+              "energyHigh": 36.634361,
+              "lowShare": 0.376,
+              "meanConfidence": 0.809
+            },
+            {
+              "atSeconds": 5.2,
+              "symbols": 8,
+              "energyLow": 33.83955,
+              "energyHigh": 25.259859,
+              "lowShare": 0.573,
+              "meanConfidence": 0.923
+            },
+            {
+              "atSeconds": 5.24,
+              "symbols": 8,
+              "energyLow": 18.011291,
+              "energyHigh": 52.023611,
+              "lowShare": 0.257,
+              "meanConfidence": 0.903
+            },
+            {
+              "atSeconds": 5.28,
+              "symbols": 8,
+              "energyLow": 5.986954,
+              "energyHigh": 82.523155,
+              "lowShare": 0.068,
+              "meanConfidence": 0.857
+            },
+            {
+              "atSeconds": 5.32,
+              "symbols": 8,
+              "energyLow": 10.027624,
+              "energyHigh": 83.900445,
+              "lowShare": 0.107,
+              "meanConfidence": 0.904
+            },
+            {
+              "atSeconds": 5.36,
+              "symbols": 8,
+              "energyLow": 17.70539,
+              "energyHigh": 53.856632,
+              "lowShare": 0.247,
+              "meanConfidence": 0.826
+            },
+            {
+              "atSeconds": 5.4,
+              "symbols": 8,
+              "energyLow": 20.078098,
+              "energyHigh": 40.133599,
+              "lowShare": 0.333,
+              "meanConfidence": 0.867
+            },
+            {
+              "atSeconds": 5.44,
+              "symbols": 8,
+              "energyLow": 5.755014,
+              "energyHigh": 81.900576,
+              "lowShare": 0.066,
+              "meanConfidence": 0.868
+            },
+            {
+              "atSeconds": 5.48,
+              "symbols": 8,
+              "energyLow": 23.465078,
+              "energyHigh": 38.025483,
+              "lowShare": 0.382,
+              "meanConfidence": 0.843
+            },
+            {
+              "atSeconds": 5.52,
+              "symbols": 8,
+              "energyLow": 30.821686,
+              "energyHigh": 38.777368,
+              "lowShare": 0.443,
+              "meanConfidence": 0.955
+            },
+            {
+              "atSeconds": 5.56,
+              "symbols": 8,
+              "energyLow": 19.285875,
+              "energyHigh": 37.135873,
+              "lowShare": 0.342,
+              "meanConfidence": 0.838
+            },
+            {
+              "atSeconds": 5.6,
+              "symbols": 8,
+              "energyLow": 23.613259,
+              "energyHigh": 38.287781,
+              "lowShare": 0.381,
+              "meanConfidence": 0.869
+            },
+            {
+              "atSeconds": 5.64,
+              "symbols": 8,
+              "energyLow": 20.868424,
+              "energyHigh": 32.090538,
+              "lowShare": 0.394,
+              "meanConfidence": 0.812
+            },
+            {
+              "atSeconds": 5.68,
+              "symbols": 8,
+              "energyLow": 33.762436,
+              "energyHigh": 25.548276,
+              "lowShare": 0.569,
+              "meanConfidence": 0.941
+            },
+            {
+              "atSeconds": 5.72,
+              "symbols": 8,
+              "energyLow": 14.63329,
+              "energyHigh": 48.841177,
+              "lowShare": 0.231,
+              "meanConfidence": 0.841
+            },
+            {
+              "atSeconds": 5.76,
+              "symbols": 8,
+              "energyLow": 11.541455,
+              "energyHigh": 65.76742,
+              "lowShare": 0.149,
+              "meanConfidence": 0.853
+            },
+            {
+              "atSeconds": 5.8,
+              "symbols": 8,
+              "energyLow": 31.183345,
+              "energyHigh": 38.881643,
+              "lowShare": 0.445,
+              "meanConfidence": 0.95
+            },
+            {
+              "atSeconds": 5.84,
+              "symbols": 8,
+              "energyLow": 27.256659,
+              "energyHigh": 26.270315,
+              "lowShare": 0.509,
+              "meanConfidence": 0.868
+            },
+            {
+              "atSeconds": 5.88,
+              "symbols": 8,
+              "energyLow": 14.564941,
+              "energyHigh": 49.322604,
+              "lowShare": 0.228,
+              "meanConfidence": 0.822
+            },
+            {
+              "atSeconds": 5.92,
+              "symbols": 8,
+              "energyLow": 9.453863,
+              "energyHigh": 79.062917,
+              "lowShare": 0.107,
+              "meanConfidence": 0.91
+            },
+            {
+              "atSeconds": 5.96,
+              "symbols": 8,
+              "energyLow": 20.021391,
+              "energyHigh": 39.033145,
+              "lowShare": 0.339,
+              "meanConfidence": 0.825
+            },
+            {
+              "atSeconds": 6,
+              "symbols": 8,
+              "energyLow": 12.769069,
+              "energyHigh": 60.531227,
+              "lowShare": 0.174,
+              "meanConfidence": 0.831
+            },
+            {
+              "atSeconds": 6.04,
+              "symbols": 8,
+              "energyLow": 23.878802,
+              "energyHigh": 37.864814,
+              "lowShare": 0.387,
+              "meanConfidence": 0.886
+            },
+            {
+              "atSeconds": 6.08,
+              "symbols": 8,
+              "energyLow": 22.335668,
+              "energyHigh": 40.514443,
+              "lowShare": 0.355,
+              "meanConfidence": 0.922
+            },
+            {
+              "atSeconds": 6.12,
+              "symbols": 8,
+              "energyLow": 42.606242,
+              "energyHigh": 9.899057,
+              "lowShare": 0.811,
+              "meanConfidence": 0.954
+            },
+            {
+              "atSeconds": 6.16,
+              "symbols": 8,
+              "energyLow": 13.729075,
+              "energyHigh": 50.130524,
+              "lowShare": 0.215,
+              "meanConfidence": 0.896
+            },
+            {
+              "atSeconds": 6.2,
+              "symbols": 8,
+              "energyLow": 12.530758,
+              "energyHigh": 66.981963,
+              "lowShare": 0.158,
+              "meanConfidence": 0.835
+            },
+            {
+              "atSeconds": 6.24,
+              "symbols": 8,
+              "energyLow": 17.491166,
+              "energyHigh": 51.913438,
+              "lowShare": 0.252,
+              "meanConfidence": 0.872
+            },
+            {
+              "atSeconds": 6.28,
+              "symbols": 8,
+              "energyLow": 13.274191,
+              "energyHigh": 64.389384,
+              "lowShare": 0.171,
+              "meanConfidence": 0.877
+            },
+            {
+              "atSeconds": 6.32,
+              "symbols": 8,
+              "energyLow": 18.245992,
+              "energyHigh": 54.319412,
+              "lowShare": 0.251,
+              "meanConfidence": 0.896
+            },
+            {
+              "atSeconds": 6.36,
+              "symbols": 8,
+              "energyLow": 21.197408,
+              "energyHigh": 35.044022,
+              "lowShare": 0.377,
+              "meanConfidence": 0.821
+            },
+            {
+              "atSeconds": 6.4,
+              "symbols": 8,
+              "energyLow": 23.561037,
+              "energyHigh": 36.603809,
+              "lowShare": 0.392,
+              "meanConfidence": 0.848
+            },
+            {
+              "atSeconds": 6.44,
+              "symbols": 8,
+              "energyLow": 29.332653,
+              "energyHigh": 25.416767,
+              "lowShare": 0.536,
+              "meanConfidence": 0.902
+            },
+            {
+              "atSeconds": 6.48,
+              "symbols": 8,
+              "energyLow": 26.598178,
+              "energyHigh": 35.251395,
+              "lowShare": 0.43,
+              "meanConfidence": 0.938
+            },
+            {
+              "atSeconds": 6.52,
+              "symbols": 8,
+              "energyLow": 0.206872,
+              "energyHigh": 116.321404,
+              "lowShare": 0.002,
+              "meanConfidence": 0.996
+            },
+            {
+              "atSeconds": 6.56,
+              "symbols": 8,
+              "energyLow": 28.048053,
+              "energyHigh": 28.060155,
+              "lowShare": 0.5,
+              "meanConfidence": 0.856
+            },
+            {
+              "atSeconds": 6.6,
+              "symbols": 8,
+              "energyLow": 17.529999,
+              "energyHigh": 49.42074,
+              "lowShare": 0.262,
+              "meanConfidence": 0.911
+            },
+            {
+              "atSeconds": 6.64,
+              "symbols": 8,
+              "energyLow": 23.848249,
+              "energyHigh": 32.930846,
+              "lowShare": 0.42,
+              "meanConfidence": 0.836
+            },
+            {
+              "atSeconds": 6.68,
+              "symbols": 8,
+              "energyLow": 19.671093,
+              "energyHigh": 34.400434,
+              "lowShare": 0.364,
+              "meanConfidence": 0.835
+            },
+            {
+              "atSeconds": 6.72,
+              "symbols": 8,
+              "energyLow": 37.242954,
+              "energyHigh": 9.985139,
+              "lowShare": 0.789,
+              "meanConfidence": 0.933
+            },
+            {
+              "atSeconds": 6.76,
+              "symbols": 8,
+              "energyLow": 30.722298,
+              "energyHigh": 21.40531,
+              "lowShare": 0.589,
+              "meanConfidence": 0.903
+            },
+            {
+              "atSeconds": 6.8,
+              "symbols": 8,
+              "energyLow": 10.100354,
+              "energyHigh": 77.603784,
+              "lowShare": 0.115,
+              "meanConfidence": 0.902
+            },
+            {
+              "atSeconds": 6.84,
+              "symbols": 8,
+              "energyLow": 28.086436,
+              "energyHigh": 27.173497,
+              "lowShare": 0.508,
+              "meanConfidence": 0.885
+            },
+            {
+              "atSeconds": 6.88,
+              "symbols": 8,
+              "energyLow": 32.510881,
+              "energyHigh": 21.744905,
+              "lowShare": 0.599,
+              "meanConfidence": 0.899
+            },
+            {
+              "atSeconds": 6.92,
+              "symbols": 8,
+              "energyLow": 10.92439,
+              "energyHigh": 64.134702,
+              "lowShare": 0.146,
+              "meanConfidence": 0.895
+            },
+            {
+              "atSeconds": 6.96,
+              "symbols": 8,
+              "energyLow": 24.580613,
+              "energyHigh": 35.973739,
+              "lowShare": 0.406,
+              "meanConfidence": 0.847
+            },
+            {
+              "atSeconds": 7,
+              "symbols": 8,
+              "energyLow": 9.922913,
+              "energyHigh": 67.686924,
+              "lowShare": 0.128,
+              "meanConfidence": 0.913
+            },
+            {
+              "atSeconds": 7.04,
+              "symbols": 8,
+              "energyLow": 7.779245,
+              "energyHigh": 81.009855,
+              "lowShare": 0.088,
+              "meanConfidence": 0.854
+            },
+            {
+              "atSeconds": 7.08,
+              "symbols": 8,
+              "energyLow": 15.617043,
+              "energyHigh": 53.859838,
+              "lowShare": 0.225,
+              "meanConfidence": 0.913
+            },
+            {
+              "atSeconds": 7.12,
+              "symbols": 8,
+              "energyLow": 20.389648,
+              "energyHigh": 51.474534,
+              "lowShare": 0.284,
+              "meanConfidence": 0.885
+            },
+            {
+              "atSeconds": 7.16,
+              "symbols": 8,
+              "energyLow": 23.300704,
+              "energyHigh": 37.959847,
+              "lowShare": 0.38,
+              "meanConfidence": 0.939
+            },
+            {
+              "atSeconds": 7.2,
+              "symbols": 8,
+              "energyLow": 14.960032,
+              "energyHigh": 61.57295,
+              "lowShare": 0.195,
+              "meanConfidence": 0.924
+            },
+            {
+              "atSeconds": 7.24,
+              "symbols": 8,
+              "energyLow": 18.715975,
+              "energyHigh": 37.902009,
+              "lowShare": 0.331,
+              "meanConfidence": 0.834
+            },
+            {
+              "atSeconds": 7.28,
+              "symbols": 8,
+              "energyLow": 19.596354,
+              "energyHigh": 45.510472,
+              "lowShare": 0.301,
+              "meanConfidence": 0.838
+            },
+            {
+              "atSeconds": 7.32,
+              "symbols": 8,
+              "energyLow": 15.762279,
+              "energyHigh": 53.430627,
+              "lowShare": 0.228,
+              "meanConfidence": 0.901
+            },
+            {
+              "atSeconds": 7.36,
+              "symbols": 8,
+              "energyLow": 6.782337,
+              "energyHigh": 81.725262,
+              "lowShare": 0.077,
+              "meanConfidence": 0.836
+            },
+            {
+              "atSeconds": 7.4,
+              "symbols": 8,
+              "energyLow": 13.040801,
+              "energyHigh": 44.042576,
+              "lowShare": 0.228,
+              "meanConfidence": 0.738
+            },
+            {
+              "atSeconds": 7.44,
+              "symbols": 8,
+              "energyLow": 18.80925,
+              "energyHigh": 46.547029,
+              "lowShare": 0.288,
+              "meanConfidence": 0.859
+            },
+            {
+              "atSeconds": 7.48,
+              "symbols": 8,
+              "energyLow": 11.16161,
+              "energyHigh": 65.26311,
+              "lowShare": 0.146,
+              "meanConfidence": 0.894
+            },
+            {
+              "atSeconds": 7.52,
+              "symbols": 8,
+              "energyLow": 25.326651,
+              "energyHigh": 43.073602,
+              "lowShare": 0.37,
+              "meanConfidence": 0.92
+            },
+            {
+              "atSeconds": 7.56,
+              "symbols": 8,
+              "energyLow": 22.576326,
+              "energyHigh": 35.744627,
+              "lowShare": 0.387,
+              "meanConfidence": 0.878
+            },
+            {
+              "atSeconds": 7.6,
+              "symbols": 8,
+              "energyLow": 19.960593,
+              "energyHigh": 53.148485,
+              "lowShare": 0.273,
+              "meanConfidence": 0.95
+            },
+            {
+              "atSeconds": 7.64,
+              "symbols": 8,
+              "energyLow": 8.017611,
+              "energyHigh": 85.731764,
+              "lowShare": 0.086,
+              "meanConfidence": 0.936
+            },
+            {
+              "atSeconds": 7.68,
+              "symbols": 8,
+              "energyLow": 11.520618,
+              "energyHigh": 69.089092,
+              "lowShare": 0.143,
+              "meanConfidence": 0.853
+            },
+            {
+              "atSeconds": 7.72,
+              "symbols": 8,
+              "energyLow": 11.001059,
+              "energyHigh": 69.911416,
+              "lowShare": 0.136,
+              "meanConfidence": 0.894
+            },
+            {
+              "atSeconds": 7.76,
+              "symbols": 8,
+              "energyLow": 18.524458,
+              "energyHigh": 46.817507,
+              "lowShare": 0.284,
+              "meanConfidence": 0.853
+            },
+            {
+              "atSeconds": 7.8,
+              "symbols": 8,
+              "energyLow": 11.931328,
+              "energyHigh": 49.347402,
+              "lowShare": 0.195,
+              "meanConfidence": 0.812
+            },
+            {
+              "atSeconds": 7.84,
+              "symbols": 8,
+              "energyLow": 7.875726,
+              "energyHigh": 77.460172,
+              "lowShare": 0.092,
+              "meanConfidence": 0.861
+            },
+            {
+              "atSeconds": 7.88,
+              "symbols": 8,
+              "energyLow": 23.377533,
+              "energyHigh": 38.6923,
+              "lowShare": 0.377,
+              "meanConfidence": 0.882
+            },
+            {
+              "atSeconds": 7.92,
+              "symbols": 8,
+              "energyLow": 29.455417,
+              "energyHigh": 26.355313,
+              "lowShare": 0.528,
+              "meanConfidence": 0.938
+            },
+            {
+              "atSeconds": 7.96,
+              "symbols": 8,
+              "energyLow": 9.474793,
+              "energyHigh": 61.612212,
+              "lowShare": 0.133,
+              "meanConfidence": 0.864
+            },
+            {
+              "atSeconds": 8,
+              "symbols": 8,
+              "energyLow": 17.996393,
+              "energyHigh": 51.109186,
+              "lowShare": 0.26,
+              "meanConfidence": 0.873
+            },
+            {
+              "atSeconds": 8.04,
+              "symbols": 8,
+              "energyLow": 37.088054,
+              "energyHigh": 13.36856,
+              "lowShare": 0.735,
+              "meanConfidence": 0.903
+            },
+            {
+              "atSeconds": 8.08,
+              "symbols": 8,
+              "energyLow": 23.960359,
+              "energyHigh": 34.476101,
+              "lowShare": 0.41,
+              "meanConfidence": 0.897
+            },
+            {
+              "atSeconds": 8.12,
+              "symbols": 8,
+              "energyLow": 16.897796,
+              "energyHigh": 62.944204,
+              "lowShare": 0.212,
+              "meanConfidence": 0.933
+            },
+            {
+              "atSeconds": 8.16,
+              "symbols": 8,
+              "energyLow": 13.401429,
+              "energyHigh": 50.933584,
+              "lowShare": 0.208,
+              "meanConfidence": 0.805
+            },
+            {
+              "atSeconds": 8.2,
+              "symbols": 8,
+              "energyLow": 16.027276,
+              "energyHigh": 63.12803,
+              "lowShare": 0.202,
+              "meanConfidence": 0.907
+            },
+            {
+              "atSeconds": 8.24,
+              "symbols": 8,
+              "energyLow": 14.714513,
+              "energyHigh": 49.071209,
+              "lowShare": 0.231,
+              "meanConfidence": 0.812
+            },
+            {
+              "atSeconds": 8.28,
+              "symbols": 8,
+              "energyLow": 5.642066,
+              "energyHigh": 83.316979,
+              "lowShare": 0.063,
+              "meanConfidence": 0.907
+            },
+            {
+              "atSeconds": 8.32,
+              "symbols": 8,
+              "energyLow": 15.170307,
+              "energyHigh": 50.474281,
+              "lowShare": 0.231,
+              "meanConfidence": 0.814
+            },
+            {
+              "atSeconds": 8.36,
+              "symbols": 8,
+              "energyLow": 31.272295,
+              "energyHigh": 26.306026,
+              "lowShare": 0.543,
+              "meanConfidence": 0.937
+            },
+            {
+              "atSeconds": 8.4,
+              "symbols": 8,
+              "energyLow": 28.129355,
+              "energyHigh": 34.992585,
+              "lowShare": 0.446,
+              "meanConfidence": 0.91
+            },
+            {
+              "atSeconds": 8.44,
+              "symbols": 8,
+              "energyLow": 16.853586,
+              "energyHigh": 51.832816,
+              "lowShare": 0.245,
+              "meanConfidence": 0.911
+            },
+            {
+              "atSeconds": 8.48,
+              "symbols": 8,
+              "energyLow": 38.479869,
+              "energyHigh": 11.78491,
+              "lowShare": 0.766,
+              "meanConfidence": 0.919
+            },
+            {
+              "atSeconds": 8.52,
+              "symbols": 8,
+              "energyLow": 14.114943,
+              "energyHigh": 60.388435,
+              "lowShare": 0.189,
+              "meanConfidence": 0.922
+            },
+            {
+              "atSeconds": 8.56,
+              "symbols": 8,
+              "energyLow": 13.000511,
+              "energyHigh": 69.312504,
+              "lowShare": 0.158,
+              "meanConfidence": 0.907
+            },
+            {
+              "atSeconds": 8.6,
+              "symbols": 8,
+              "energyLow": 15.346536,
+              "energyHigh": 49.719709,
+              "lowShare": 0.236,
+              "meanConfidence": 0.832
+            },
+            {
+              "atSeconds": 8.64,
+              "symbols": 8,
+              "energyLow": 15.109741,
+              "energyHigh": 51.555141,
+              "lowShare": 0.227,
+              "meanConfidence": 0.824
+            },
+            {
+              "atSeconds": 8.68,
+              "symbols": 4,
+              "energyLow": 16.796994,
+              "energyHigh": 48.097795,
+              "lowShare": 0.259,
+              "meanConfidence": 0.921
+            }
+          ]
+        },
+        "reportedPhase": 5,
+        "symbols": {
+          "phase": 5,
+          "symbols": 1740,
+          "strongSymbols": 1542,
+          "meanConfidence": 0.792,
+          "lowToneSymbols": 993,
+          "highToneSymbols": 747,
+          "toneShare": {
+            "1200": 0.264,
+            "2200": 0.736
+          },
+          "strongestWindowStart": 867,
+          "strongestWindowConfidence": 0.91,
+          "peakEnergyWindowStart": 405
         }
       }
     }
